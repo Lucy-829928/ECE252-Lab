@@ -65,7 +65,7 @@ typedef struct simple_PNG {
  *****************************************************************************/
 /* this is one possible way to structure the PNG manipulation functions */
 
-int is_png(U8 *buf, size_t n); //check if PNG signature is present
+bool is_png(U8 *buf, size_t n); //check if PNG signature is present
     //takes in pointer to least 8 bytes of binary data
 int get_png_data_IHDR(struct data_IHDR *out, FILE *fp, long offset, int whence); //extract from file the data field of the IHDR chunk, to populate a struct data_IHDR
     //takes in file pointer and how to reach data field of the IDHR chunk (see fseek parameters)
