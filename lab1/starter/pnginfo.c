@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <lab_png.h>
-#include <crc.h>
+#include "lab_png.h"
+#include "crc.h"
 
 #define IMAGE_DIR "images/"
 
