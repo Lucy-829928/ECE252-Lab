@@ -45,6 +45,41 @@ void traverse_directory (const char *directory) {
 
     struct dirent *entry;
     struct stat buf;
-    char path[1000];
+    char path[4096];
     int png_found = 0;
+
+    while((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
+
+        snprintf(path, sizeof(path), "%s/%s", directory, entry->d_name);
+
+        if (lstat(path, &buf) == -1) {
+            continue;
+        }
+
+        if (S_ISREG(buf.st_mode)) {
+            check_file(path);
+            png_found = 1;
+        } else if (S_ISDIR(buf.st_mode)) {
+            traverse_directory(path);
+        }
+    }
+
+    closedir(dir);
+
+    if (!png_found) {
+        printf("findpng: No PNG file found\n");
+    }
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <directory>\n", argv[0]);
+        return 1;
+    }
+
+    traverse_directory(argv[1]);
+    return 0;
 }
