@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <lab_png.h>
-#include <crc.h>
+#include "lab_png.h"
+#include "crc.h"
 
 bool is_png(U8 *buf, size_t n)
 {
@@ -154,18 +154,18 @@ int get_png_chunks(simple_PNG_p out, FILE *fp, long offset, int whence)
     return 0;
 }
 
-chunk_p get_chunk(FILE *fp)
-{
-}
+// chunk_p get_chunk(FILE *fp)
+// {
+// }
 
-U32 get_chunk_crc(chunk_p in)
-{
-}
+// U32 get_chunk_crc(chunk_p in)
+// {
+// }
 
-U32 calculate_chunk_crc(chunk_p in)
-{
-}
+// U32 calculate_chunk_crc(chunk_p in)
+// {
+// }
 
-simple_PNG_p mallocPNG()
-{
-}
+// simple_PNG_p mallocPNG()
+// {
+// }
