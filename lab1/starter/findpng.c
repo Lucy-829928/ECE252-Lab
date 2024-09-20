@@ -26,24 +26,24 @@ typedef unsigned int U32;
 
 */
 
-bool is_png(U8 *buf, size_t n)
-{
-    if (n < PNG_SIG_SIZE)
-    {
-        return false;
-    }
-    U8 png_signature[PNG_SIG_SIZE] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A}; /* first 8 bytes signature for png */
+// bool is_png(U8 *buf, size_t n)
+// {
+//     if (n < PNG_SIG_SIZE)
+//     {
+//         return false;
+//     }
+//     U8 png_signature[PNG_SIG_SIZE] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A}; /* first 8 bytes signature for png */
 
-    int i;
-    for (i = 0; i < 8; i++)
-    {
-        if (buf[i] != png_signature[i])
-        {
-            return false; /* mismatch, not png file */
-        }
-    }
-    return true; /* matched, png file */
-}
+//     int i;
+//     for (i = 0; i < 8; i++)
+//     {
+//         if (buf[i] != png_signature[i])
+//         {
+//             return false; /* mismatch, not png file */
+//         }
+//     }
+//     return true; /* matched, png file */
+// }
 
 void check_file (const char *filepath) {
     FILE *fp = fopen(filepath, "rb");

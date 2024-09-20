@@ -29,6 +29,9 @@ bool is_png(U8 *buf, size_t n)
 
 int get_png_data_IHDR(struct data_IHDR *out, FILE *fp, long offset, int whence) // takes in file pointer and how to reach data field of the IHDR chunk (see `fseek()` parameters)
 {
+    fseek(fp, 0, SEEK_SET); /* initialize file pointer */
+    fseek(fp, 8, whence);   /* skip the header file (8 bytes) */
+
     /* read the IHDR chunk length (4 bytes) and type (4 bytes) */
     U8 header[8];
     size_t read_count = fread(header, 1, 8, fp);
@@ -116,7 +119,7 @@ int main(int argc, char *argv[])
         // printf("location1: %ld\n", ftell(file));
 
         struct data_IHDR ihdr;
-        if (get_png_data_IHDR(&ihdr, file, 8, SEEK_CUR) != 0) /* use `SEEK_CUR` since the current location is at 9th byte*/
+        if (get_png_data_IHDR(&ihdr, file, 8, SEEK_SET) != 0) /* use `SEEK_CUR` since the current location is at 9th byte*/
         {
             // printf("location failed: %ld\n", ftell(file));
             // printf("Failed to read IHDR chunk\n"); /* fail to get IHDR data */

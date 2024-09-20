@@ -99,8 +99,8 @@ int get_png_chunks(simple_PNG_p out, FILE *fp, long offset, int whence)
     out->p_IHDR->crc = (buf_IHDR[21] << 24) | (buf_IHDR[22] << 16) | (buf_IHDR[23] << 8) | buf_IHDR[24];
 
     /* IDAT chunk first half part (8 bytes) */
-    U32 width = ((U32)buf_IHDR[8] << 24) | ((U32)buf_IHDR[9] << 16) | ((U32)buf_IHDR[10] << 8) | (U32)buf_IHDR[11];    /* get the width of image */
-    U32 height = ((U32)buf_IHDR[12] << 24) | ((U32)buf_IHDR[13] << 16) | ((U32)buf_IHDR[14] << 8) | (U32)buf_IHDR[15]; /* get the height of image */
+    // U32 width = ((U32)buf_IHDR[8] << 24) | ((U32)buf_IHDR[9] << 16) | ((U32)buf_IHDR[10] << 8) | (U32)buf_IHDR[11];    /* get the width of image */
+    // U32 height = ((U32)buf_IHDR[12] << 24) | ((U32)buf_IHDR[13] << 16) | ((U32)buf_IHDR[14] << 8) | (U32)buf_IHDR[15]; /* get the height of image */
     // size_t raw_data = height * (width * 4 + 1); /* calculate the raw data size (max) */
     // U8 *buf_IDAT = malloc(raw_data);
     U8 buf_IDAT[12];
