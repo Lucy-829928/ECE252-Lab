@@ -1,0 +1,1 @@
+catpng.o: catpng.c

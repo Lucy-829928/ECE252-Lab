@@ -9,23 +9,6 @@
 typedef unsigned char U8;
 typedef unsigned int U32;
 
-/* int is_pn (U8 *buf, size_t n) {
-    FILE *fp;
-    U8 png_header[8];
-
-    fp = fopen(buf, "rb");
-    fread(png_header, sizeof(unsigned char), 8, fp);
-    fclose(fp);
-
-    if (png_header[0] == 0x89 && png_header[1] == 0x50 && png_header[2] == 0x4E && png_header[3] == 0x47 && png_header[4] == 0x0D && png_header[5] == 0x0A && png_header[6] == 0x1A && png_header[7] == 0x0A) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-*/
-
 void check_file(const char *filepath)
 {
     FILE *fp = fopen(filepath, "rb");
@@ -62,7 +45,7 @@ void traverse_directory(const char *directory)
 
         snprintf(path, sizeof(path), "%s/%s", directory, entry->d_name);
 
-        if (lstat(path, &buf) == -1)
+        if (stat(path, &buf) == -1)
         {
             continue;
         }
@@ -85,6 +68,7 @@ void traverse_directory(const char *directory)
         printf("findpng: No PNG file found\n");
     }
 }
+
 
 int main(int argc, char *argv[])
 {
