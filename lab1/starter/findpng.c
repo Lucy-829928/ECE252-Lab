@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 
     /* if no PNG files in directory, print message */
     if (png_found == 0) {
-        printf("No PNG files found\n");
+        printf("findpng: No PNG file found\n");
     }
 
     return 0;
