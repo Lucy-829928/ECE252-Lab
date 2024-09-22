@@ -12,6 +12,7 @@
  * INCLUDE HEADER FILES
  *****************************************************************************/
 #include <stdio.h>
+#include <stdbool.h>
 
 /******************************************************************************
  * DEFINED MACROS
@@ -71,7 +72,7 @@ typedef struct simple_PNG
 bool is_png(U8 *buf, size_t n); // check if PNG signature is present
                                 // takes in pointer to least 8 bytes of binary data
 int get_png_data_IHDR(struct data_IHDR *out, FILE *fp, long offset, int whence); // extract from file the data field of the IHDR chunk, to populate a struct data_IHDR
-                                                                                 // takes in file pointer and how to reach data field of the IDHR chunk (see fseek parameters)
+                                                                                 // takes in file pointer and how to reach data field of the IHDR chunk (see fseek parameters)
 int get_png_height(struct data_IHDR *buf); // read out image height from a struct data_IHDR
 int get_png_width(struct data_IHDR *buf);  // read out image width from a struct data_IHDR
 

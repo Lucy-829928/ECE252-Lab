@@ -33,6 +33,6 @@ typedef unsigned char U8;
 typedef unsigned long int U64;
 
 /* FUNCTION PROTOTYPES */
-int mem_def(U8 *dest, U64 *dest_len, U8 *source,  U64 source_len, int level);
-int mem_inf(U8 *dest, U64 *dest_len, U8 *source,  U64 source_len);
+int mem_def(U8 *dest, U64 *dest_len, U8 *source,  U64 source_len, int level); // compress
+int mem_inf(U8 *dest, U64 *dest_len, U8 *source,  U64 source_len);  // uncompress
 void zerr(int ret);
