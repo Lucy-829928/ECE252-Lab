@@ -29,43 +29,82 @@ bool is_png(U8 *buf, size_t n)
 /* return -1(get failed) or 0(get success), parameters are pointer pointed to IHDR chunk's data section, pointer to file, offset and whence for fseek() */
 int get_png_data_IHDR(struct data_IHDR *out, FILE *fp, long offset, int whence) // takes in file pointer and how to reach data field of the IHDR chunk (see `fseek()` parameters)
 {
-    simple_PNG_p png = mallocPNG(); /* allocate memory for simple_PNG struct */ 
+    // fseek(fp, 0, SEEK_SET); /* initialize file pointer */
+    fseek(fp, offset, whence); /* skip the header file (8 bytes) */
 
-    /* extract all PNG chunks (IHDR, IDAT, IEND) */ 
-    if (get_png_chunks(png, fp, offset, whence) != 0)
+    /* read the IHDR chunk length (4 bytes) and type (4 bytes) */
+    U8 header[8];
+    size_t read_count = fread(header, 1, 8, fp);
+    if (read_count != 8)
     {
-        printf("Failed to get PNG chunks\n");
-        free_png(png);
-        return -1; 
+        return -1; /* Read error */
+    }
+    // printf("location2: %ld\n", ftell(fp));
+
+    /* verify that this is the 'IHDR' chunk */
+    if (header[4] != 'I' || header[5] != 'H' || header[6] != 'D' || header[7] != 'R')
+    {
+        // printf("Incalcrc_calid IHDR chunk.\n");
+        return -1; /* not IHDR chunk */
     }
 
-    /* IHDR chunk must be present, check if it's there */ 
-    if (png->p_IHDR == NULL)
+    U8 buffer[DATA_IHDR_SIZE];
+    read_count = fread(buffer, 1, DATA_IHDR_SIZE, fp);
+    if (read_count != DATA_IHDR_SIZE)
     {
-        printf("IHDR chunk not found\n");
-        free_png(png);
-        return -1; 
+        return -1; /* read error */
     }
+    // printf("location3: %ld\n", ftell(fp));
 
-    /* cannot do this since big endian need to change to host byte order, use ntohl() instead */
-    // memcpy(&out->width, data_ihdr, 4);      /* copy first 4 bytes to width */
-    // memcpy(&out->height, data_ihdr + 4, 4); /* copy next 4 bytes to height */
-    // IHDR data section (png->p_IHDR->p_data) should contain 13 bytes
-    
-    /* create a pointer pointed to the data section of certain IHDR chunk */
-    U8 * data_ihdr = png->p_IHDR->p_data;
+    out->width = ((U32)buffer[0] << 24) | ((U32)buffer[1] << 16) | ((U32)buffer[2] << 8) | (U32)buffer[3];  /* 4 bytes */
+    out->height = ((U32)buffer[4] << 24) | ((U32)buffer[5] << 16) | ((U32)buffer[6] << 8) | (U32)buffer[7]; /* 4 bytes */
+    out->bit_depth = buffer[8];
+    out->color_type = buffer[9];
+    out->compression = buffer[10];
+    out->filter = buffer[11];
+    out->interlace = buffer[12];
 
-    /* read the first 4 bytes for width, convert from big-endian to host order */
-    out->width = ntohl(*(U32 *)(data_ihdr)); /* 4 bytes buf[0]~buf[3] */
-    out->height = ntohl(*(U32 *)(data_ihdr + 4)); /* 4 bytes buf[4]~buf[7] */ 
-    out->bit_depth = *(data_ihdr + 8); /* 1 byte buf[8] */ 
-    out->color_type = *(data_ihdr + 9); /* 1 byte buf[9] */
-    out->compression = *(data_ihdr + 10); /* 1 byte buf[10] */
-    out->filter = *(data_ihdr + 11); /* 1 byte buf[11] */
-    out->interlace = *(data_ihdr + 12); /* 1 byte buf[12] */
-
-    return 0;
+    return 0; /* success */
 }
+// int get_png_data_IHDR(struct data_IHDR *out, FILE *fp, long offset, int whence) // takes in file pointer and how to reach data field of the IHDR chunk (see `fseek()` parameters)
+// {
+//     simple_PNG_p png = mallocPNG(); /* allocate memory for simple_PNG struct */
+
+//     /* extract all PNG chunks (IHDR, IDAT, IEND) */
+//     if (get_png_chunks(png, fp, offset, whence) != 0)
+//     {
+//         printf("Failed to get PNG chunks\n");
+//         free_png(png);
+//         return -1;
+//     }
+
+//     /* IHDR chunk must be present, check if it's there */
+//     if (png->p_IHDR == NULL)
+//     {
+//         printf("IHDR chunk not found\n");
+//         free_png(png);
+//         return -1;
+//     }
+
+//     /* cannot do this since big endian need to change to host byte order, use ntohl() instead */
+//     // memcpy(&out->width, data_ihdr, 4);      /* copy first 4 bytes to width */
+//     // memcpy(&out->height, data_ihdr + 4, 4); /* copy next 4 bytes to height */
+//     // IHDR data section (png->p_IHDR->p_data) should contain 13 bytes
+
+//     /* create a pointer pointed to the data section of certain IHDR chunk */
+//     U8 * data_ihdr = png->p_IHDR->p_data;
+
+//     /* read the first 4 bytes for width, convert from big-endian to host order */
+//     out->width = ntohl(*(U32 *)(data_ihdr)); /* 4 bytes buf[0]~buf[3] */
+//     out->height = ntohl(*(U32 *)(data_ihdr + 4)); /* 4 bytes buf[4]~buf[7] */
+//     out->bit_depth = *(data_ihdr + 8); /* 1 byte buf[8] */
+//     out->color_type = *(data_ihdr + 9); /* 1 byte buf[9] */
+//     out->compression = *(data_ihdr + 10); /* 1 byte buf[10] */
+//     out->filter = *(data_ihdr + 11); /* 1 byte buf[11] */
+//     out->interlace = *(data_ihdr + 12); /* 1 byte buf[12] */
+
+//     return 0;
+// }
 
 /* return height of png, parameter is the IHDR data section */
 int get_png_height(struct data_IHDR *buf)
@@ -288,18 +327,31 @@ void free_png(simple_PNG_p in) // free the memory of a struct simple_PNG
     /* free the element which is pointer if it has been allocated */
     if (in->p_IHDR != NULL)
     {
-        free(in->p_IHDR);  /* free the dynamically allocated memory for chunk data */
-        in->p_IHDR = NULL; /* set the pointer to NULL to avoid dangling pointer issues */
+        if (in->p_IHDR->p_data != NULL)
+        {
+            free(in->p_IHDR->p_data); /* free chunk's data */
+        }                 
+        free(in->p_IHDR); /* free the dynamically allocated memory for chunk data */
+        in->p_IHDR = NULL;  /* avoid double free */
     }
     if (in->p_IDAT != NULL)
     {
-        free(in->p_IDAT);  /* free the dynamically allocated memory for chunk data */
-        in->p_IDAT = NULL; /* set the pointer to NULL to avoid dangling pointer issues */
+        if (in->p_IDAT->p_data != NULL)
+        {
+            free(in->p_IDAT->p_data); /* free chunk's data */
+        }
+        free(in->p_IDAT); /* free the dynamically allocated memory for chunk data */
+        in->p_IDAT = NULL; /* avoid double free */
     }
+
     if (in->p_IEND != NULL)
     {
-        free(in->p_IEND);  /* free the dynamically allocated memory for chunk data */
-        in->p_IEND = NULL; /* set the pointer to NULL to avoid dangling pointer issues */
+        if (in->p_IEND->p_data != NULL)
+        {
+            free(in->p_IEND->p_data); /* free chunk's data */
+        }
+        free(in->p_IEND); /* free the dynamically al    located memory for chunk data */
+        in->p_IEND = NULL; /* avoid double free */
     }
 
     /* free the chunk structure itself */
@@ -325,7 +377,7 @@ void free_chunk(chunk_p in)
 }
 
 /* write a struct simple_PNG to file, return -1(write failed) or 0(write success) */
-int write_PNG(char *filepath, simple_PNG_p in) 
+int write_PNG(char *filepath, simple_PNG_p in)
 {
     if (in == NULL)
     {
@@ -340,7 +392,7 @@ int write_PNG(char *filepath, simple_PNG_p in)
         return -1;
     }
 
-    /* first write PNG signature (8 bytes) */ 
+    /* first write PNG signature (8 bytes) */
     const U8 png_signature[8] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
     if (fwrite(png_signature, 1, 8, fp) != 8)
     {
@@ -349,7 +401,7 @@ int write_PNG(char *filepath, simple_PNG_p in)
         return -1;
     }
 
-    /* second write IHDR chunk */ 
+    /* second write IHDR chunk */
     if (in->p_IHDR != NULL)
     {
         if (write_chunk(fp, in->p_IHDR) != 0)
@@ -360,7 +412,7 @@ int write_PNG(char *filepath, simple_PNG_p in)
         }
     }
 
-    /* third write IDAT chunk */ 
+    /* third write IDAT chunk */
     if (in->p_IDAT != NULL)
     {
         if (write_chunk(fp, in->p_IDAT) != 0)
@@ -371,7 +423,7 @@ int write_PNG(char *filepath, simple_PNG_p in)
         }
     }
 
-    /* last write IEND chunk */ 
+    /* last write IEND chunk */
     if (in->p_IEND != NULL)
     {
         if (write_chunk(fp, in->p_IEND) != 0)
@@ -387,7 +439,7 @@ int write_PNG(char *filepath, simple_PNG_p in)
 }
 
 /* write a struct chunk to file, return -1(write failed) or 0(write success) */
-int write_chunk(FILE *fp, chunk_p in)          
+int write_chunk(FILE *fp, chunk_p in)
 {
     if (in == NULL || fp == NULL)
     {
@@ -395,7 +447,7 @@ int write_chunk(FILE *fp, chunk_p in)
         return -1;
     }
 
-    /* first write the chunk length (4 bytes) in big-endian order */ 
+    /* first write the chunk length (4 bytes) in big-endian order */
     U32 length_be = htonl(in->length); /* convert length to big-endian */
     if (fwrite(&length_be, 1, CHUNK_LEN_SIZE, fp) != CHUNK_LEN_SIZE)
     {
@@ -403,7 +455,7 @@ int write_chunk(FILE *fp, chunk_p in)
         return -1;
     }
 
-    /* second write the chunk type (4 bytes) */ 
+    /* second write the chunk type (4 bytes) */
     if (fwrite(in->type, 1, CHUNK_TYPE_SIZE, fp) != CHUNK_TYPE_SIZE)
     {
         perror("Failed to write chunk type");
@@ -417,8 +469,8 @@ int write_chunk(FILE *fp, chunk_p in)
         return -1;
     }
 
-    /* last write the chunk CRC (4 bytes) in big-endian order */ 
-    U32 crc_be = htonl(in->crc); /* convert CRC to big-endian */ 
+    /* last write the chunk CRC (4 bytes) in big-endian order */
+    U32 crc_be = htonl(in->crc); /* convert CRC to big-endian */
     if (fwrite(&crc_be, 1, CHUNK_CRC_SIZE, fp) != CHUNK_CRC_SIZE)
     {
         perror("Failed to write chunk CRC");

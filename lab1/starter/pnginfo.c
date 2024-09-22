@@ -323,25 +323,27 @@ int main(int argc, char *argv[])
     for (i = 1; i < argc; i++) /* start at 1 to skip the program name */
     {
         /* calculate the required size for the full file path */
-        size_t path_size = strlen(IMAGE_DIR) + strlen(argv[i]) + 1; /* strlen() will return a string length; +1 for the null terminator */
+        // size_t path_size = strlen(IMAGE_DIR) + strlen(argv[i]) + 1; /* strlen() will return a string length; +1 for the null terminator */
 
-        /* allocate memory for the full path */
-        char *filepath = malloc(path_size);
-        if (filepath == NULL)
-        {
-            printf("Memory allocation for file failed\n");
-            return -1;
-        }
+        // /* allocate memory for the full path */
+        // char *filepath = malloc(path_size);
+        // if (filepath == NULL)
+        // {
+        //     printf("Memory allocation for file failed\n");
+        //     return -1;
+        // }
 
-        /* construct the full file path */
-        strcpy(filepath, IMAGE_DIR);
-        strcat(filepath, argv[i]);
+        // /* construct the full file path */
+        // strcpy(filepath, IMAGE_DIR);
+        // strcat(filepath, argv[i]);
 
-        FILE *file = fopen(filepath, "rb"); /* open file for reading & binary mode */
+        // FILE *file = fopen(filepath, "rb"); /* open file for reading & binary mode */
+        FILE *file = fopen(argv[1], "rb"); /* open file for reading & binary mode */
         if (file == NULL)
         {
             printf("%s: Failed to open file\n", argv[i]);
-            free(filepath);
+            // free(filepath);
+            free(file);
             continue;
         }
 
@@ -354,7 +356,8 @@ int main(int argc, char *argv[])
         {
             printf("Not a PNG file\n");
             fclose(file);
-            free(filepath);
+            // free(filepath);
+            free(file);
             continue;
         }
         // printf("location1: %ld\n", ftell(file));
@@ -403,7 +406,7 @@ int main(int argc, char *argv[])
 
         free_png(png);
         fclose(file);
-        free(filepath);
+        // free(filepath);
     }
 
     return 0;
