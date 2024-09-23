@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
         // {
         //     printf("IHDR data is not null\n");
         // }
-        
+
         if (new_iend->length != 0)
         {
             /* allocate and copy IEND */
