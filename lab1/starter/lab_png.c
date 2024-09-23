@@ -44,7 +44,7 @@ int get_png_data_IHDR(struct data_IHDR *out, FILE *fp, long offset, int whence) 
     /* verify that this is the 'IHDR' chunk */
     if (header[4] != 'I' || header[5] != 'H' || header[6] != 'D' || header[7] != 'R')
     {
-        // printf("Incalcrc_calid IHDR chunk.\n");
+        // printf("Invalid IHDR chunk.\n");
         return -1; /* not IHDR chunk */
     }
 
