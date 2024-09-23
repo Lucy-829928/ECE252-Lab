@@ -62,7 +62,8 @@
 catpng
 findpng
 pnginfo
+all.png
 
 # other
-*.png
-*.txt
+# *.png
+# *.txt
