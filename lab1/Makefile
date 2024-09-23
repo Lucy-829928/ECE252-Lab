@@ -43,5 +43,5 @@ $(PRE_TARGETS): %: %.o $(PRE_OBJS)
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) *.o *.d *.out *.png
-	rm -f $(PRE_TARGETS) *.o *.d *.out *.png
+	rm -f $(TARGETS) *.o *.d *.out
+	rm -f $(PRE_TARGETS) *.o *.d *.out
