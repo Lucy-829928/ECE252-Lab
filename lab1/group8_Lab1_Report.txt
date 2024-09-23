@@ -1,0 +1,23 @@
+########### Setting Up Directory  ###########
+########### Running Tests  ###########
+>> make all
+No makefile found -1
+findpng failed to compile -35
+catpng failed to compile -50
+Any *.out renamed to *
+
+make file not located, file organization -5
+executables not located, file organization -5
+
+
+>> make clean
+nothing to clean, test skipped
+
+########### Score ###########
+Makefile score: 0/5
+findpng score: 0/35
+catpng score: 0/50
+file organization: 0/10
+Total lab 1 score:  0/100
+
+########### Additional Comments ###########
