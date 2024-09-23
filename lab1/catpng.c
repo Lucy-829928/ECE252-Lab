@@ -10,8 +10,8 @@
 #include "zutil.h"
 
 #define MAX_T 9999999
-#define T 99999
-#define MAX_PNG_FILES 10
+// #define T 99999
+#define MAX_PNG_FILES 50
 
 int main(int argc, char *argv[])
 {
@@ -22,11 +22,11 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    if (argc < 3)
-    {
-        printf("not enough png for concatenating\n");
-        return -1;
-    }
+    // if (argc < 3)
+    // {
+    //     printf("not enough png for concatenating\n");
+    //     return -1;
+    // }
 
     int i;
     U8 *buffer_all = malloc(MAX_T);
@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
         /* create allocated simple_PNG_p & get chunks with sections */
         simple_PNG_p png = mallocPNG();
         get_png_chunks(png, file, 8, SEEK_SET);
+        /* check for corruption */
         if (png->p_IHDR == NULL || png->p_IEND == NULL || png->p_IDAT == NULL)
         {
             printf("%s: is corrupted or required chunk is missing\n", argv[i]);
@@ -101,9 +102,10 @@ int main(int argc, char *argv[])
             fclose(file);
             return -1;
         }
+        /* check for IHDR data */
         if (new_ihdr->p_data == NULL)
         {
-            /* allocate and copy IHDR */
+            /* copy IHDR */
             memcpy(new_ihdr, png->p_IHDR, sizeof(struct chunk));
             new_ihdr->p_data = malloc(png->p_IHDR->length); /* allocate memory for the chunk data */
             if (new_ihdr->p_data == NULL)
@@ -122,9 +124,10 @@ int main(int argc, char *argv[])
         //     printf("IHDR data is not null\n");
         // }
 
+        /* check if iend is empty */
         if (new_iend->length != 0)
         {
-            /* allocate and copy IEND */
+            /* copy IEND */
             memcpy(new_iend, png->p_IEND, sizeof(struct chunk));
         }
         // else
@@ -164,9 +167,10 @@ int main(int argc, char *argv[])
         // printf("i = %d, total size: %ld, raw_data_size: %ld\n", i, total_size, raw_data_size);
 
         /* copy each raw data to buffer */
+        // printf("total size: %ld, raw data size: %ld\n", total_size, raw_data_size);
         if (total_size + raw_data_size > MAX_T)
         {
-            printf("File size exceed max size, no png can be added\n");
+            printf("File size exceed max size accepted\n");
             free_png(png);
             free(inf_data);
             fclose(file);
@@ -181,7 +185,7 @@ int main(int argc, char *argv[])
     }
 
     /* compressed buffer for all png */
-    U64 def_size = T;
+    U64 def_size = total_size;
     U8 *def_data = malloc(def_size);
 
     if (!def_data)
