@@ -11,10 +11,17 @@
 
 #define MAX_T 9999999
 #define T 99999
+#define MAX_PNG_FILES 10
 
 int main(int argc, char *argv[])
 {
     // Your code for the catpng program
+    if (argc > MAX_PNG_FILES)
+    {
+        printf("Too many PNG files. Maximum allowed is %d\n", MAX_PNG_FILES);
+        return -1;
+    }
+
     if (argc < 3)
     {
         printf("not enough png for concatenating\n");
@@ -52,6 +59,7 @@ int main(int argc, char *argv[])
         if (!file)
         {
             printf("%s: unable to open file\n", argv[i]);
+            fclose(file);
             return -1;
         }
 
@@ -91,6 +99,7 @@ int main(int argc, char *argv[])
             free(new_ihdr);
             free(new_idat);
             free(new_iend);
+            fclose(file);
             return -1;
         }
         if (new_ihdr->p_data == NULL)
@@ -141,6 +150,7 @@ int main(int argc, char *argv[])
             free(new_ihdr->p_data);
             free(new_ihdr);
             free(new_iend);
+            fclose(file);
             return -1;
         }
 
@@ -161,7 +171,7 @@ int main(int argc, char *argv[])
             free_png(png);
             free(inf_data);
             fclose(file);
-            break;
+            return -1;
         }
         memcpy(buffer_all + total_size, inf_data, raw_data_size);
         total_size += raw_data_size;
