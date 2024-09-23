@@ -59,7 +59,6 @@ int main(int argc, char *argv[])
         if (!file)
         {
             printf("%s: unable to open file\n", argv[i]);
-            fclose(file);
             return -1;
         }
 
