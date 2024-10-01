@@ -29,7 +29,7 @@ struct thread_args
 {
     char url[MAX_URL_LENGTH];        /* url to fetch image segments */
     int image_num;                   /* image segment number */
-    int *total_pngs_read;            /* pointer to total number of image segments read */
+    // int *total_pngs_read;            /* pointer to total number of image segments read */
     image_segment_t *image_segments; /* pointer to array of image segments */
     pthread_mutex_t *mutex;          /* pointer to mutex for synchronizing access to shared data */
 };

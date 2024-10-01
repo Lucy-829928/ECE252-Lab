@@ -15,10 +15,10 @@
 #define MAX_PNG_FILES 50
 
 /* get all three chunks sequentially and stored to element pointer of struct pointer simple_PNG_p, return -1(get failed) or 0(get success) */
-int load_png_chunks(simple_PNG_p out, image_segment_t * segment)
+int load_png_chunks(simple_PNG_p out, image_segment_t *segment)
 {
-    unsigned char * data = segment->data;  /* pointer to mem buffer containing data of image segment, like a pointer that always pointed to the starter of file */
-    size_t seg_size = segment->size;   /* size of segment */
+    unsigned char *data = segment->data; /* pointer to mem buffer containing data of image segment, like a pointer that always pointed to the starter of file */
+    size_t seg_size = segment->size;     /* size of segment */
     size_t offset = PNG_SIG_SIZE;        /* 8 bytes of signature of png */
     /* check PNG signature */
     if (memcmp(data, "\x89PNG\x0D\x0A\x1A\x0A", 8) != 0)
@@ -33,7 +33,7 @@ int load_png_chunks(simple_PNG_p out, image_segment_t * segment)
     while (offset < seg_size)
     {
         /****  read chunk ****/
-        if(offset + 8 > seg_size) /* 8 for 4 bytes length + 4 bytes type */
+        if (offset + 8 > seg_size) /* 8 for 4 bytes length + 4 bytes type */
         {
             printf("Error: Invalid PNG chunk size.\n");
             return -1;
@@ -44,7 +44,7 @@ int load_png_chunks(simple_PNG_p out, image_segment_t * segment)
 
         char type[5] = {0};
         memcpy(type, data + offset, 4); /* copy 4 bytes from starter of type?data + offset? */
-        offset += 4; /* move to data */
+        offset += 4;                    /* move to data */
 
         chunk = malloc(sizeof(struct chunk));
         if (!chunk)
@@ -59,6 +59,12 @@ int load_png_chunks(simple_PNG_p out, image_segment_t * segment)
         memcpy(chunk->type, type, 4);
         /* store chunk data to chunk */
         chunk->p_data = malloc(length);
+        if (chunk->p_data == NULL)
+        {
+            printf("Error: Failed to allocate memory for chunk data.\n");
+            free(chunk);
+            return -1;
+        }
         memcpy(chunk->p_data, data + offset, length);
         /* store chunk crc to chunk */
         chunk->crc = ntohl(*(U32 *)(data + offset + length));
@@ -87,17 +93,17 @@ int load_png_chunks(simple_PNG_p out, image_segment_t * segment)
     return 0;
 }
 
-void load_png_data_IHDR(struct data_IHDR * data_ihdr, U8 * segment_data, size_t sig_size, int seek_set)
+void load_png_data_IHDR(struct data_IHDR *data_ihdr, U8 *segment_data, size_t sig_size, int seek_set)
 {
     /* get 8 bytes (4bytes width & 4bytes height) from start of IHDR  */
-    U8 * ihdr_chunk_start = segment_data + sig_size + seek_set; 
+    U8 *ihdr_chunk_start = segment_data + sig_size + seek_set;
 
     // Extract the width and height from the IHDR chunk (first 8 bytes of the data).
     data_ihdr->width = ntohl(*(U32 *)(ihdr_chunk_start + 8));   /* width offset is 8, and last for 4 bytes */
     data_ihdr->height = ntohl(*(U32 *)(ihdr_chunk_start + 12)); /* height offset is 12, and last for 4 bytes */
 }
 
-int catpng (int num_segments, image_segment_t * segments)
+int catpng(int num_segments, image_segment_t *segments)
 {
     // Your code for the catpng program
     if (num_segments > MAX_PNG_FILES)
@@ -126,16 +132,18 @@ int catpng (int num_segments, image_segment_t * segments)
     chunk_p new_ihdr = malloc(sizeof(struct chunk));
     chunk_p new_idat = malloc(sizeof(struct chunk));
     chunk_p new_iend = malloc(sizeof(struct chunk));
+
     if (!new_ihdr || !new_idat || !new_iend)
     {
         printf("Memory allocation for chunks failed\n");
         free(buffer_all);
         return -1;
     }
+    
     new_ihdr->p_data = NULL;
     new_idat->p_data = NULL;
     new_iend->p_data = NULL;
-    // new_iend->length = 1; /* set to a wrong number for testing if it is copied */
+    new_iend->length = 1; /* set to a wrong number for testing if it is copied */
 
     for (i = 0; i < num_segments; i++)
     {
@@ -144,6 +152,23 @@ int catpng (int num_segments, image_segment_t * segments)
         if (!segment_data)
         {
             printf("Error: Missing segment data for segment %d\n", i);
+            free(buffer_all);
+            if (new_ihdr->p_data)
+            {
+                free(new_ihdr->p_data);
+            }
+            if (new_ihdr)
+            {
+                free(new_ihdr);
+            }
+            if (new_idat)
+            {
+                free(new_idat);
+            }
+            if (new_iend)
+            {
+                free(new_iend);
+            }
             return -1;
         }
 
@@ -153,14 +178,23 @@ int catpng (int num_segments, image_segment_t * segments)
         {
             printf("Error: Failed to load chunks for segment %d\n", segments[i].sequence_num);
             free_png(png);
+            free(buffer_all);
+            if (new_ihdr->p_data)
+            {
+                free(new_ihdr->p_data);
+            }
+            free(new_ihdr);
+            free(new_idat);
+            free(new_iend);
             return -1;
         }
-        
+
         /* check for IHDR chunk of png */
         if (png->p_IHDR == NULL)
         {
             printf("Error: IHDR chunk is missing or corrupted in the segment %d\n", segments[i].sequence_num);
             free(buffer_all);
+            free_png(png);
             free(new_ihdr);
             free(new_idat);
             free(new_iend);
@@ -176,6 +210,7 @@ int catpng (int num_segments, image_segment_t * segments)
             {
                 printf("Failed to allocate memory for IHDR data\n");
                 free(buffer_all);
+                free_png(png);
                 free(new_ihdr);
                 free(new_idat);
                 free(new_iend);
@@ -184,7 +219,7 @@ int catpng (int num_segments, image_segment_t * segments)
 
             /* copy IHDR */
             memcpy(new_ihdr, png->p_IHDR, sizeof(struct chunk));
-            
+
             if (new_ihdr->p_data == NULL)
             {
                 printf("Failed to allocate memory for IHDR data\n");
@@ -226,6 +261,7 @@ int catpng (int num_segments, image_segment_t * segments)
         {
             printf("Memory allocation for inf_data failed\n");
             free(buffer_all);
+            free_png(png);
             free(new_ihdr->p_data);
             free(new_ihdr);
             free(new_iend);
@@ -235,9 +271,12 @@ int catpng (int num_segments, image_segment_t * segments)
         if (mem_inf(inf_data, &raw_data_size, png->p_IDAT->p_data, png->p_IDAT->length) != 0)
         {
             printf("Failed to inflate IDAT data from image %d\n", segments[i].sequence_num);
-            free_png(png);
-            free(buffer_all);
             free(inf_data);
+            free(buffer_all);
+            free_png(png);
+            free(new_ihdr);
+            free(new_idat);
+            free(new_iend);
             return -1;
         }
         // printf("i = %d, total size: %ld, raw_data_size: %ld\n", i, total_size, raw_data_size);
@@ -247,15 +286,18 @@ int catpng (int num_segments, image_segment_t * segments)
         if (total_size + raw_data_size > MAX_T)
         {
             printf("File size exceed max size accepted\n");
-            free_png(png);
-            free(buffer_all);
             free(inf_data);
+            free(buffer_all);
+            free_png(png);
+            free(new_ihdr);
+            free(new_idat);
+            free(new_iend);
             return -1;
         }
         memcpy(buffer_all + total_size, inf_data, raw_data_size);
         total_size += raw_data_size;
 
-        free_png(png);
+        // free_png(png);
         free(inf_data);
     }
 

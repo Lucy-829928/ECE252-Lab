@@ -1,0 +1,844 @@
+thread num: 1, image_num: 3
+before create thread
+i = 0
+here
+here1
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 21 of size 5268 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 21 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 1
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 18 of size 6319 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 18 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 2
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 31 of size 5784 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 31 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 3
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 15 of size 5947 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 15 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 4
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 35 of size 5273 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 35 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 5
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 36 of size 5385 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 36 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 6
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 11 of size 6068 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 11 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 7
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 36 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 27 of size 11513 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 27 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 8
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 26 of size 6050 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 26 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 9
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 14 of size 6346 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 14 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 10
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 47 of size 4854 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 47 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 11
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 17 of size 5767 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 17 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 12
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 43 of size 5102 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 43 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 13
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 9 of size 5921 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 9 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 14
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 9 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 46 of size 10722 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 46 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 15
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 5 of size 5868 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 5 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 16
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 49 of size 3883 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 49 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 17
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 16 of size 5496 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 16 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 18
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 31 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 22 of size 17016 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 22 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 19
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 43 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 6 of size 10898 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 6 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 20
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 38 of size 4986 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 38 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 21
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 47 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 12 of size 11038 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 12 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 22
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 18 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 45 of size 17614 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 45 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 23
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 44 of size 5091 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 44 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 24
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 25 of size 5775 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 25 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 25
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 33 of size 5509 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 33 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 26
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 39 of size 4806 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 39 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 27
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 44 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 26 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 47 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 37 of size 21213 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 37 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 28
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 1 of size 3774 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 1 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 29
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 30 of size 5871 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 30 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 30
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 25 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 46 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 47 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 32 of size 20941 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 32 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 31
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 3 of size 5116 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 3 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 32
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 25 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 0 of size 9985 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 0 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 33
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 22 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 11 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 25 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 13 of size 23466 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 13 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 34
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 40 of size 5228 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 40 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 35
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 4 of size 5682 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 4 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 36
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 3 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 28 of size 11179 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 28 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 37
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 22 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 32 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 40 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 24 of size 27533 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 24 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 38
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 44 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 5 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 32 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 31 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 39 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 19 of size 33560 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 19 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 39
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 17 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 16 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 38 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 48 of size 20327 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 48 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 40
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 42 of size 5331 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 42 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 41
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 23 of size 5176 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 23 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 42
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 17 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 6 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 29 of size 17543 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 29 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 43
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 21 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 5 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 3 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 41 of size 21652 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 41 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 44
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 13 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 43 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 10 of size 23795 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 10 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 45
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 34 of size 5558 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 34 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 46
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 46 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 8 of size 22870 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 8 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 47
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 19 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 17 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 24 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 12 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 49 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 3 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 30 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 16 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 42 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 36 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 45 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 41 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 40 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 34 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 3 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 12 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 6 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 44 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 41 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 19 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 43 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 48 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 20 of size 138186 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 20 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 48
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Received segment 7 of size 5680 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread fetched segment 7 from URL: http://ece252-1.uwaterloo.ca:2520/image?img=3; seg_get_num = 49
+thread finished URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 41 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 0 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 40 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 37 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 30 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 48 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 4 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 22 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 25 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 26 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 42 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 1 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 45 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 4 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 20 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 26 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 9 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 12 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 35 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 20 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 32 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 26 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 6 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 31 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 40 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 4 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 17 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 1 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 4 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 5 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 20 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 19 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 29 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 29 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 18 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 21 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 25 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 31 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 22 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 10 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 38 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 27 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 42 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 33 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 18 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 24 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 17 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 11 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 4 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 21 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 1 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 6 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 9 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 47 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 23 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 0 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 8 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 38 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 17 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 25 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 19 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 13 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 42 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 36 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 35 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 22 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 47 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 42 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 5 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 8 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 30 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 29 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 24 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 33 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 36 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 0 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 28 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 19 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 33 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 12 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 3 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 39 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 4 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 18 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 27 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 18 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 14 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 1 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 35 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 13 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 4 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 37 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 7 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 11 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 1 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 12 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 8 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 38 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 41 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 16 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 6 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 44 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 44 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 36 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 43 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 20 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 0 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 47 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 27 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 20 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 15 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 11 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 25 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 28 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicate segment 34 detected. Skipping...
+thread started URL: http://ece252-1.uwaterloo.ca:2520/image?img=3
+Trying to connect to URL: http://ece252-1.uwaterloo.ca:2520/image?img=3, res = 0
+Duplicatcorrupted double-linked list
