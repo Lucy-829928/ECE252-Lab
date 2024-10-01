@@ -47,6 +47,12 @@ int load_png_chunks(simple_PNG_p out, image_segment_t * segment)
         offset += 4; /* move to data */
 
         chunk = malloc(sizeof(struct chunk));
+        if (!chunk)
+        {
+            printf("Error: Failed to allocate memory for chunk.\n");
+            return -1;
+        }
+
         /* store chunk length to chunk */
         chunk->length = length;
         /* store chunk type to chunk */
@@ -135,12 +141,22 @@ int catpng (int num_segments, image_segment_t * segments)
     {
         U8 *segment_data = segments[i].data;
         // size_t segment_size = segments[i].size;
+        if (!segment_data)
+        {
+            printf("Error: Missing segment data for segment %d\n", i);
+            return -1;
+        }
 
         /* create allocated simple_PNG_p & get chunks with sections */
         simple_PNG_p png = mallocPNG();
-        load_png_chunks(png, &segments[i]);
-
-        /* check for IHDR data */
+        if (load_png_chunks(png, &segments[i]) != 0)
+        {
+            printf("Error: Failed to load chunks for segment %d\n", segments[i].sequence_num);
+            free_png(png);
+            return -1;
+        }
+        
+        /* check for IHDR chunk of png */
         if (png->p_IHDR == NULL)
         {
             printf("Error: IHDR chunk is missing or corrupted in the segment %d\n", segments[i].sequence_num);

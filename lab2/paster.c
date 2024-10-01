@@ -19,7 +19,7 @@ void *do_work(void *arg)
 {
     struct thread_args *p_in = arg;                               /* cast the argument to thread_args */
     struct thread_ret *p_out = malloc(sizeof(struct thread_ret)); /* allocate memory for the return value */
-   
+
     CURL *curl_handle;
     CURLcode res;
     RECV_BUF recv_buf;
@@ -89,8 +89,10 @@ void *do_work(void *arg)
         pthread_mutex_lock(p_in->mutex); /* lock the mutex to synchronize access to shared data */
 
         /* if the image segment has not been received before, store it */
-        if (p_in->image_segments[sequence_num].data == NULL)
+        if (!segment_received[sequence_num])
         {
+            segment_received[sequence_num] = true;
+
             printf("Received segment %d of size %zu from URL: %s\n", sequence_num, recv_buf.size, p_in->url);
 
             p_in->image_segments[sequence_num].data = malloc(recv_buf.size);
@@ -100,15 +102,16 @@ void *do_work(void *arg)
             (*p_in->total_pngs_read)++;
 
             printf("thread fetched segment %d from URL: %s\n", sequence_num, p_in->url); // Debugging print
+            segments_get_num++;
         }
         else
         {
             printf("Duplicate segment %d detected.\n", sequence_num);
         }
+        pthread_mutex_unlock(p_in->mutex); /* unlock the mutex */
     }
 
-    pthread_mutex_unlock(p_in->mutex); /* unlock the mutex */
-    p_out->done_status = 0;            /* set the done_status to 0 (success) */
+    p_out->done_status = 0; /* set the done_status to 0 (success) */
 
     /* clean up cURL resources */
     curl_easy_cleanup(curl_handle);
@@ -154,31 +157,37 @@ int main(int argc, char **argv)
     struct thread_args args[num_threads];
 
     /* get data for args and create threads */
-    for (int i = 0; i < num_threads; i++)
-    {http://ece252-%d.uwaterloo.ca:2520/image?img=%d
-        snprintf(args[i].url, MAX_URL_LENGTH, "http://ece252-%d.uwaterloo.ca:2520/image?img=%d", (i % 3) + 1, image_num); /* assign server and image num to URL */
-        args[i].image_num = image_num;
-        args[i].total_pngs_read = &segments_get_num;
-        args[i].image_segments = segments;
-        args[i].mutex = &mutex;
+    while (segments_get_num < NUM_STRIPS)
+    {
+        for (int i = 0; i < num_threads; i++)
+        {
+            snprintf(args[i].url, MAX_URL_LENGTH, "http://ece252-%d.uwaterloo.ca:2520/image?img=%d", (i % 3) + 1, image_num); /* assign server and image num to URL */
+            args[i].image_num = image_num;
+            args[i].total_pngs_read = &segments_get_num;
+            args[i].image_segments = segments;
+            args[i].mutex = &mutex;
 
-        pthread_create(&threads[i], NULL, do_work, (void *)&args[i]);
+            pthread_create(&threads[i], NULL, do_work, (void *)&args[i]);
+        }
     }
+
+    printf("here\n");
 
     /* wait for all threads to complete */
     for (int i = 0; i < num_threads; i++)
     {
-        struct thread_ret *ret;
+        printf("here1\n");
+        struct thread_ret * ret;
         pthread_join(threads[i], (void **)&ret); /* let thread wait for return value */
         free(ret);
     }
-
+    printf("!!!! here2, num of png get: %d\n", segments_get_num);
     /* concatenate segments to full png */
     if (catpng(NUM_STRIPS, segments) != 0)
     {
         fprintf(stderr, "Failed to concatenate PNG\n");
     }
-
+    printf("here3\n");
     pthread_mutex_destroy(&mutex);
 
     return 0;
