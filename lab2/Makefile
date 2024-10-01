@@ -2,7 +2,7 @@ CC = gcc       # compiler
 LD = gcc       # linker
 CFLAGS = -Wall -g -std=c99  # compilation flags
 LDFLAGS = -g   # debugging symbols in build
-LDLIBS = -lz -lcurl  # link with libz
+LDLIBS = -lz -lcurl -lpthread # link with libz
 
 # Source files and object files
 TARGET_SRCS = paster.c
