@@ -29,7 +29,7 @@ struct thread_args
 {
     char url[MAX_URL_LENGTH];        /* url to fetch image segments */
     int image_num;                   /* image segment number */
-    // int *total_pngs_read;            /* pointer to total number of image segments read */
+    int *total_pngs_read;            /* pointer to total number of image segments read */
     image_segment_t *image_segments; /* pointer to array of image segments */
     pthread_mutex_t *mutex;          /* pointer to mutex for synchronizing access to shared data */
 };
@@ -43,3 +43,5 @@ struct thread_ret
 int catpng(int num_segments, image_segment_t *segments);
 int load_png_chunks(simple_PNG_p out, image_segment_t *segment);
 void load_png_data_IHDR(struct data_IHDR *data_ihdr, U8 *segment_data, size_t sig_size, int seek_set);
+
+int write_segment_to_png(const char *filename, image_segment_t *segment);
