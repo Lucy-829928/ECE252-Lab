@@ -5,8 +5,11 @@
 #include <unistd.h>
 #include <curl/curl.h>
 #include <pthread.h>
+#include <sys/time.h>
 #include "catpng.h"
 #include "cURL/main_write_header_cb.h"
+
+#define MAX_THREAD 20
 
 /* global data structures to share*/
 image_segment_t segments[NUM_STRIPS];                 /* segments array for store multiple(50) image segments */
@@ -183,6 +186,10 @@ int main(int argc, char **argv)
     need to concatenate image segments and save to all.png
     use catpng for this, make sure to modify catpng to meet requirements for lab2 */
 
+    struct timeval start, end;
+    /* start timer */
+    gettimeofday(&start, NULL);
+
     int num_threads = DEFAULT_THREAD;                      /* default thread num */
     int image_num = DEFAULT_PNG;                           /* default image num */
     memset(segments, 0, sizeof(segments));                 /* initialize the segments array */
@@ -202,7 +209,7 @@ int main(int argc, char **argv)
         }
     }
 
-    if(!(1 <= num_threads && num_threads <= 6) || !(1 <= image_num && image_num <= 3))
+    if(!(1 <= num_threads && num_threads <= MAX_THREAD) || !(1 <= image_num && image_num <= 3))
     {
         printf("Invalid input for '-n' and '-t'\n");
         return -1;
@@ -301,6 +308,11 @@ int main(int argc, char **argv)
         }
     }
     pthread_mutex_destroy(&num_lock);
+
+    /* end timer */
+    gettimeofday(&end, NULL);
+    double time_spent = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
+    printf("Spent wall-clock time: %.6f seconds\n", time_spent);
 
     return 0;
 }
