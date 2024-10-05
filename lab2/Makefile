@@ -9,8 +9,8 @@ TARGET_SRCS = paster.c
 PRE_SRCS = pnginfo.c
 UTIL_SRCS = catpng.c crc.c zutil.c lab_png.c \
 			cURL/main_write_header_cb.c
+PRE_USE_SRCS = crc.c zutil.c
 
-TARGET_OBJS = $(TARGET_SRCS:.c=.o)
 PRE_OBJS = $(PRE_USE_SRCS:.c=.o)
 UTIL_OBJS = $(UTIL_SRCS:.c=.o)
 
@@ -46,4 +46,3 @@ $(PRE_TARGETS): %: %.o $(PRE_OBJS)
 clean:
 	rm -f $(TARGETS) *.o *.d *.out 
 	rm -f $(PRE_TARGETS) *.o *.d *.out 
-	rm -f $(UTIL_OBJS) $(UTIL_SRCS:.c=.d) $(TARGET_SRCS:.c=.d)
