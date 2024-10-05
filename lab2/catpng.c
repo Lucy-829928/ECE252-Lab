@@ -204,7 +204,9 @@ int catpng(int num_segments, image_segment_t *segments)
     new_ihdr->p_data = NULL;
     new_idat->p_data = NULL;
     new_iend->p_data = NULL;
-    new_iend->length = 1; /* set to a wrong number for testing if it is copied */
+
+    bool get_ihdr = false;
+    bool get_iend = false;
 
     for (i = 0; i < num_segments; i++)
     {
@@ -242,10 +244,14 @@ int catpng(int num_segments, image_segment_t *segments)
             goto cleanup;
         }
 
+        /* copy IHDR */
+        // memcpy(new_ihdr, png->p_IHDR, sizeof(struct chunk));
+
         /* check for IHDR data */
-        if (new_ihdr->p_data == NULL)
+        if (get_ihdr == false)
         {
             /* allocate memory for IHDR chunk */
+            new_ihdr->p_data = NULL;
             new_ihdr->p_data = malloc(png->p_IHDR->length);
             if (new_ihdr->p_data == NULL)
             {
@@ -257,21 +263,9 @@ int catpng(int num_segments, image_segment_t *segments)
                 result = -1;
                 goto cleanup;
             }
-
-            /* copy IHDR */
-            memcpy(new_ihdr, png->p_IHDR, sizeof(struct chunk));
-
-            // if (new_ihdr->p_data == NULL)
-            // {
-            //     printf("Failed to allocate memory for IHDR data\n");
-            //     if (png)
-            //     {
-            //         free_png(png);
-            //     }
-            //     result = -1;
-            //     goto cleanup;
-            // }
             memcpy(new_ihdr->p_data, png->p_IHDR->p_data, png->p_IHDR->length); /* copy the actual data */
+            get_ihdr = true;
+            // printf("copied new p_data for ihdr\n");
         }
         // else
         // {
@@ -279,10 +273,11 @@ int catpng(int num_segments, image_segment_t *segments)
         // }
 
         /* check if iend is empty */
-        if (new_iend->length != 0)
+        if (get_iend == false)
         {
             /* copy IEND */
             memcpy(new_iend, png->p_IEND, sizeof(struct chunk));
+            get_iend = true;
         }
         // else
         // {
@@ -402,6 +397,8 @@ int catpng(int num_segments, image_segment_t *segments)
     }
     else
     {
+        new_ihdr->length = 13;
+        memcpy(new_ihdr->type, "IHDR", 4);
         U32 width = *(U32 *)(new_ihdr->p_data);
         *(U32 *)(new_ihdr->p_data + 4) = htonl(total_height); /* update height in IHDR by add 4 bytes(skip width) to address of p_data */
         *(U32 *)(new_ihdr->p_data) = width;
@@ -470,7 +467,10 @@ cleanup:
     }
     free_chunk(new_ihdr);
     free_chunk(new_idat);
-    free_chunk(new_iend);
-
+    if(new_iend)
+    {
+        free(new_iend);
+    }
+    
     return result;
 }

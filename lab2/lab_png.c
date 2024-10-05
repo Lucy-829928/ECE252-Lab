@@ -363,7 +363,7 @@ void free_png(simple_PNG_p in) // free the memory of a struct simple_PNG
 }
 
 /* free chunk_p(struct pointer) */
-void free_chunk(chunk_p in)
+void free_chunk(chunk_p in) /* note that iend has no malloc p_data */
 {
     if (in)
     {
