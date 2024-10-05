@@ -222,7 +222,7 @@ int catpng(int num_segments, image_segment_t *segments)
         if (load_png_chunks(png, &segments[i]) != 0)
         {
             printf("Error: Failed to load chunks for segment %d\n", segments[i].sequence_num);
-            if(png)
+            if (png)
             {
                 free_png(png);
             }
@@ -314,7 +314,7 @@ int catpng(int num_segments, image_segment_t *segments)
         if (mem_inf(inf_data, &raw_data_size, png->p_IDAT->p_data, png->p_IDAT->length) != 0)
         {
             printf("Failed to inflate IDAT data from image %d\n", segments[i].sequence_num);
-            if(inf_data)
+            if (inf_data)
             {
                 free(inf_data);
                 inf_data = NULL;
@@ -366,7 +366,7 @@ int catpng(int num_segments, image_segment_t *segments)
     if (mem_def(def_data, &def_size, buffer_all, total_size, Z_DEFAULT_COMPRESSION) != 0)
     {
         printf("Failed to deflate concatenated data\n");
-        if(def_data)
+        if (def_data)
         {
             free(def_data);
             def_data = NULL;
@@ -392,7 +392,7 @@ int catpng(int num_segments, image_segment_t *segments)
     if (new_ihdr->p_data == NULL)
     {
         printf("Memory allocation for new IHDR data failed\n");
-        if(def_data)
+        if (def_data)
         {
             free(def_data);
             def_data = NULL;
@@ -434,7 +434,7 @@ int catpng(int num_segments, image_segment_t *segments)
     if (!output_file)
     {
         printf("Failed to open output.png for writing\n");
-        if(def_data)
+        if (def_data)
         {
             free(def_data);
             def_data = NULL;
@@ -442,7 +442,7 @@ int catpng(int num_segments, image_segment_t *segments)
         result = -1;
         goto cleanup;
     }
-    
+
     /* write PNG signature */
     U8 png_signature[8] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
     fwrite(png_signature, 1, 8, output_file);
