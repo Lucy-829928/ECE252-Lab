@@ -330,17 +330,19 @@ void free_png(simple_PNG_p in) // free the memory of a struct simple_PNG
         if (in->p_IHDR->p_data != NULL)
         {
             free(in->p_IHDR->p_data); /* free chunk's data */
-        }                 
-        free(in->p_IHDR); /* free the dynamically allocated memory for chunk data */
-        in->p_IHDR = NULL;  /* avoid double free */
+            in->p_IHDR->p_data = NULL;
+        }
+        free(in->p_IHDR);  /* free the dynamically allocated memory for chunk data */
+        in->p_IHDR = NULL; /* avoid double free */
     }
     if (in->p_IDAT != NULL)
     {
         if (in->p_IDAT->p_data != NULL)
         {
             free(in->p_IDAT->p_data); /* free chunk's data */
+            in->p_IDAT->p_data = NULL;
         }
-        free(in->p_IDAT); /* free the dynamically allocated memory for chunk data */
+        free(in->p_IDAT);  /* free the dynamically allocated memory for chunk data */
         in->p_IDAT = NULL; /* avoid double free */
     }
 
@@ -349,31 +351,30 @@ void free_png(simple_PNG_p in) // free the memory of a struct simple_PNG
         if (in->p_IEND->p_data != NULL)
         {
             free(in->p_IEND->p_data); /* free chunk's data */
+            in->p_IEND->p_data = NULL;
         }
-        free(in->p_IEND); /* free the dynamically al    located memory for chunk data */
+        free(in->p_IEND);  /* free the dynamically al    located memory for chunk data */
         in->p_IEND = NULL; /* avoid double free */
     }
 
     /* free the chunk structure itself */
     free(in);
+    in = NULL;
 }
 
 /* free chunk_p(struct pointer) */
 void free_chunk(chunk_p in)
 {
-    if (in == NULL)
+    if (in)
     {
-        return; /* nothing to free */
-    }
-
-    /* free the element which is pointer if it has been allocated */
-    if (in->p_data != NULL)
-    {
-        free(in->p_data); /* free the dynamically allocated memory for chunk data */
-    }
-
-    /* free the chunk structure itself */
-    free(in);
+        if (in->p_data) /* free the element which is pointer if it has been allocated */
+        {
+            free(in->p_data);
+            in->p_data = NULL;
+        }
+        free(in);
+        in = NULL;
+    } 
 }
 
 /* write a struct simple_PNG to file, return -1(write failed) or 0(write success) */

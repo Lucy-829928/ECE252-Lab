@@ -120,7 +120,7 @@ int load_png_chunks(simple_PNG_p out, image_segment_t *segment)
         if (chunk->p_data == NULL)
         {
             printf("Error: Failed to allocate memory for chunk data.\n");
-            free(chunk);
+            free_chunk(chunk);
             return -1;
         }
         memcpy(chunk->p_data, data + offset, length);
@@ -163,11 +163,13 @@ void load_png_data_IHDR(struct data_IHDR *data_ihdr, U8 *segment_data, size_t si
 
 int catpng(int num_segments, image_segment_t *segments)
 {
+    int result = 0;
     // Your code for the catpng program
     if (num_segments > MAX_PNG_FILES)
     {
         printf("Too many PNG files. Maximum allowed is %d\n", MAX_PNG_FILES);
-        return -1;
+        result = -1;
+        return result;
     }
 
     // if (num_segments < 3)
@@ -181,7 +183,8 @@ int catpng(int num_segments, image_segment_t *segments)
     if (!buffer_all)
     {
         printf("Failed to allocate memory for buffer_all\n");
-        return -1;
+        result = -1;
+        return result;
     }
 
     U32 total_height = 0;
@@ -194,10 +197,10 @@ int catpng(int num_segments, image_segment_t *segments)
     if (!new_ihdr || !new_idat || !new_iend)
     {
         printf("Memory allocation for chunks failed\n");
-        free(buffer_all);
-        return -1;
+        result = -1;
+        goto cleanup;
     }
-    
+
     new_ihdr->p_data = NULL;
     new_idat->p_data = NULL;
     new_iend->p_data = NULL;
@@ -210,24 +213,8 @@ int catpng(int num_segments, image_segment_t *segments)
         if (!segment_data)
         {
             printf("Error: Missing segment data for segment %d\n", i);
-            free(buffer_all);
-            if (new_ihdr->p_data)
-            {
-                free(new_ihdr->p_data);
-            }
-            if (new_ihdr)
-            {
-                free(new_ihdr);
-            }
-            if (new_idat)
-            {
-                free(new_idat);
-            }
-            if (new_iend)
-            {
-                free(new_iend);
-            }
-            return -1;
+            result = -1;
+            goto cleanup;
         }
 
         /* create allocated simple_PNG_p & get chunks with sections */
@@ -235,28 +222,24 @@ int catpng(int num_segments, image_segment_t *segments)
         if (load_png_chunks(png, &segments[i]) != 0)
         {
             printf("Error: Failed to load chunks for segment %d\n", segments[i].sequence_num);
-            free_png(png);
-            free(buffer_all);
-            if (new_ihdr->p_data)
+            if(png)
             {
-                free(new_ihdr->p_data);
+                free_png(png);
             }
-            free(new_ihdr);
-            free(new_idat);
-            free(new_iend);
-            return -1;
+            result = -1;
+            goto cleanup;
         }
 
         /* check for IHDR chunk of png */
         if (png->p_IHDR == NULL)
         {
             printf("Error: IHDR chunk is missing or corrupted in the segment %d\n", segments[i].sequence_num);
-            free(buffer_all);
-            free_png(png);
-            free(new_ihdr);
-            free(new_idat);
-            free(new_iend);
-            return -1;
+            if (png)
+            {
+                free_png(png);
+            }
+            result = -1;
+            goto cleanup;
         }
 
         /* check for IHDR data */
@@ -267,25 +250,27 @@ int catpng(int num_segments, image_segment_t *segments)
             if (new_ihdr->p_data == NULL)
             {
                 printf("Failed to allocate memory for IHDR data\n");
-                free(buffer_all);
-                free_png(png);
-                free(new_ihdr);
-                free(new_idat);
-                free(new_iend);
-                return -1;
+                if (png)
+                {
+                    free_png(png);
+                }
+                result = -1;
+                goto cleanup;
             }
 
             /* copy IHDR */
             memcpy(new_ihdr, png->p_IHDR, sizeof(struct chunk));
 
-            if (new_ihdr->p_data == NULL)
-            {
-                printf("Failed to allocate memory for IHDR data\n");
-                free(buffer_all);
-                free(new_ihdr->p_data);
-                free(new_ihdr); /* free the chunk structure */
-                return -1;
-            }
+            // if (new_ihdr->p_data == NULL)
+            // {
+            //     printf("Failed to allocate memory for IHDR data\n");
+            //     if (png)
+            //     {
+            //         free_png(png);
+            //     }
+            //     result = -1;
+            //     goto cleanup;
+            // }
             memcpy(new_ihdr->p_data, png->p_IHDR->p_data, png->p_IHDR->length); /* copy the actual data */
         }
         // else
@@ -318,24 +303,28 @@ int catpng(int num_segments, image_segment_t *segments)
         if (!inf_data)
         {
             printf("Memory allocation for inf_data failed\n");
-            free(buffer_all);
-            free_png(png);
-            free(new_ihdr->p_data);
-            free(new_ihdr);
-            free(new_iend);
-            return -1;
+            if (png)
+            {
+                free_png(png);
+            }
+            result = -1;
+            goto cleanup;
         }
 
         if (mem_inf(inf_data, &raw_data_size, png->p_IDAT->p_data, png->p_IDAT->length) != 0)
         {
             printf("Failed to inflate IDAT data from image %d\n", segments[i].sequence_num);
-            free(inf_data);
-            free(buffer_all);
-            free_png(png);
-            free(new_ihdr);
-            free(new_idat);
-            free(new_iend);
-            return -1;
+            if(inf_data)
+            {
+                free(inf_data);
+                inf_data = NULL;
+            }
+            if (png)
+            {
+                free_png(png);
+            }
+            result = -1;
+            goto cleanup;
         }
         // printf("i = %d, total size: %ld, raw_data_size: %ld\n", i, total_size, raw_data_size);
 
@@ -344,19 +333,23 @@ int catpng(int num_segments, image_segment_t *segments)
         if (total_size + raw_data_size > MAX_T)
         {
             printf("File size exceed max size accepted\n");
-            free(inf_data);
-            free(buffer_all);
-            free_png(png);
-            free(new_ihdr);
-            free(new_idat);
-            free(new_iend);
-            return -1;
+            if (inf_data)
+            {
+                free(inf_data);
+                inf_data = NULL;
+            }
+            if (png)
+            {
+                free_png(png);
+            }
+            result = -1;
+            goto cleanup;
         }
         memcpy(buffer_all + total_size, inf_data, raw_data_size);
         total_size += raw_data_size;
 
-        // free_png(png);
         free(inf_data);
+        free_png(png);
     }
 
     /* compressed buffer for all png */
@@ -366,46 +359,46 @@ int catpng(int num_segments, image_segment_t *segments)
     if (!def_data)
     {
         printf("Failed to allocate memory for def_data\n");
-        free(buffer_all);
-        return -1;
+        result = -1;
+        goto cleanup;
     }
 
     if (mem_def(def_data, &def_size, buffer_all, total_size, Z_DEFAULT_COMPRESSION) != 0)
     {
         printf("Failed to deflate concatenated data\n");
-        free(buffer_all);
-        free(def_data);
-        return -1;
+        if(def_data)
+        {
+            free(def_data);
+            def_data = NULL;
+        }
+        result = -1;
+        goto cleanup;
     }
 
     /* to make sure pointers are initialized */
     if (!new_ihdr || !new_iend)
     {
         printf("Memory allocation for new chunks failed\n");
-        free(buffer_all);
-        if (new_ihdr)
+        if (def_data)
         {
-            free(new_ihdr);
+            free(def_data);
+            def_data = NULL;
         }
-        if (new_idat && new_idat->p_data)
-        {
-            free(new_idat->p_data);
-        }
-        free(new_idat);
-        if (new_iend)
-        {
-            free(new_iend);
-        }
-        return -1;
+        result = -1;
+        goto cleanup;
     }
 
     /* copy and modify IHDR chunk */
     if (new_ihdr->p_data == NULL)
     {
         printf("Memory allocation for new IHDR data failed\n");
-        free(buffer_all);
-        free(def_data);
-        return -1;
+        if(def_data)
+        {
+            free(def_data);
+            def_data = NULL;
+        }
+        result = -1;
+        goto cleanup;
     }
     else
     {
@@ -422,9 +415,13 @@ int catpng(int num_segments, image_segment_t *segments)
     if (new_idat->p_data == NULL)
     {
         printf("Memory allocation for new IDAT data failed\n");
-        free(buffer_all);
-        free(def_data);
-        return -1;
+        if (def_data)
+        {
+            free(def_data);
+            def_data = NULL;
+        }
+        result = -1;
+        goto cleanup;
     }
     memcpy(new_idat->p_data, def_data, def_size);  /* data of IDAT chunk changed */
     new_idat->crc = calculate_chunk_crc(new_idat); /* crc of IDAT chunk calculated */
@@ -437,10 +434,15 @@ int catpng(int num_segments, image_segment_t *segments)
     if (!output_file)
     {
         printf("Failed to open output.png for writing\n");
-        free(buffer_all);
-        free(def_data);
-        return -1;
+        if(def_data)
+        {
+            free(def_data);
+            def_data = NULL;
+        }
+        result = -1;
+        goto cleanup;
     }
+    
     /* write PNG signature */
     U8 png_signature[8] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
     fwrite(png_signature, 1, 8, output_file);
@@ -452,15 +454,23 @@ int catpng(int num_segments, image_segment_t *segments)
 
     /* close the file and free resources */
     fclose(output_file);
-    free(buffer_all);
-    free(def_data);
-    free(new_ihdr->p_data);
-    free(new_ihdr);
-    free(new_idat->p_data);
-    free(new_idat);
-    free(new_iend);
 
     printf("Concatenated PNG written to all.png\n");
 
-    return 0;
+    if (def_data)
+    {
+        free(def_data);
+        def_data = NULL;
+    }
+cleanup:
+    if (buffer_all)
+    {
+        free(buffer_all);
+        buffer_all = NULL;
+    }
+    free_chunk(new_ihdr);
+    free_chunk(new_idat);
+    free_chunk(new_iend);
+
+    return result;
 }
