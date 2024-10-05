@@ -103,6 +103,13 @@ void *do_work(void *arg)
         {
             printf("Failed to allocate memory for segment %d\n", sequence_num);
             pthread_mutex_unlock(&num_lock); /* unlock the mutex before returning */
+            /* free buf so that it won't hold same data */
+            if (recv_buf.buf != NULL)
+            {
+                free(recv_buf.buf);
+                recv_buf.buf = NULL;
+            }
+            recv_buf_init(&recv_buf, BUF_SIZE);
             continue;                        /* move on to the next iteration */
         }
 
