@@ -14,6 +14,64 @@
 #define PNG_SIG_SIZE 8
 #define MAX_PNG_FILES 50
 
+int write_segment_to_png(const char *filename, image_segment_t *segment)
+{
+    // Open file for writing
+    FILE *file = fopen(filename, "wb+");
+    if (!file)
+    {
+        printf("Failed to open file %s for writing\n", filename);
+        return -1;
+    }
+
+    // Write PNG signature
+    U8 png_signature[8] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
+    fwrite(png_signature, 1, 8, file);
+
+    // Process the PNG chunks within the segment
+    unsigned char *data = segment->data;
+    size_t seg_size = segment->size;
+    size_t offset = 8; // Skip the PNG signature (8 bytes)
+
+    while (offset < seg_size)
+    {
+        // Get the length of the chunk
+        U32 length = ntohl(*(U32 *)(data + offset));
+        offset += 4;
+
+        // Get the chunk type
+        char type[5] = {0};
+        memcpy(type, data + offset, 4);
+        offset += 4;
+
+        // Write length and type to file
+        U32 length_be = htonl(length);
+        fwrite(&length_be, 1, 4, file); // Write length in big-endian
+        fwrite(type, 1, 4, file);       // Write chunk type
+
+        // Write the chunk data
+        fwrite(data + offset, 1, length, file);
+        offset += length;
+
+        // Write the chunk CRC
+        U32 crc = ntohl(*(U32 *)(data + offset));
+        U32 crc_be = htonl(crc);
+        fwrite(&crc_be, 1, 4, file); // Write CRC in big-endian
+        offset += 4;
+
+        // Stop after writing the IEND chunk
+        if (memcmp(type, "IEND", 4) == 0)
+        {
+            break;
+        }
+    }
+
+    // Close file
+    fclose(file);
+    printf("Segment written to %s\n", filename);
+    return 0;
+}
+
 /* get all three chunks sequentially and stored to element pointer of struct pointer simple_PNG_p, return -1(get failed) or 0(get success) */
 int load_png_chunks(simple_PNG_p out, image_segment_t *segment)
 {

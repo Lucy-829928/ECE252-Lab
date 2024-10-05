@@ -1,7 +1,7 @@
 CC = gcc       # compiler
 LD = gcc       # linker
-CFLAGS = -Wall -g -std=c99  # compilation flags
-LDFLAGS = -g -fsanitize=address  # debugging symbols in build
+CFLAGS = -Wall -g -std=c99 # compilation flags
+LDFLAGS = -g   # debugging symbols in build
 LDLIBS = -lz -lcurl -lpthread # link with libz
 
 # Source files and object files
@@ -38,5 +38,5 @@ $(TARGETS): %: %.o $(UTIL_OBJS)
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) *.o *.d *.out
+	rm -f $(TARGETS) *.o *.d *.out 
 	rm -f $(UTIL_OBJS) $(UTIL_SRCS:.c=.d) $(TARGET_SRCS:.c=.d)
