@@ -13,48 +13,55 @@ executables locatedin expected folder, file organization +5
 PART 1===================================
 
 >> ./paster
-Number of threads detected: 4136
+Number of threads detected: 1
 Expected: 1 or 2
-incorrect -2
+correct +2
 Program completed successfully
-Process finished after 2 seconds
+Process finished after 47 seconds
 
 >> ./paster
 Program completed successfully
-Process finished after 0 seconds
-Average processing time for 3 runs is 0 seconds
+Process finished after 59 seconds
+
+>> ./paster
+Program completed successfully
+Process finished after 42 seconds
+Average processing time for 3 runs is 49 seconds
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -4
+0all.png
+images pass absolute error test +4
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -2
-crc errors -2
+all.png: 400 x 300
+Dimensions correct +2
+No crc errors +2
 
 PART 2===================================
 
 >> ./paster -n 2
-Segfault detected!
+Program completed successfully
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
 >> ./paster -n 3
 Program completed successfully
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
 PART 3===================================
 
@@ -64,225 +71,236 @@ Requests to all 3 servers detected +4
 PART 4===================================
 
 >> ./paster -t 2 -n 1
-Number of threads detected: 4562
+Number of threads detected: 2
 Expected: 2 or 3
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 2  is  1
-run time for t = 2  is  1
-run time for t = 2  is  0
-run time for t = 2  is  0
-run time for t = 2  is  0
+run time for t = 2  is  26
+run time for t = 2  is  21
+run time for t = 2  is  16
+run time for t = 2  is  33
+run time for t = 2  is  21
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 23 seconds
 
 >> ./paster -t 3 -n 1
-Number of threads detected: 4590
+Number of threads detected: 3
 Expected: 3 or 4
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 3  is  1
-run time for t = 3  is  0
-run time for t = 3  is  0
-run time for t = 3  is  0
-run time for t = 3  is  0
+run time for t = 3  is  10
+run time for t = 3  is  15
+run time for t = 3  is  15
+run time for t = 3  is  16
+run time for t = 3  is  22
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 15 seconds
 
 >> ./paster -t 4 -n 1
-Number of threads detected: 4648
+Number of threads detected: 4
 Expected: 4 or 5
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 4  is  2
-run time for t = 4  is  0
-run time for t = 4  is  0
-run time for t = 4  is  0
-run time for t = 4  is  1
+run time for t = 4  is  15
+run time for t = 4  is  24
+run time for t = 4  is  15
+run time for t = 4  is  11
+run time for t = 4  is  11
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 15 seconds
 
 >> ./paster -t 5 -n 1
-Number of threads detected: 4815
+Number of threads detected: 5
 Expected: 5 or 6
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 5  is  0
-run time for t = 5  is  1
-run time for t = 5  is  0
-run time for t = 5  is  0
-run time for t = 5  is  0
+run time for t = 5  is  18
+run time for t = 5  is  8
+run time for t = 5  is  7
+run time for t = 5  is  11
+run time for t = 5  is  9
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 10 seconds
 
 >> ./paster -t 6 -n 1
-Number of threads detected: 4584
+Number of threads detected: 6
 Expected: 6 or 7
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 6  is  0
-run time for t = 6  is  1
-run time for t = 6  is  0
-run time for t = 6  is  0
-run time for t = 6  is  0
+run time for t = 6  is  13
+run time for t = 6  is  6
+run time for t = 6  is  7
+run time for t = 6  is  10
+run time for t = 6  is  8
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 8 seconds
 
 >> ./paster -t 7 -n 1
-Number of threads detected: 4368
+Number of threads detected: 7
 Expected: 7 or 8
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 7  is  1
-run time for t = 7  is  0
-run time for t = 7  is  0
-run time for t = 7  is  0
-run time for t = 7  is  1
+run time for t = 7  is  7
+run time for t = 7  is  7
+run time for t = 7  is  8
+run time for t = 7  is  7
+run time for t = 7  is  5
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 6 seconds
 
 >> ./paster -t 8 -n 1
-Number of threads detected: 4112
+Number of threads detected: 8
 Expected: 8 or 9
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 8  is  0
-run time for t = 8  is  0
-run time for t = 8  is  0
-run time for t = 8  is  1
-run time for t = 8  is  0
+run time for t = 8  is  8
+run time for t = 8  is  7
+run time for t = 8  is  9
+run time for t = 8  is  6
+run time for t = 8  is  6
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 7 seconds
 
 >> ./paster -t 9 -n 1
-Number of threads detected: 4293
+Number of threads detected: 9
 Expected: 9 or 10
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 9  is  0
-run time for t = 9  is  0
-run time for t = 9  is  0
-run time for t = 9  is  1
-run time for t = 9  is  0
+run time for t = 9  is  8
+run time for t = 9  is  6
+run time for t = 9  is  7
+run time for t = 9  is  4
+run time for t = 9  is  7
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 6 seconds
 
 >> ./paster -t 10 -n 1
-Number of threads detected: 5070
+Number of threads detected: 10
 Expected: 10 or 11
-incorrect -2
+correct +2
 Program completed successfully
-run time for t = 10  is  1
-run time for t = 10  is  0
-run time for t = 10  is  0
-run time for t = 10  is  1
-run time for t = 10  is  0
+run time for t = 10  is  6
+run time for t = 10  is  5
+run time for t = 10  is  5
+run time for t = 10  is  5
+run time for t = 10  is  8
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -1
+0all.png
+images pass absolute error test +1
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -1
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +1
+No crc errors +1
 
-Average processing time for 5 runs is 0 seconds
+Average processing time for 5 runs is 5 seconds
 
 
 PART 5===================================
 
     # of Threads:  1  ...  10
-Processing Times: 0 0 0 0 0 0 0 0 0 0
-Observed Speedups:           
--t10 is less than 2x faster than -t1 -10
+Processing Times: 49 23 15 15 10 8 6 7 6 5
+Observed Speedups: 1.00 2.13 3.26 3.26 4.90 6.12 8.16 7.00 8.16 9.80 
+-t10 is at least 8x faster than -t1, or is <= 7s, +10
 
 PART 6===================================
 
 >> ./paster -t 10 -n 2
 Program completed successfully
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -2
+0all.png
+images pass absolute error test +2
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -2
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +2
+No crc errors +1
 
 >> ./paster -t 10 -n 3
 Program completed successfully
 Got image error = 
-compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
-image fails absolute error test -2
+0all.png
+images pass absolute error test +2
 
 >> ./pnginfo all.png
 Got: 
-all.png:file not found!Dimensions incorrect -2
-crc errors -1
+all.png: 400 x 300
+Dimensions correct +2
+No crc errors +1
 
 PART 7===================================
 Found measures towards thread safety +5
@@ -290,5 +308,19 @@ Found measures towards thread safety +5
 PART 8===================================
 
 >> valgrind --leak-check=full ./paster -t 10 -n 1 
+Did not find definitely lost bytes +5
 
-[program hangs here]
+PART 9===================================
+
+>> make clean
+No .o found +1
+No executable found +1
+
+########### Score ###########
+
+File Organization score: 10/10
+Makefile score: 4/4
+paster multi-threaded score:  95/95
+Total lab 2 score:  109/109
+
+########### Additional Comments ###########

@@ -1,0 +1,23 @@
+########### Setting Up Directory  ###########
+Removing all .pngs, .o, .d and executables
+########### Processing Script Arguments ###########
+Cleaning IPC before each test case enabled: false
+########### Running Tests  ###########
+>> make
+paster2 failed to compile -100
+Any *.out renamed to *
+
+make file not located, file organization -5
+executables not located, file organization -5
+
+>> make clean
+nothing to clean, test skipped
+
+########### Score ###########
+
+Makefile score: 0/5
+File organization score: 0/10
+paster2 multi-threaded score: 0/0
+Total lab 3 score: 0/15
+
+########### Additional Comments ###########
