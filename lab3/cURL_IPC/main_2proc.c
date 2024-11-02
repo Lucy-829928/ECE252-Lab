@@ -38,6 +38,8 @@
 #include <sys/wait.h>
 #include <semaphore.h>
 
+#include "main_2proc.h"
+
 #define IMG_URL "http://ece252-1.uwaterloo.ca:2530/image?img=1&part=20"
 #define DUM_URL "https://example.com/"
 #define ECE252_HEADER "X-Ece252-Fragment: "
@@ -70,19 +72,6 @@
    | buf[max_size-1]| 1 byte
    +================+
 */
-typedef struct recv_buf_flat {
-    char *buf;       /* memory to hold a copy of received data */
-    size_t size;     /* size of valid data in buf in bytes*/
-    size_t max_size; /* max capacity of buf in bytes*/
-    int seq;         /* >=0 sequence number extracted from http header */
-                     /* <0 indicates an invalid seq number */
-} RECV_BUF;
-
-size_t header_cb_curl(char *p_recv, size_t size, size_t nmemb, void *userdata);
-size_t write_cb_curl(char *p_recv, size_t size, size_t nmemb, void *p_userdata);
-int recv_buf_init(RECV_BUF *ptr, size_t max_size);
-int recv_buf_cleanup(RECV_BUF *ptr);
-int write_file(const char *path, const void *in, size_t len);
 
 
 /**
@@ -159,7 +148,6 @@ int sizeof_shm_recv_buf(size_t nbytes)
  * NOTE: caller should call sizeof_shm_recv_buf first and then allocate memory.
  *       caller is also responsible for releasing the memory.
  */
-
 int shm_recv_buf_init(RECV_BUF *ptr, size_t nbytes)
 {
     if ( ptr == NULL ) {
@@ -174,6 +162,40 @@ int shm_recv_buf_init(RECV_BUF *ptr, size_t nbytes)
     return 0;
 }
 
+int recv_buf_init(RECV_BUF *ptr, size_t max_size)
+{
+    void *p = NULL;
+
+    if (ptr == NULL)
+    {
+        return 1;
+    }
+
+    p = malloc(max_size);
+    if (p == NULL)
+    {
+        return 2;
+    }
+
+    ptr->buf = p;
+    ptr->size = 0;
+    ptr->max_size = max_size;
+    ptr->seq = -1; /* valid seq should be non-negative */
+    return 0;
+}
+
+int recv_buf_cleanup(RECV_BUF *ptr)
+{
+    if (ptr == NULL)
+    {
+        return 1;
+    }
+
+    free(ptr->buf);
+    ptr->size = 0;
+    ptr->max_size = 0;
+    return 0;
+}
 
 /**
  * @brief output data in memory to a file
@@ -181,7 +203,6 @@ int shm_recv_buf_init(RECV_BUF *ptr, size_t nbytes)
  * @param in  void *, input data to be written to the file
  * @param len size_t, length of the input data in bytes
  */
-
 int write_file(const char *path, const void *in, size_t len)
 {
     FILE *fp = NULL;
