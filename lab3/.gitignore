@@ -59,10 +59,11 @@
 # bin/
 # boutput.txt
 
-# paster
-# pnginfo
+paster2
+pnginfo
 # output.txt
 
 # other
-# *.png
+*.csv
+*.png
 # *.txt

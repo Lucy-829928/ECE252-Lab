@@ -16,11 +16,13 @@
 #define DEFAULT_THREAD 1
 #define DEFAULT_PNG 1
 
+#define DATA_SIZE 1024000 /* set a fixed size so that we don't need malloc, because for different process, the malloc address is not shared */
+
 /* struct to hold image segment data */
 typedef struct image_segment
 {
     int sequence_num;    /* sequence number of the image segment */
-    unsigned char *data; /* pointer to data of the image segment */
+    unsigned char data[DATA_SIZE]; /* fixed data size array of the image segment */
     size_t size;         /* size of the image segment */
 } image_segment_t;
 
