@@ -10,12 +10,19 @@
 #include "catpng.h"
 #include "cURL_IPC/main_2proc.h"
 
+// #define MAX_THREAD 20
+#define MAX_BUFFER_SIZE 50    /* setting the max buffer size, 1 <= B <= 50 */
+#define MAX_PRODUCER 20    /* setting the max producer number, 1 <= P <= 20 */
+#define MAX_CONSUMER 20    /* setting the max consumer number, 1 <= C <= 20 */
 
-#define BUFFER_SIZE 5    /* setting the buffer size */
 sem_t empty;        /* record the empty buffer number */
 sem_t full;         /* record the full buffer number */
 
-#define MAX_THREAD 20
+int buffer_size;         /* size of the buffer (from input) */
+int producer_num;        /* number of producer threads */
+int consumer_num;        /* number of consumer threads */
+int consumer_sleep_time; /* consumer sleep time (ms) */
+int image_num;           /* image number to download */
 
 /* global data structures to share*/
 image_segment_t segments[NUM_STRIPS];                 /* segments array for store multiple(50) image segments */
@@ -23,8 +30,8 @@ bool segment_received[NUM_STRIPS];                    /* bool array for determin
 int segments_get_num = 0;                             /* number of segments got */
 pthread_mutex_t num_lock = PTHREAD_MUTEX_INITIALIZER; /* mutex for locking global variables */
 
-/* thread function: a routine that can run as a thread by pthreads */
-void *do_work(void *arg)
+/* Producer (thread) function: a routine that can run as a thread by pthreads */
+void * producer(void *arg)
 {
     struct thread_args *p_in = arg;                               /* cast the argument to thread_args */
     struct thread_ret *p_out = malloc(sizeof(struct thread_ret)); /* allocate memory for the return value */
@@ -89,6 +96,9 @@ void *do_work(void *arg)
         sequence_num = recv_buf.seq;   /* extract the sequence number from the header */
         // printf("Thread %ld is processing sequence number %d\n", pthread_self(), sequence_num);
 
+        /* wait */
+        sem_wait(&empty);
+
         /* check if the segment is received before */
         if (segment_received[sequence_num])
         {
@@ -141,6 +151,9 @@ void *do_work(void *arg)
         segments_get_num++;
         // printf("Thread fetched segment %d from URL: %s; seg_get_num = %d\n", sequence_num, p_in->url, segments_get_num);
 
+        /* post */
+        sem_post(&full);
+
         if (segments_get_num == NUM_STRIPS)
         {
             pthread_mutex_unlock(&num_lock); /* unlock mutex after check */
@@ -175,6 +188,31 @@ void *do_work(void *arg)
     return p_out; /* return the result */
 }
 
+void * consumer(void * arg)
+{
+    while (1)
+    {
+        /* wait */
+        sem_wait(&full);
+        pthread_mutex_lock(&num_lock);
+
+        /* check if get all segments */
+        if (segments_get_num >= NUM_STRIPS)
+        {
+            pthread_mutex_unlock(&num_lock);
+            break;
+        }
+
+        usleep(consumer_sleep_time * 1000);
+
+        pthread_mutex_unlock(&num_lock);
+
+        /* post */
+        sem_post(&empty);  
+    }
+    return NULL;
+}
+
 void print_segment_received()
 {
     printf("Segments received: \n");
@@ -186,109 +224,58 @@ void print_segment_received()
 
 int main(int argc, char **argv)
 {
-    sem_init(&empty, 0, BUFFER_SIZE); 
+    if (argc != 6)
+    {
+        fprintf(stderr, "Usage: %s <buffer_size> <producer_num> <consumer_num> <consumer_sleep_time> <image_num>\n", argv[0]);
+        return -1;
+    }
+
+    buffer_size = atoi(argv[1]);    /* the second argument string (B) is for buffer size */
+    producer_num = atoi(argv[2]);   /* the third argument string (P) is for number of producer */
+    consumer_num = atoi(argv[3]);   /* the fourth argument string (C) is for number of consumer */
+    consumer_sleep_time = atoi(argv[4]); /* the fifth argument string (X) is for time(ms) for consumer to sleep before it starts to process image data */
+    image_num = atoi(argv[5]);           /* the sixth argument string (N) is for image number we want to get from server */
+
+    sem_init(&empty, 0, buffer_size); 
     sem_init(&full, 0, 0);            
 
     struct timeval start, end;
     /* start timer */
     gettimeofday(&start, NULL);
 
-    int num_threads = DEFAULT_THREAD;                      /* default thread num */
-    int image_num = DEFAULT_PNG;                           /* default image num */
-    memset(segments, 0, sizeof(segments));                 /* initialize the segments array */
-    memset(segment_received, 0, sizeof(segment_received)); /* initialize the segment_received array */
-    segments_get_num = 0;
+    // int num_threads = DEFAULT_THREAD;                      /* default thread num */
+    // int image_num = DEFAULT_PNG;                           /* default image num */
+    // memset(segments, 0, sizeof(segments));                 /* initialize the segments array */
+    // memset(segment_received, 0, sizeof(segment_received)); /* initialize the segment_received array */
+    // segments_get_num = 0;
 
-    /* get user data from command line */
-    for (int i = 1; i < argc; i++) /* skip the call-program command */
+    pthread_t producers[producer_num], consumers[consumer_num];
+    struct thread_args args[producer_num];
+
+    for (int i = 0; i < producer_num; i++)
     {
-        if (strncmp(argv[i], "-t", 2) == 0 && i + 1 < argc)
-        {
-            num_threads = atoi(argv[i + 1]); /* convert the num after "-t" to int, it is for the thread number */
-        }
-        else if (strncmp(argv[i], "-n", 2) == 0 && i + 1 < argc)
-        {
-            image_num = atoi(argv[i + 1]); /* convert the num after "-n" to int, it is for the image number */
-        }
-    }
-
-    if (!(1 <= num_threads && num_threads <= MAX_THREAD) || !(1 <= image_num && image_num <= 3))
-    {
-        printf("Invalid input for '-n' and '-t'\n");
-        return -1;
-    }
-
-    // printf("thread num: %d, image_num: %d\n", num_threads, image_num);
-
-    /* allocate space for threads and their input arguments */
-    pthread_t threads[num_threads];
-    struct thread_args args[num_threads];
-    memset(args, 0, sizeof(args));
-
-    /* get data for args and create threads */
-    // while (segments_get_num < NUM_STRIPS)
-    // {
-    for (int i = 0; i < num_threads; i++)
-    {
-        // pthread_mutex_lock(&mutex); /* lock the mutex for thread */
-        // if (segments_get_num >= NUM_STRIPS)
-        // {
-        //     pthread_mutex_unlock(&mutex);
-        //     break; /* exit if all segments fetched */
-        // }
-        // pthread_mutex_unlock(&mutex);
-
-        snprintf(args[i].url, MAX_URL_LENGTH, "http://ece252-%d.uwaterloo.ca:2520/image?img=%d", (i % 3) + 1, image_num); /* assign server and image num to URL */
-        args[i].image_num = image_num;
-        args[i].total_pngs_read = &segments_get_num;
+        snprintf(args[i].url, MAX_URL_LENGTH, "http://ece252-%d.uwaterloo.ca:2520/image?img=%d", (i % 3) + 1, image_num);
         args[i].image_segments = segments;
-        args[i].mutex = &num_lock;
-
-        pthread_create(&threads[i], NULL, do_work, (void *)&args[i]);
-        pthread_t pthread_self(void);
-        // printf("i = %d\n", i);
+        pthread_create(&producers[i], NULL, producer, &args[i]);
     }
 
-    // printf("here\n");
-
-    /* wait for all threads to complete */
-    for (int i = 0; i < num_threads; i++)
+    for (int i = 0; i < consumer_num; i++)
     {
-        // printf("here1\n");
+        pthread_create(&consumers[i], NULL, consumer, NULL);
+    }
+
+    for (int i = 0; i < producer_num; i++)
+    {
         struct thread_ret *ret;
-        pthread_join(threads[i], (void **)&ret); /* let thread wait for return value */
+        pthread_join(producers[i], (void **)&ret);
         free(ret);
     }
-    // printf("!!!! num of png get: %d\n", segments_get_num);
 
-    // for (int i = 0; i < 50; i++)
-    // {
-    //     char filename[50];
-    //     sprintf(filename, "segment_%d.png", i);
-    //     printf("segment number of the png is %d ", segments[i].sequence_num);
-    //     if (write_segment_to_png(filename, &segments[i]) != 0)
-    //     {
-    //         printf("Failed to write segment %d to PNG\n", i);
-    //     }
-    // }
-
-    /* check if all segments are received */
-    if (segments_get_num != NUM_STRIPS)
+    for (int i = 0; i < consumer_num; i++)
     {
-        printf("Error: Missing segment data. Only %d/%d segments received.\n", segments_get_num, NUM_STRIPS);
-        return -1;
+        pthread_join(consumers[i], NULL);
     }
-    // printf("here2.5\n");
 
-    // printf("Order of segments stored:\n");
-    // for (int i = 0; i < segments_get_num; i++)
-    // {
-    //     printf("Segment %d stored at position %d\n", segments[i].sequence_num, i);
-    // }
-
-    // void print_segment_received();
-
-    /* concatenate segments to full png */
     if (segments_get_num == NUM_STRIPS)
     {
         if (catpng(NUM_STRIPS, segments) != 0)
@@ -298,10 +285,9 @@ int main(int argc, char **argv)
     }
     else
     {
-        printf("Error: Missing segment data. Only %d/%d segments received.\n", segments_get_num, NUM_STRIPS);
+        printf("Error: Missing segment data.\n");
     }
 
-    // printf("here3\n");
     for (int i = 0; i < NUM_STRIPS; i++)
     {
         if (segments[i].data != NULL)
@@ -311,6 +297,8 @@ int main(int argc, char **argv)
         }
     }
     pthread_mutex_destroy(&num_lock);
+    sem_destroy(&empty);
+    sem_destroy(&full);
 
     /* end timer */
     gettimeofday(&end, NULL);
