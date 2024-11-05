@@ -42,7 +42,7 @@ struct thread_ret
     int done_status; /* status of thread */
 };
 
-int catpng(int num_segments, image_segment_t *segments);
+int catpng(int num_segments, image_segment_t *segments, const char * png_name);
 int load_png_chunks(simple_PNG_p out, image_segment_t *segment);
 void load_png_data_IHDR(struct data_IHDR *data_ihdr, U8 *segment_data, size_t sig_size, int seek_set);
 
