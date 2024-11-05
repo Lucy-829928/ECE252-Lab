@@ -8,7 +8,8 @@ LDLIBS = -lz -lcurl -lpthread # link with libz
 TARGET_SRCS = paster2.c
 PRE_SRCS = pnginfo.c
 UTIL_SRCS = catpng.c crc.c zutil.c lab_png.c \
-			cURL_IPC/main_2proc.c
+			cURL_IPC/main_2proc.c \
+			shm/shm_stack.c
 PRE_USE_SRCS = crc.c zutil.c
 
 UTIL_OBJS = $(UTIL_SRCS:.c=.o)
