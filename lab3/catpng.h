@@ -16,7 +16,7 @@
 #define DEFAULT_THREAD 1
 #define DEFAULT_PNG 1
 
-#define DATA_SIZE 1024000 /* set a fixed size so that we don't need malloc, because for different process, the malloc address is not shared */
+#define DATA_SIZE 10240 /* set a fixed size so that we don't need malloc, because for different process, the malloc address is not shared */
 
 /* struct to hold image segment data */
 typedef struct image_segment
