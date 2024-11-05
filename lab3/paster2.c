@@ -561,6 +561,14 @@ int main(int argc, char **argv)
     struct utsname uts;
     uname(&uts);
 
+    double total_time = 0.0;
+    printf("here2\n");
+    for (int i = 0; i < RUN_TIME; i++)
+    {
+        double time_spent = execute_experiment(buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, image_num);
+        total_time += time_spent;
+        printf("Run %d: %.6f seconds\n", i + 1, time_spent);
+    }
     /* create .csv */
     char csv_filename[256];
     snprintf(csv_filename, sizeof(csv_filename), "lab3_%s.csv", uts.nodename);
@@ -573,16 +581,6 @@ int main(int argc, char **argv)
     }
 
     fprintf(fp, "B,P,C,X,Avg Time\n");
-
-    double total_time = 0.0;
-    printf("here2\n");
-    for (int i = 0; i < RUN_TIME; i++)
-    {
-        double time_spent = execute_experiment(buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, image_num);
-        total_time += time_spent;
-        printf("Run %d: %.6f seconds\n", i + 1, time_spent);
-    }
-
     double avg_time = total_time / RUN_TIME;
     fprintf(fp, "%d,%d,%d,%d,%.6f\n", buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, avg_time);
     printf("paster2 execution time: %.6f seconds\n", avg_time);
