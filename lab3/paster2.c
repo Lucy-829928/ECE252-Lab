@@ -41,8 +41,6 @@ int producer_num;        /* number of producer threads */
 int consumer_num;        /* number of consumer threads */
 int consumer_sleep_time; /* consumer sleep time (ms) */
 int image_num;           /* image number to download */
-int producer_index;
-int consumer_index;
 
 int shm_id_segments_buffer; /* shared memory ID for image segments buffer */
 int shm_id_segments;        /* shared memory ID for image segments */
@@ -50,16 +48,22 @@ int shm_id_segments;        /* shared memory ID for image segments */
 // int shm_id_segments_get_num; /* shared memory ID for number of segments got in shared memory */
 int shm_id_produced_count; /* shared memory ID for number of produced segment */
 int shm_id_consumed_count; /* shared memory ID for number of consumed segment */
-int shm_id_exit_flag;      /* shared memory ID for consumer exit flag */
+int shm_id_producer_index; /* Shared memory ID for producer index */
+int shm_id_consumer_index; /* Shared memory ID for consumer index */
+int shm_id_producer_exit_flag;      /* shared memory ID for producer exit flag */
+int shm_id_consumer_exit_flag;      /* shared memory ID for consumer exit flag */
 
 /* global data structures in shared memory */
 image_segment_t *segments_buffer; /* point to the segments buffer array for store buffer_seg_num of image segments in shared memory */
 image_segment_t *segments;        /* point to the segments array for store 50 image segments in shared memory */
-// bool *segment_received;          /* point to bool array for determining if the image segment is received in shared memory */
-// int *segments_get_num; /* point to number of segments got in shared memory */
-int *produced_count; /* point to number of produced segment */
-int *consumed_count; /* point to number of consumed segment */
-int *exit_flag;      /* point to consumer exit flag */
+// processed_image_segment_t *processed_segment;
+
+int *produced_count;          /* point to number of produced segment */
+int *consumed_count;          /* point to number of consumed segment */
+int *producer_index;          /* point to index of producer segment buffer */
+int *consumer_index;          /* point to index of consumer segment buffer */
+int *producer_exit_flag;      /* point to producer exit flag */
+int *consumer_exit_flag;      /* point to consumer exit flag */
 
 void print_sem()
 {
@@ -79,12 +83,11 @@ void producer(char *url_template)
 
     while (1)
     {
-        // if (*exit_flag)
-        // {
-        //     printf("Producer exit: ");
-        //     print_sem();
-        //     break;
-        // }
+        if (*producer_exit_flag)
+        {
+            printf("Producer exit: ");
+            break;
+        }
 
         printf("Producer: start ");
         print_sem();
@@ -108,6 +111,7 @@ void producer(char *url_template)
         /* check if get all segments */
         if (*produced_count >= NUM_STRIPS)
         {
+            *producer_exit_flag = 1;
             sem_post(mutex);
             sem_post(full); /* allow consumers to exit if necessary */
             break;
@@ -161,14 +165,14 @@ void producer(char *url_template)
             continue;
         }
 
-        memcpy(segments_buffer[producer_index].data, recv_buf.buf, recv_buf.size);
-        segments_buffer[producer_index].size = recv_buf.size;
-        segments_buffer[producer_index].sequence_num = recv_buf.seq;
+        memcpy(segments_buffer[*producer_index].data, recv_buf.buf, recv_buf.size);
+        segments_buffer[*producer_index].size = recv_buf.size;
+        segments_buffer[*producer_index].sequence_num = recv_buf.seq;
 
-        printf(">> Producer store segment %d into index %d\n", recv_buf.seq, producer_index);
+        printf(">> Producer store segment %d into index %d\n", recv_buf.seq, *producer_index);
 
-        printf("??? producer_index = %d, buffer_seg_num = %d\n", producer_index, buffer_seg_num);
-        if (producer_index == buffer_seg_num - 1)
+        printf("??? producer_index = %d, buffer_seg_num = %d\n", *producer_index, buffer_seg_num);
+        if (*producer_index == buffer_seg_num - 1)
         {
             printf("producer_index == buffer_seg_num\n");
             if (catpng(buffer_seg_num, segments_buffer, "producer.png") != 0)
@@ -181,7 +185,7 @@ void producer(char *url_template)
             }
         }
 
-        producer_index = (producer_index + 1) % buffer_seg_num;
+        *producer_index = (*producer_index + 1) % buffer_seg_num;
 
         /* print out the buffer's segments' signature */
         for (int i = 0; i < buffer_seg_num; i++)
@@ -227,12 +231,12 @@ void consumer()
         printf("Consumer: start ");
         print_sem();
 
-        // if (*exit_flag)
-        // {
-        //     printf("Consumer exit: ");
-        //     print_sem();
-        //     break;
-        // }
+        if (*consumer_exit_flag)
+        {
+            printf("Consumer exit: ");
+            print_sem();
+            break;
+        }
 
         /* wait */
         sem_wait(full);
@@ -248,10 +252,10 @@ void consumer()
         //     break;
         // }
 
-        // int seg_num_consumer = *consumed_count;
         /* check if get all segments */
         if (*consumed_count >= NUM_STRIPS)
         {
+            *consumer_exit_flag = 1;
             sem_post(mutex);
             sem_post(empty); // Allow producers to exit if necessary
             break;
@@ -261,13 +265,13 @@ void consumer()
         printf("here7\n");
 
         // sem_wait(mutex);
-        int seg_num_consumer = segments_buffer[consumer_index].sequence_num;
-        memcpy(segments[seg_num_consumer].data, segments_buffer[consumer_index].data, segments_buffer[consumer_index].size);
-        segments[seg_num_consumer].size = segments_buffer[consumer_index].size;
-        segments[seg_num_consumer].sequence_num = segments_buffer[consumer_index].sequence_num;
+        int seg_num_consumer = segments_buffer[*consumer_index].sequence_num;
+        memcpy(segments[seg_num_consumer].data, segments_buffer[*consumer_index].data, segments_buffer[*consumer_index].size);
+        segments[seg_num_consumer].size = segments_buffer[*consumer_index].size;
+        segments[seg_num_consumer].sequence_num = segments_buffer[*consumer_index].sequence_num;
 
-        printf(">> Consumer read segment %d from buffer index %d\n", seg_num_consumer, consumer_index);
-        consumer_index = (consumer_index + 1) % buffer_seg_num;
+        printf(">> Consumer read segment %d from buffer index %d\n", seg_num_consumer, *consumer_index);
+        *consumer_index = (*consumer_index + 1) % buffer_seg_num;
 
         for (int i = 0; i <= seg_num_consumer; i++)
         {
@@ -294,32 +298,34 @@ void consumer()
         /* delay */
         usleep(consumer_sleep_time * 1000);
     }
-    // *exit_flag = 1;
-    // for (int i = 0; i < consumer_num; i++)
-    // {
-    //     sem_post(full);
-    // }
-    // sem_post(mutex);
-    // printf("Consumer exit after check: ");
-    // print_sem();
 }
+
+
 
 /* Set up shared memory for communication between processes */
 void setup_shared_memory()
 {
+    /* create space */
     shm_id_segments_buffer = shmget(IPC_PRIVATE, buffer_seg_num * sizeof(image_segment_t), IPC_CREAT | 0666);
     shm_id_segments = shmget(IPC_PRIVATE, NUM_STRIPS * sizeof(image_segment_t), IPC_CREAT | 0666);
     // shm_id_segment_received = shmget(IPC_PRIVATE, NUM_STRIPS * sizeof(bool), IPC_CREAT | 0666);
     shm_id_produced_count = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
     shm_id_consumed_count = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
-    // shm_id_exit_flag = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
+    shm_id_producer_index = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
+    shm_id_consumer_index = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
+    shm_id_producer_exit_flag = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
+    shm_id_consumer_exit_flag = shmget(IPC_PRIVATE, sizeof(int), IPC_CREAT | 0666);
 
+    /* link space with name */
     segments_buffer = (image_segment_t *)shmat(shm_id_segments_buffer, NULL, 0);
     segments = (image_segment_t *)shmat(shm_id_segments, NULL, 0);
     // segment_received = (bool *)shmat(shm_id_segment_received, NULL, 0);
     produced_count = (int *)shmat(shm_id_produced_count, NULL, 0);
     consumed_count = (int *)shmat(shm_id_consumed_count, NULL, 0);
-    // exit_flag = (int *)shmat(shm_id_exit_flag, NULL, 0);
+    producer_index = (int *)shmat(shm_id_producer_index, NULL, 0);
+    consumer_index = (int *)shmat(shm_id_consumer_index, NULL, 0);
+    producer_exit_flag = (int *)shmat(shm_id_producer_exit_flag, NULL, 0);
+    consumer_exit_flag = (int *)shmat(shm_id_consumer_exit_flag, NULL, 0);
 
     for (int i = 0; i < buffer_seg_num; i++)
     {
@@ -335,9 +341,10 @@ void setup_shared_memory()
 
     *produced_count = 0;
     *consumed_count = 0;
-    producer_index = 0;
-    consumer_index = 0;
-    // *exit_flag = 0;
+    *producer_index = 0;
+    *consumer_index = 0;
+    *producer_exit_flag = 0;
+    *consumer_exit_flag = 0;
 
     /* unlink */
     sem_unlink(sem_name_empty);
@@ -398,9 +405,21 @@ void cleanup()
     {
         shmctl(shm_id_consumed_count, IPC_RMID, NULL);
     }
-    if (shm_id_exit_flag != -1)
+    if (shm_id_producer_index != -1)
     {
-        shmctl(shm_id_exit_flag, IPC_RMID, NULL);
+        shmctl(shm_id_producer_index, IPC_RMID, NULL);
+    }
+    if (shm_id_consumer_index != -1)
+    {
+        shmctl(shm_id_consumer_index, IPC_RMID, NULL);
+    }
+    if (shm_id_producer_exit_flag != -1)
+    {
+        shmctl(shm_id_producer_exit_flag, IPC_RMID, NULL);
+    }
+    if (shm_id_consumer_exit_flag != -1)
+    {
+        shmctl(shm_id_consumer_exit_flag, IPC_RMID, NULL);
     }
 
     sem_close(empty);
@@ -461,6 +480,7 @@ double execute_experiment(int B, int P, int C, int X, int N)
         }
     }
     printf("here4\n");
+
     /* Wait for all child processes to finish */
     for (int i = 0; i < P + C; i++)
     {
@@ -518,7 +538,7 @@ int main(int argc, char **argv)
     snprintf(sem_name_empty, sizeof(sem_name_empty), "/sem_empty_%s_%d", getenv("USER"), getpid());
     snprintf(sem_name_full, sizeof(sem_name_full), "/sem_full_%s_%d", getenv("USER"), getpid());
     snprintf(sem_name_mutex, sizeof(sem_name_mutex), "/sem_mutex_%s_%d", getenv("USER"), getpid());
-    atexit(cleanup);
+    // atexit(cleanup);
     signal(SIGINT, signal_handler); /* call the clean up when ctrl+c*/
 
     if (argc != 6)

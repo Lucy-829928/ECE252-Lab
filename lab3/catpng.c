@@ -476,10 +476,10 @@ cleanup:
     }
     free_chunk(new_ihdr);
     free_chunk(new_idat);
-    if(new_iend)
+    if (new_iend)
     {
         free(new_iend);
     }
-    
+
     return result;
 }
