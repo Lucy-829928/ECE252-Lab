@@ -170,7 +170,7 @@ void load_png_data_IHDR(struct data_IHDR *data_ihdr, U8 *segment_data, size_t si
     data_ihdr->height = ntohl(*(U32 *)(ihdr_chunk_start + 12)); /* height offset is 12, and last for 4 bytes */
 }
 
-int catpng(int num_segments, image_segment_t *segments)
+int catpng(int num_segments, image_segment_t *segments, const char *png_name)
 {
     int result = 0;
     // Your code for the catpng program
@@ -436,7 +436,7 @@ int catpng(int num_segments, image_segment_t *segments)
     /* copied above */
 
     /* write the new png file */
-    FILE *output_file = fopen("all.png", "wb+");
+    FILE *output_file = fopen(png_name, "wb+");
     if (!output_file)
     {
         printf("Failed to open output.png for writing\n");
@@ -461,7 +461,7 @@ int catpng(int num_segments, image_segment_t *segments)
     /* close the file and free resources */
     fclose(output_file);
 
-    printf("Concatenated PNG written to all.png\n");
+    printf("Concatenated PNG written to %s\n", png_name);
 
     if (def_data)
     {

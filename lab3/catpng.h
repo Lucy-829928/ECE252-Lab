@@ -16,7 +16,7 @@
 #define DEFAULT_THREAD 1
 #define DEFAULT_PNG 1
 
-#define DATA_SIZE 1024000 /* set a fixed size so that we don't need malloc, because for different process, the malloc address is not shared */
+#define DATA_SIZE 10240 /* set a fixed size so that we don't need malloc, because for different process, the malloc address is not shared */
 
 /* struct to hold image segment data */
 typedef struct image_segment
@@ -42,7 +42,7 @@ struct thread_ret
     int done_status; /* status of thread */
 };
 
-int catpng(int num_segments, image_segment_t *segments);
+int catpng(int num_segments, image_segment_t *segments, const char * png_name);
 int load_png_chunks(simple_PNG_p out, image_segment_t *segment);
 void load_png_data_IHDR(struct data_IHDR *data_ihdr, U8 *segment_data, size_t sig_size, int seek_set);
 
