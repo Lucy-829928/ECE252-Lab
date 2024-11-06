@@ -9,7 +9,12 @@
  * @author yqhuang@uwaterloo.ca
  */
 
-struct int_stack;
+typedef struct int_stack
+{
+    int size;               /* the max capacity of the stack */
+    int pos;                /* position of last item pushed onto the stack */
+    int *items;             /* stack of stored integers */
+} ISTACK;
 
 int sizeof_shm_stack(int size);
 int init_shm_stack(struct int_stack *p, int stack_size);
