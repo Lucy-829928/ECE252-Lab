@@ -45,7 +45,7 @@ $(PRE_TARGETS): %: %.o $(PRE_OBJS)
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) *.o *.d *.out lab3_*.csv *.png
+	rm -f $(TARGETS) *.o *.d *.out *.png
 	rm -f $(PRE_TARGETS) *.o *.d *.out
 	rm -f cURL_IPC/*.o cURL_IPC/*.d cURL_IPC/*.out
 	rm -f shm/*.o shm/*.d shm/*.out
