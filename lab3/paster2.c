@@ -22,7 +22,7 @@
 #define MAX_BUFFER_SEG_NUM 50 /* setting the max buffer size, 1 <= B <= 50 */
 #define MAX_PRODUCER 20       /* setting the max producer number, 1 <= P <= 20 */
 #define MAX_CONSUMER 20       /* setting the max consumer number, 1 <= C <= 20 */
-#define RUN_TIME 5            /* total run times to calculate the average running time*/
+#define RUN_TIME 1            /* total run times to calculate the average running time*/
 
 /* POSIX semaphore */
 char sem_name_empty[50];
@@ -64,14 +64,14 @@ int *consumer_index;          /* point to index of consumer segment buffer */
 int *producer_exit_flag;      /* point to producer exit flag */
 int *consumer_exit_flag;      /* point to consumer exit flag */
 
-void print_sem()
-{
-    int empty_val, full_val, mutex_val;
-    sem_getvalue(empty, &empty_val);
-    sem_getvalue(full, &full_val);
-    sem_getvalue(mutex, &mutex_val);
-    printf("here print: empty = %d, full = %d, mutex = %d\n", empty_val, full_val, mutex_val);
-}
+// void print_sem()
+// {
+//     int empty_val, full_val, mutex_val;
+//     sem_getvalue(empty, &empty_val);
+//     sem_getvalue(full, &full_val);
+//     sem_getvalue(mutex, &mutex_val);
+//     //printf("here print: empty = %d, full = %d, mutex = %d\n", empty_val, full_val, mutex_val);
+// }
 
 /* Producer function: a routine that can run as a process */
 void producer(char *url_template)
@@ -85,20 +85,20 @@ void producer(char *url_template)
         sem_wait(mutex);
         if (*producer_exit_flag)
         {
-            printf("Producer exit: ");
+            //printf("Producer exit: ");
             sem_post(mutex);
             break;
         }
         sem_post(mutex);
 
-        printf("Producer: start ");
-        print_sem();
+        //printf("Producer: start ");
+        //print_sem();
 
         sem_wait(empty);
         sem_wait(mutex);
 
-        printf("Producer: start after wait ");
-        print_sem();
+        //printf("Producer: start after wait ");
+        //print_sem();
 
         // if (*producer_exit_flag)
         // {
@@ -128,7 +128,7 @@ void producer(char *url_template)
         {
             sem_post(mutex);
             sem_post(full);
-            printf("!! Producer: consumer haven't get to the index\n");
+            //printf("!! Producer: consumer haven't get to the index\n");
             continue;
         }
 
@@ -136,7 +136,7 @@ void producer(char *url_template)
         recv_buf_init(&recv_buf, BUF_SIZE); /* initialize the receive buffer */
         if (recv_buf.buf == NULL)
         {
-            printf("Failed to allocate memory for recv_buf\n");
+            //printf("Failed to allocate memory for recv_buf\n");
             exit(-1);
         }
 
@@ -145,7 +145,7 @@ void producer(char *url_template)
 
         if (curl_handle == NULL)
         {
-            printf("curl_easy_init: returned NULL\n");
+            //printf("curl_easy_init: returned NULL\n");
             free(recv_buf.buf);
             exit(-1);
         }
@@ -165,7 +165,7 @@ void producer(char *url_template)
         res = curl_easy_perform(curl_handle);
         if (res != CURLE_OK)
         {
-            printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            //printf("curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
             continue;
         }
 
@@ -173,46 +173,46 @@ void producer(char *url_template)
         segments_buffer[*producer_index].size = recv_buf.size;
         segments_buffer[*producer_index].sequence_num = recv_buf.seq;
 
-        printf(">> Producer store segment %d into index %d\n", recv_buf.seq, *producer_index);
+        //printf(">> Producer store segment %d into index %d\n", recv_buf.seq, *producer_index);
 
-        printf("??? producer_index = %d, buffer_seg_num = %d\n", *producer_index, buffer_seg_num);
-        if (*producer_index == buffer_seg_num - 1)
-        {
-            printf("producer_index == buffer_seg_num\n");
-            if (catpng(buffer_seg_num, segments_buffer, "producer.png") != 0)
-            {
-                printf("Error: Failed to concatenate PNG\n");
-            }
-            else
-            {
-                printf("Concatenated to producer.png\n");
-            }
-        }
+        //printf("??? producer_index = %d, buffer_seg_num = %d\n", *producer_index, buffer_seg_num);
+        // if (*producer_index == buffer_seg_num - 1)
+        // {
+        //     //printf("producer_index == buffer_seg_num\n");
+        //     if (catpng(buffer_seg_num, segments_buffer, "producer.png") != 0)
+        //     {
+        //         //printf("Error: Failed to concatenate PNG\n");
+        //     }
+        //     else
+        //     {
+        //         //printf("Concatenated to producer.png\n");
+        //     }
+        // }
 
         *producer_index = (*producer_index + 1) % buffer_seg_num;
 
         /* print out the buffer's segments' signature */
-        for (int i = 0; i < buffer_seg_num; i++)
-        {
-            if (segments_buffer[i].data)
-            {
-                printf("Producer read segment %d with signature %02x %02x %02x %02x\n",
-                       i,
-                       segments_buffer[i].data[0], segments_buffer[i].data[1],
-                       segments_buffer[i].data[2], segments_buffer[i].data[3]);
-            }
-            else
-            {
-                printf("Producer read segment %d with NULL data\n", i);
-            }
-        }
+        // for (int i = 0; i < buffer_seg_num; i++)
+        // {
+        //     if (segments_buffer[i].data)
+        //     {
+        //         printf("Producer read segment %d with signature %02x %02x %02x %02x\n",
+        //                i,
+        //                segments_buffer[i].data[0], segments_buffer[i].data[1],
+        //                segments_buffer[i].data[2], segments_buffer[i].data[3]);
+        //     }
+        //     else
+        //     {
+        //         //printf("Producer read segment %d with NULL data\n", i);
+        //     }
+        // }
 
         (*produced_count)++;
         sem_post(mutex);
         sem_post(full); /* inform consumer that a new segment is ready */
 
-        printf("Producer: end after post ");
-        print_sem();
+        //printf("Producer: end after post ");
+        //print_sem();
     }
 
     /* clean up cURL resources */
@@ -235,22 +235,22 @@ void consumer()
         sem_wait(mutex);
         if (*consumer_exit_flag)
         {
-            printf("Consumer exit: ");
+            //printf("Consumer exit: ");
             sem_post(mutex);
-            print_sem();
+            //print_sem();
             break;
         }
         sem_post(mutex);
 
-        printf("Consumer: start ");
-        print_sem();
+        //printf("Consumer: start ");
+        //print_sem();
 
         /* wait */
         sem_wait(full);
         sem_wait(mutex);
 
-        printf("Consumer: start after wait ");
-        print_sem();
+        //printf("Consumer: start after wait ");
+        //print_sem();
 
         // if (*consumer_exit_flag)
         // {
@@ -271,7 +271,7 @@ void consumer()
         }
         // sem_post(mutex);
 
-        printf("here7\n");
+        //printf("here7\n");
 
         // sem_wait(mutex);
         int seg_num_consumer = segments_buffer[*consumer_index].sequence_num;
@@ -279,31 +279,31 @@ void consumer()
         segments[seg_num_consumer].size = segments_buffer[*consumer_index].size;
         segments[seg_num_consumer].sequence_num = segments_buffer[*consumer_index].sequence_num;
 
-        printf(">> Consumer read segment %d from buffer index %d\n", seg_num_consumer, *consumer_index);
+        //printf(">> Consumer read segment %d from buffer index %d\n", seg_num_consumer, *consumer_index);
         *consumer_index = (*consumer_index + 1) % buffer_seg_num;
 
-        for (int i = 0; i <= seg_num_consumer; i++)
-        {
-            if (segments[i].data)
-            {
-                printf("Consumer read segment %d with signature %02x %02x %02x %02x\n",
-                       i,
-                       segments[i].data[0], segments[i].data[1],
-                       segments[i].data[2], segments[i].data[3]);
-            }
-            else
-            {
-                printf("Consumer read segment %d with NULL data\n", i);
-            }
-        }
+        // for (int i = 0; i <= seg_num_consumer; i++)
+        // {
+        //     if (segments[i].data)
+        //     {
+        //         // printf("Consumer read segment %d with signature %02x %02x %02x %02x\n",
+        //         //        i,
+        //         //        segments[i].data[0], segments[i].data[1],
+        //         //        segments[i].data[2], segments[i].data[3]);
+        //     }
+        //     else
+        //     {
+        //         //printf("Consumer read segment %d with NULL data\n", i);
+        //     }
+        // }
 
         (*consumed_count)++;
         /* post */
         sem_post(mutex);
         sem_post(empty);
 
-        printf("Consumer: end after post ");
-        print_sem();
+        //printf("Consumer: end after post ");
+       // print_sem();
         /* delay */
         usleep(consumer_sleep_time * 1000);
     }
@@ -385,15 +385,15 @@ void setup_shared_memory()
         perror("Failed to open semaphore mutex");
         exit(1);
     }
-    printf("here2.5\n");
-    print_sem();
-    printf("Semaphore setup complete.\n");
+    //printf("here2.5\n");
+    //print_sem();
+    //printf("Semaphore setup complete.\n");
 }
 
 /* Clean up shared memory and semaphores */
 void cleanup()
 {
-    printf("Cleaning up shared memory and semaphores...\n");
+    //printf("Cleaning up shared memory and semaphores...\n");
     if (shm_id_segments_buffer != -1)
     {
         shmctl(shm_id_segments_buffer, IPC_RMID, NULL);
@@ -441,7 +441,7 @@ void cleanup()
 
 void signal_handler(int signum)
 {
-    printf("Caught signal %d\n", signum);
+    //printf("Caught signal %d\n", signum);
     cleanup();
     exit(signum);
 }
@@ -452,7 +452,7 @@ bool all_segments_received()
     {
         if (segments[i].size == 0)
         {
-            printf("Segment %d data is missing\n", i);
+            //printf("Segment %d data is missing\n", i);
             return false;
         }
     }
@@ -462,7 +462,7 @@ bool all_segments_received()
 double execute_experiment(int B, int P, int C, int X, int N)
 {
     setup_shared_memory();
-    printf("here3\n");
+    //printf("here3\n");
     struct timeval start, end;
     /* start timer */
     gettimeofday(&start, NULL);
@@ -488,7 +488,7 @@ double execute_experiment(int B, int P, int C, int X, int N)
             exit(0);
         }
     }
-    printf("here4\n");
+    //printf("here4\n");
 
     /* Wait for all child processes to finish */
     for (int i = 0; i < P + C; i++)
@@ -500,17 +500,17 @@ double execute_experiment(int B, int P, int C, int X, int N)
     gettimeofday(&end, NULL);
     double time_spent = (end.tv_sec - start.tv_sec) + (end.tv_usec - start.tv_usec) / 1000000.0;
 
-    for (int i = 0; i < NUM_STRIPS; i++)
-    {
-        if (segments[i].data == NULL)
-        {
-            printf("Segment %d data is NULL\n", i);
-        }
-        else
-        {
-            printf("Segment %d loaded with size %zu\n", i, segments[i].size);
-        }
-    }
+    // for (int i = 0; i < NUM_STRIPS; i++)
+    // {
+    //     if (segments[i].data == NULL)
+    //     {
+    //         //printf("Segment %d data is NULL\n", i);
+    //     }
+    //     else
+    //     {
+    //         //printf("Segment %d loaded with size %zu\n", i, segments[i].size);
+    //     }
+    // }
 
     if (all_segments_received())
     {
@@ -518,10 +518,10 @@ double execute_experiment(int B, int P, int C, int X, int N)
         {
             printf("Error: Failed to concatenate PNG\n");
         }
-        else
-        {
-            printf("Concatenated to all.png\n");
-        }
+        // else
+        // {
+        //     //printf("Concatenated to all.png\n");
+        // }
     }
     else
     {
@@ -565,18 +565,18 @@ int main(int argc, char **argv)
     // sem_init(&empty, 0, buffer_size);
     // sem_init(&full, 0, 0);
 
-    printf("here1\n");
+    //printf("here1\n");
     /* store the host info */
     struct utsname uts;
     uname(&uts);
 
     double total_time = 0.0;
-    printf("here2\n");
+    //printf("here2\n");
     for (int i = 0; i < RUN_TIME; i++)
     {
         double time_spent = execute_experiment(buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, image_num);
         total_time += time_spent;
-        printf("Run %d: %.2f seconds\n", i + 1, time_spent);
+        //printf("Run %d: %.2f seconds\n", i + 1, time_spent);
     }
     /* create .csv */
     //char csv_filename[256];

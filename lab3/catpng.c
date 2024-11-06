@@ -461,7 +461,7 @@ int catpng(int num_segments, image_segment_t *segments, const char *png_name)
     /* close the file and free resources */
     fclose(output_file);
 
-    printf("Concatenated PNG written to %s\n", png_name);
+    //printf("Concatenated PNG written to %s\n", png_name);
 
     if (def_data)
     {
