@@ -23,7 +23,7 @@
 #define MAX_BUFFER_SEG_NUM 50 /* setting the max buffer size, 1 <= B <= 50 */
 #define MAX_PRODUCER 20       /* setting the max producer number, 1 <= P <= 20 */
 #define MAX_CONSUMER 20       /* setting the max consumer number, 1 <= C <= 20 */
-#define RUN_TIME 1
+#define RUN_TIME 1            /* total run times to calculate the average running time*/
 
 /* POSIX semaphore */
 char sem_name_empty[50];
@@ -253,7 +253,7 @@ void consumer()
         // }
 
         /* check if get all segments */
-        if (*consumed_count >= NUM_STRIPS)
+        if (*producer_exit_flag && *consumed_count >= NUM_STRIPS)
         {
             *consumer_exit_flag = 1;
             sem_post(mutex);

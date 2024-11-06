@@ -79,13 +79,13 @@ int load_png_chunks(simple_PNG_p out, image_segment_t *segment)
     size_t seg_size = segment->size;     /* size of segment */
     size_t offset = PNG_SIG_SIZE;        /* 8 bytes of signature of png */
 
-    /* print first segment's signature */
-    if (segment->sequence_num == 0)
-    {
-        printf("Segment 0 first bytes: %02x %02x %02x %02x %02x %02x %02x %02x\n",
-               segment->data[0], segment->data[1], segment->data[2], segment->data[3],
-               segment->data[4], segment->data[5], segment->data[6], segment->data[7]);
-    }
+    // /* print first segment's signature */
+    // if (segment->sequence_num == 0)
+    // {
+    //     printf("Segment 0 first bytes: %02x %02x %02x %02x %02x %02x %02x %02x\n",
+    //            segment->data[0], segment->data[1], segment->data[2], segment->data[3],
+    //            segment->data[4], segment->data[5], segment->data[6], segment->data[7]);
+    // }
 
     /* check PNG signature */
     if (memcmp(data, "\x89PNG\x0D\x0A\x1A\x0A", 8) != 0)
