@@ -36,12 +36,6 @@
    | items[size-1] | 4 bytes
    +===============+
 */
-typedef struct int_stack
-{
-    int size;               /* the max capacity of the stack */
-    int pos;                /* position of last item pushed onto the stack */
-    int *items;             /* stack of stored integers */
-} ISTACK;
 
 /**
  * @brief calculate the total memory that the struct int_stack needs and

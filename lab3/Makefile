@@ -8,8 +8,7 @@ LDLIBS = -lz -lcurl -lpthread # link with libz
 TARGET_SRCS = paster2.c
 PRE_SRCS = pnginfo.c
 UTIL_SRCS = catpng.c crc.c zutil.c lab_png.c \
-			cURL_IPC/main_2proc.c \
-			shm/shm_stack.c
+			cURL_IPC/main_2proc.c
 PRE_USE_SRCS = crc.c zutil.c
 
 UTIL_OBJS = $(UTIL_SRCS:.c=.o)
@@ -47,4 +46,6 @@ $(PRE_TARGETS): %: %.o $(PRE_OBJS)
 .PHONY: clean
 clean:
 	rm -f $(TARGETS) *.o *.d *.out lab3_*.csv *.png
-	rm -f $(PRE_TARGETS) *.o *.d *.out 
+	rm -f $(PRE_TARGETS) *.o *.d *.out
+	rm -f cURL_IPC/*.o cURL_IPC/*.d cURL_IPC/*.out
+	rm -f shm/*.o shm/*.d shm/*.out

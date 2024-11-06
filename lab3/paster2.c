@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <unistd.h> /* add for usleep */
 #include <curl/curl.h>
-#include <pthread.h>
 #include <sys/time.h>
 #include <semaphore.h>   /* add for using process */
 #include <sys/shm.h>     /* for shared memory */
