@@ -362,6 +362,7 @@ void setup_shared_memory()
         perror("Failed to open semaphore empty");
         exit(1);
     }
+<<<<<<< HEAD
 
     full = sem_open(sem_name_full, O_CREAT | O_EXCL, 0644, 0);
     if (full == SEM_FAILED)
@@ -370,6 +371,16 @@ void setup_shared_memory()
         exit(1);
     }
 
+=======
+
+    full = sem_open(sem_name_full, O_CREAT | O_EXCL, 0644, 0);
+    if (full == SEM_FAILED)
+    {
+        perror("Failed to open semaphore full");
+        exit(1);
+    }
+
+>>>>>>> ea59d41e55f0d95cb917d6e3f0c11f671fbfa64d
     mutex = sem_open(sem_name_mutex, O_CREAT | O_EXCL, 0644, 1);
     if (mutex == SEM_FAILED)
     {
@@ -406,6 +417,7 @@ void cleanup()
         shmctl(shm_id_consumed_count, IPC_RMID, NULL);
     }
     if (shm_id_producer_index != -1)
+<<<<<<< HEAD
     {
         shmctl(shm_id_producer_index, IPC_RMID, NULL);
     }
@@ -419,6 +431,21 @@ void cleanup()
     }
     if (shm_id_consumer_exit_flag != -1)
     {
+=======
+    {
+        shmctl(shm_id_producer_index, IPC_RMID, NULL);
+    }
+    if (shm_id_consumer_index != -1)
+    {
+        shmctl(shm_id_consumer_index, IPC_RMID, NULL);
+    }
+    if (shm_id_producer_exit_flag != -1)
+    {
+        shmctl(shm_id_producer_exit_flag, IPC_RMID, NULL);
+    }
+    if (shm_id_consumer_exit_flag != -1)
+    {
+>>>>>>> ea59d41e55f0d95cb917d6e3f0c11f671fbfa64d
         shmctl(shm_id_consumer_exit_flag, IPC_RMID, NULL);
     }
 

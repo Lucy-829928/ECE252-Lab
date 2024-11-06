@@ -1,7 +1,7 @@
 #define IMG_URL "http://ece252-1.uwaterloo.ca:2530/image?img=1&part=20"
 #define DUM_URL "https://example.com/"
 #define ECE252_HEADER "X-Ece252-Fragment: "
-#define BUF_SIZE 1024000 /* 1024*1000 = 1000K */
+#define BUF_SIZE 10240 /* 1024*10 = 10K */
 
 typedef struct recv_buf_flat
 {
