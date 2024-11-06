@@ -579,9 +579,9 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    fprintf(fp, "B,P,C,X,Avg Time\n");
+    fprintf(fp, "B,P,C,X,N,Avg Time\n");
     double avg_time = total_time / RUN_TIME;
-    fprintf(fp, "%d,%d,%d,%d,%.6f\n", buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, avg_time);
+    fprintf(fp, "%d,%d,%d,%d,%.6f\n", buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, image_num, avg_time);
     printf("paster2 execution time: %.6f seconds\n", avg_time);
 
     fclose(fp);
