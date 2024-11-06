@@ -82,11 +82,14 @@ void producer(char *url_template)
 
     while (1)
     {
+        sem_wait(mutex);
         if (*producer_exit_flag)
         {
             printf("Producer exit: ");
+            sem_post(mutex);
             break;
         }
+        sem_post(mutex);
 
         printf("Producer: start ");
         print_sem();
@@ -97,12 +100,11 @@ void producer(char *url_template)
         printf("Producer: start after wait ");
         print_sem();
 
-        // if (*exit_flag)
+        // if (*producer_exit_flag)
         // {
-        //     sem_post(mutex);
-        //     sem_post(empty);
         //     printf("Producer exit: ");
-        //     print_sem();
+        //     sem_post(mutex);
+        //     sem_post(full);
         //     break;
         // }
 
@@ -112,7 +114,10 @@ void producer(char *url_template)
         {
             *producer_exit_flag = 1;
             sem_post(mutex);
-            sem_post(full); /* allow consumers to exit if necessary */
+            for (int i = 0; i < consumer_num; i++)
+            {
+                sem_post(full);  /* allow consumers to exit if necessary */
+            }
             break;
         }
         // sem_post(mutex); /* exit critical section */
@@ -227,15 +232,18 @@ void consumer()
 {
     while (1)
     {
-        printf("Consumer: start ");
-        print_sem();
-
+        sem_wait(mutex);
         if (*consumer_exit_flag)
         {
             printf("Consumer exit: ");
+            sem_post(mutex);
             print_sem();
             break;
         }
+        sem_post(mutex);
+
+        printf("Consumer: start ");
+        print_sem();
 
         /* wait */
         sem_wait(full);
@@ -243,10 +251,12 @@ void consumer()
 
         printf("Consumer: start after wait ");
         print_sem();
-        // if (*exit_flag)
+
+        // if (*consumer_exit_flag)
         // {
-        //     sem_post(mutex);
         //     printf("Consumer exit: ");
+        //     sem_post(mutex);
+        //     sem_post(empty);
         //     print_sem();
         //     break;
         // }
@@ -256,7 +266,7 @@ void consumer()
         {
             *consumer_exit_flag = 1;
             sem_post(mutex);
-            sem_post(empty); // Allow producers to exit if necessary
+            sem_post(empty); /* allow producers to exit if necessary */
             break;
         }
         // sem_post(mutex);
