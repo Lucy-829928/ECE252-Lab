@@ -22,7 +22,7 @@
 #define MAX_BUFFER_SEG_NUM 50 /* setting the max buffer size, 1 <= B <= 50 */
 #define MAX_PRODUCER 20       /* setting the max producer number, 1 <= P <= 20 */
 #define MAX_CONSUMER 20       /* setting the max consumer number, 1 <= C <= 20 */
-#define RUN_TIME 1            /* total run times to calculate the average running time*/
+#define RUN_TIME 5            /* total run times to calculate the average running time*/
 
 /* POSIX semaphore */
 char sem_name_empty[50];
@@ -576,25 +576,25 @@ int main(int argc, char **argv)
     {
         double time_spent = execute_experiment(buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, image_num);
         total_time += time_spent;
-        printf("Run %d: %.6f seconds\n", i + 1, time_spent);
+        printf("Run %d: %.2f seconds\n", i + 1, time_spent);
     }
     /* create .csv */
-    char csv_filename[256];
-    snprintf(csv_filename, sizeof(csv_filename), "lab3_%s.csv", uts.nodename);
+    //char csv_filename[256];
+    //snprintf(csv_filename, sizeof(csv_filename), "lab3_%s.csv", uts.nodename);
 
-    FILE *fp = fopen(csv_filename, "w");
-    if (fp == NULL)
-    {
-        perror("Error opening file");
-        return -1;
-    }
+    //FILE *fp = fopen(csv_filename, "w");
+    // if (fp == NULL)
+    // {
+    //     perror("Error opening file");
+    //     return -1;
+    // }
 
-    fprintf(fp, "B,P,C,X,Avg Time\n");
+    //fprintf(fp, "B,P,C,X,N,Avg Time\n");
     double avg_time = total_time / RUN_TIME;
-    fprintf(fp, "%d,%d,%d,%d,%.6f\n", buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, avg_time);
-    printf("paster2 execution time: %.6f seconds\n", avg_time);
+    //fprintf(fp, "%d,%d,%d,%d,%d,%.2f\n", buffer_seg_num, producer_num, consumer_num, consumer_sleep_time, image_num, avg_time);
+    printf("paster2 execution time: %.2f seconds\n", avg_time);
 
-    fclose(fp);
+    //fclose(fp);
 
     return 0;
 }
