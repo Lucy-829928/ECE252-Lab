@@ -1,23 +1,193 @@
 ########### Setting Up Directory  ###########
 Removing all .pngs, .o, .d and executables
 ########### Processing Script Arguments ###########
-Cleaning IPC before each test case enabled: false
+Cleaning IPC before each test case enabled: true
 ########### Running Tests  ###########
 >> make
-paster2 failed to compile -100
+paster2 compiled +3
 Any *.out renamed to *
 
-make file not located, file organization -5
-executables not located, file organization -5
+make file located in expected folder, file organization +5
+executables located in expected folder, file organization +5
+
+====== PART 1 ======
+
+>> ./paster2 5 1 1 1 1
+Program completed successfully
+Process finished after 10 seconds
+
+>> ./pnginfo all.png
+Got: 
+all.png: 400 x 300 
+Dimensions correct +1
+No crc errors +1
+Got image error = 
+0all.png
+images pass absolute error test +4
+
+====== PART 2 ======
+./paster2 5 5 1 1 1
+Program finishes successfully
+
+Number of requests detected: 50
+Expected: 50
+correct +3
+
+Number of processes detected: 6
+Expected: 6
+correct +3
+====== PART 3 ======
+
+>> ./paster2 5 5 5 1 2
+Program completed successfully
+
+>> ./pnginfo all.png
+Got: 
+all.png: 400 x 300 
+Dimensions correct +1
+No crc errors +1
+Got image error = 
+0all.png
+images pass absolute error test +4
+
+>> ./paster2 5 5 5 1 3
+Program completed successfully
+
+>> ./pnginfo all.png
+Got: 
+all.png: 400 x 300 
+Dimensions correct +1
+No crc errors +1
+Got image error = 
+0all.png
+images pass absolute error test +4
+
+====== PART 5 ======
+
+
+>> ./paster2 5 5 5 1 1
+Program completed successfully
+
+>> ./pnginfo all.png
+Got: 
+all.png: 400 x 300 
+Dimensions correct +1
+No crc errors +1
+Got image error = 
+0all.png
+images pass absolute error test +4
+
+Number of requests detected: 50
+Expected: 50
+correct +2
+
+./paster2 5 5 5 200 1
+Program finishes successfully
+Number of processes detected: 10
+Expected: 10
+correct +2
+
+
+>> ./paster2 5 5 10 1 1
+Program completed successfully
+
+>> ./pnginfo all.png
+Got: 
+all.png: 400 x 300 
+Dimensions correct +1
+No crc errors +1
+Got image error = 
+0all.png
+images pass absolute error test +4
+
+Number of requests detected: 50
+Expected: 50
+correct +2
+
+./paster2 5 5 10 200 1
+Program finishes successfully
+Number of processes detected: 15
+Expected: 15
+correct +2
+
+
+>> ./paster2 5 10 5 1 1
+Program crashed!
+
+>> ./pnginfo all.png
+Got: 
+all.png:file not found!Dimensions incorrect -1
+crc errors -1
+Got image error = 
+compare-im6.q16: unable to open image `all.png': No such file or directory @ error/blob.c/OpenBlob/2874.
+image fails absolute error test -4
+
+Number of requests detected: 50
+Expected: 50
+correct +2
+
+./paster2 5 10 5 200 1
+Program gets stuck!
+Number of processes detected: 15
+Expected: 15
+correct +2
+
+
+>> ./paster2 5 10 10 1 1
+Program completed successfully
+
+>> ./pnginfo all.png
+Got: 
+all.png: 400 x 300 
+Dimensions correct +1
+No crc errors +1
+Got image error = 
+0all.png
+images pass absolute error test +4
+
+Number of requests detected: 50
+Expected: 50
+correct +2
+
+./paster2 5 10 10 200 1
+Program finishes successfully
+Number of processes detected: 20
+Expected: 20
+correct +2
+
+====== PART 6 ======
+Performing buffer-size compliance test
+Buffer compliance test passed +6
+Checking if user compliantly generated the timings file
+Difference_slow: .040000
+Difference_fast: 10.195000
+Confirming data file is complete for all combinations
+Data file is complete +6
+Grading CSV
++17 out of 26 for runtime behavior
+
+====== PART 7 ======
+Cleaning remaining shared memory
+
+>> valgrind --leak-check=full ./paster2 5 5 5 1 1 
+Found 3240 definitely lost bytes -3
+
+====== PART 8 ======
+Checking if each consumer does image processing
+Did not find expected number of consumers performing image processing -10
+
+====== PART 9 ======
 
 >> make clean
-nothing to clean, test skipped
+No .o found +1
+No .d found
+No executable found +1
 
 ########### Score ###########
 
-Makefile score: 0/5
-File organization score: 0/10
-paster2 multi-threaded score: 0/0
-Total lab 3 score: 0/15
+Makefile score: 5/5
+File organization score: 10/10
+paster2 multi-threaded score: 67/91
+Total lab 3 score: 82/106
 
 ########### Additional Comments ###########
