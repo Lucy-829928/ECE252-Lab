@@ -25,8 +25,6 @@
  * @see https://curl.haxx.se/libcurl/using/
  * @see https://ec.haxx.se/callback-write.html
  */ 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -37,44 +35,7 @@
 #include <libxml/parser.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
-
-
-#define SEED_URL "http://ece252-1.uwaterloo.ca/lab4/"
-#define ECE252_HEADER "X-Ece252-Fragment: "
-#define BUF_SIZE 1048576  /* 1024*1024 = 1M */
-#define BUF_INC  524288   /* 1024*512  = 0.5M */
-
-#define CT_PNG  "image/png"
-#define CT_HTML "text/html"
-#define CT_PNG_LEN  9
-#define CT_HTML_LEN 9
-
-#define max(a, b) \
-   ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
-     _a > _b ? _a : _b; })
-
-typedef struct recv_buf2 {
-    char *buf;       /* memory to hold a copy of received data */
-    size_t size;     /* size of valid data in buf in bytes*/
-    size_t max_size; /* max capacity of buf in bytes*/
-    int seq;         /* >=0 sequence number extracted from http header */
-                     /* <0 indicates an invalid seq number */
-} RECV_BUF;
-
-
-htmlDocPtr mem_getdoc(char *buf, int size, const char *url);
-xmlXPathObjectPtr getnodeset (xmlDocPtr doc, xmlChar *xpath);
-int find_http(char *fname, int size, int follow_relative_links, const char *base_url);
-size_t header_cb_curl(char *p_recv, size_t size, size_t nmemb, void *userdata);
-size_t write_cb_curl3(char *p_recv, size_t size, size_t nmemb, void *p_userdata);
-int recv_buf_init(RECV_BUF *ptr, size_t max_size);
-int recv_buf_cleanup(RECV_BUF *ptr);
-void cleanup(CURL *curl, RECV_BUF *ptr);
-int write_file(const char *path, const void *in, size_t len);
-CURL *easy_handle_init(RECV_BUF *ptr, const char *url);
-int process_data(CURL *curl_handle, RECV_BUF *p_recv_buf);
-
+#include "curl_xml.h"
 
 htmlDocPtr mem_getdoc(char *buf, int size, const char *url)
 {
@@ -428,46 +389,4 @@ int process_data(CURL *curl_handle, RECV_BUF *p_recv_buf)
     }
 
     return write_file(fname, p_recv_buf->buf, p_recv_buf->size);
-}
-
-int main( int argc, char** argv ) 
-{
-    CURL *curl_handle;
-    CURLcode res;
-    char url[256];
-    RECV_BUF recv_buf;
-        
-    if (argc == 1) {
-        strcpy(url, SEED_URL); 
-    } else {
-        strcpy(url, argv[1]);
-    }
-    printf("%s: URL is %s\n", argv[0], url);
-
-    curl_global_init(CURL_GLOBAL_DEFAULT);
-    curl_handle = easy_handle_init(&recv_buf, url);
-
-    if ( curl_handle == NULL ) {
-        fprintf(stderr, "Curl initialization failed. Exiting...\n");
-        curl_global_cleanup();
-        abort();
-    }
-    /* get it! */
-    res = curl_easy_perform(curl_handle);
-
-    if( res != CURLE_OK) {
-        fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
-        cleanup(curl_handle, &recv_buf);
-        exit(1);
-    } else {
-	printf("%lu bytes received in memory %p, seq=%d.\n", \
-               recv_buf.size, recv_buf.buf, recv_buf.seq);
-    }
-
-    /* process the download data */
-    process_data(curl_handle, &recv_buf);
-
-    /* cleaning up */
-    cleanup(curl_handle, &recv_buf);
-    return 0;
 }

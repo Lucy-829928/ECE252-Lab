@@ -11,9 +11,9 @@ LDLIBS_XML2 = $(shell xml2-config --libs)
 LDLIBS_CURL = $(shell curl-config --libs)
 LDLIBS = $(LDLIBS_XML2) $(LDLIBS_CURL) 
 
-SRCS   = main.c
-OBJS3  = main.o
-TARGETS= main.out
+SRCS   = curl_xml.c
+OBJS3  = curl_xml.o
+TARGETS= curl_xml.out
 
 all: ${TARGETS}
 
