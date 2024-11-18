@@ -1,5 +1,9 @@
 #pragma once
 
+#include <libxml/HTMLparser.h>
+#include <libxml/parser.h>
+#include <libxml/xpath.h>
+
 #define SEED_URL "http://ece252-1.uwaterloo.ca/lab4/"
 #define ECE252_HEADER "X-Ece252-Fragment: "
 #define BUF_SIZE 1048576  /* 1024*1024 = 1M */
