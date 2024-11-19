@@ -165,22 +165,26 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
 
         // Log the PNG URL to png_urls.txt
         pthread_mutex_lock(&png_mutex);
-        if (total_png < MAX_PNG_URLS)
+        if (total_png >= m || total_png >= MAX_PNG_URLS)
         {
-            total_png++;
-            // printf("  total png = %d\n", total_png);
-            FILE *png_file = fopen("png_urls.txt", "a");
-            if (png_file)
-            {
-                fprintf(png_file, "%s\n", eurl);
-                fclose(png_file);
-            }
-            struct UrlStackElement png_url = {.url_ptr = strdup(eurl)};
-            push(png_stack, png_url);
-            // printf(">> PNG URL pushed to png_stack: %s\n", png_url.url_ptr);
-            // printf(">>> PNG stack size: %d\n", png_stack->num_items);
-            // free(png_url.url_ptr);
+            pthread_mutex_unlock(&png_mutex);
+            return -1; // Exit early if target reached
         }
+        
+        total_png++;
+        printf("  total png = %d\n", total_png);
+        FILE *png_file = fopen("png_urls.txt", "a");
+        if (png_file)
+        {
+            fprintf(png_file, "%s\n", eurl);
+            fclose(png_file);
+        }
+        struct UrlStackElement png_url = {.url_ptr = strdup(eurl)};
+        push(png_stack, png_url);
+        // printf(">> PNG URL pushed to png_stack: %s\n", png_url.url_ptr);
+        // printf(">>> PNG stack size: %d\n", png_stack->num_items);
+        // free(png_url.url_ptr);
+        
         pthread_mutex_unlock(&png_mutex);
 
         // Save the PNG locally
@@ -309,7 +313,7 @@ void *do_work(void *arg)
             // Process the data and mark the final URL as visited
             pthread_mutex_lock(&visited_mutex);
             ENTRY entry = {.key = strdup(final_url)};
-            
+
             if (hsearch(entry, FIND) == NULL)
             {
                 hsearch(entry, ENTER);
@@ -324,18 +328,26 @@ void *do_work(void *arg)
                 // Process data
                 process_data_2(curl_handle, &recv_buf);
 
+                // Read the updated total_png
+                pthread_mutex_lock(&png_mutex);
+                if (total_png >= MAX_PNG_URLS || total_png >= m)
+                {
+                    pthread_cond_broadcast(&frontier_cond); // Notify threads to exit
+                }
+                pthread_mutex_unlock(&png_mutex);
+
                 // Write the URL to the log file if logging is enabled
                 pthread_mutex_lock(&visited_mutex);
                 if (v == 1)
                 {
-                    // pthread_mutex_lock(&png_mutex);
-                    // int png_count = total_png;
-                    // pthread_mutex_unlock(&png_mutex);
+                    pthread_mutex_lock(&png_mutex);
+                    int png_count = total_png;
+                    pthread_mutex_unlock(&png_mutex);
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
                         // fprintf(fp, "[%ld] Thread %lu Visiting: %s\n", time(NULL), pthread_self(), url.url_ptr);
-                        // fprintf(fp, "Total PNGs found: %d\n", png_count);
+                        fprintf(fp, "Total PNGs found: %d\n", png_count);
                         fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
                         // printf(" === Logged URL to log.txt: %s\n", url.url_ptr);
