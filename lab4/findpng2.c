@@ -54,14 +54,14 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
 
     if (buf == NULL || size == 0)
     {
-        printf("Error: Empty or NULL HTML buffer.\n");
+        // printf("Error: Empty or NULL HTML buffer.\n");
         return -1;
     }
 
     doc = mem_getdoc(buf, size, base_url);
     if (doc == NULL)
     {
-        printf("Error: Unable to parse document.\n");
+        // printf("Error: Unable to parse document.\n");
         return -1;
     }
 
@@ -99,7 +99,7 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
                 continue;
             }
 
-            printf(" ---- > Extracted URL: %s\n", href);
+            // printf(" ---- > Extracted URL: %s\n", href);
 
             // Push the URL to the frontier stack
             ENTRY entry = {.key = strdup((const char *)href)};
@@ -109,14 +109,14 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
             {
                 struct UrlStackElement new_element = {.url_ptr = strdup((const char *)href)};
                 push(frontier_stack, new_element);
-                printf("    ?? PUSH to frontier\n");
+                // printf("    ?? PUSH to frontier\n");
                 pthread_cond_signal(&frontier_cond); // Signal waiting threads
-                printf("    ??? URL not exist visited: %s, add to frontier\n", href);
+                // printf("    ??? URL not exist visited: %s, add to frontier\n", href);
             }
             else
             {
                 free(entry.key);
-                printf("    !!! URL already visited: %s, not add to frontier\n", href);
+                // printf("    !!! URL already visited: %s, not add to frontier\n", href);
             }
             pthread_mutex_unlock(&frontier_mutex);
             pthread_mutex_unlock(&visited_mutex);
@@ -139,7 +139,7 @@ int process_html_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         return -1;
     }
 
-    printf("Processing HTML from URL: %s\n", url);
+    // printf("Processing HTML from URL: %s\n", url);
 
     // Extract and process links
     find_http_2(p_recv_buf->buf, p_recv_buf->size, 1, url);
@@ -159,14 +159,14 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
     // Validate PNG signature (can use is_png() as well)
     if (p_recv_buf->size >= 8 && memcmp(p_recv_buf->buf, "\x89PNG\r\n\x1a\n", 8) == 0)
     {
-        printf("Valid PNG detected: %s\n", eurl);
+        // printf("Valid PNG detected: %s\n", eurl);
 
         // Log the PNG URL to png_urls.txt
         pthread_mutex_lock(&png_mutex);
         if (total_png < MAX_PNG_URLS)
         {
             total_png++;
-            printf("  total png = %d\n", total_png);
+            // printf("  total png = %d\n", total_png);
             FILE *png_file = fopen("png_urls.txt", "a");
             if (png_file)
             {
@@ -175,8 +175,8 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
             }
             struct UrlStackElement png_url = {.url_ptr = strdup(eurl)};
             push(png_stack, png_url);
-            printf(">> PNG URL pushed to png_stack: %s\n", png_url.url_ptr);
-            printf(">>> PNG stack size: %d\n", png_stack->num_items);
+            // printf(">> PNG URL pushed to png_stack: %s\n", png_url.url_ptr);
+            // printf(">>> PNG stack size: %d\n", png_stack->num_items);
             // free(png_url.url_ptr);
         }
         pthread_mutex_unlock(&png_mutex);
@@ -189,30 +189,30 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
     }
     else
     {
-        fprintf(stderr, "Invalid PNG detected at URL: %s\n", eurl);
+        // fprintf(stderr, "Invalid PNG detected at URL: %s\n", eurl);
         return -1;
     }
 }
 
 int process_data_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
 {
-    printf(" -- Processing data\n");
+    // printf(" -- Processing data\n");
     char *ct = NULL;
     curl_easy_getinfo(curl_handle, CURLINFO_CONTENT_TYPE, &ct);
-    printf(" -- - Content-Type: %s\n", ct);
+    // printf(" -- - Content-Type: %s\n", ct);
     if (ct && strstr(ct, CT_HTML))
     {
-        printf(" -- > HTML processing\n");
+        // printf(" -- > HTML processing\n");
         process_html_2(curl_handle, p_recv_buf);
         return 0; // Not PNG
     }
     else if (ct && strstr(ct, CT_PNG))
     {
-        printf(" -- > PNG processing\n");
+        // printf(" -- > PNG processing\n");
         process_png_2(curl_handle, p_recv_buf);
         return 1; // PNG
     }
-    printf(" -- > Not processing\n");
+    // printf(" -- > Not processing\n");
     return 0; // Not PNG
 }
 
@@ -230,7 +230,7 @@ void *do_work(void *arg)
             pthread_cond_broadcast(&frontier_cond); // wake all thread
             pthread_mutex_unlock(&png_mutex);
             pthread_mutex_unlock(&frontier_mutex);
-            printf("~~~ EXIT: All URLs processed or max PNGs found\n");
+            // printf("~~~ EXIT: All URLs processed or max PNGs found\n");
             return NULL; // exit thread
         }
         pthread_mutex_unlock(&png_mutex);
@@ -246,7 +246,7 @@ void *do_work(void *arg)
             {
                 pthread_cond_broadcast(&frontier_cond);
                 pthread_mutex_unlock(&frontier_mutex);
-                printf("~~~ EXIT: all threads sleeping\n");
+                // printf("~~~ EXIT: all threads sleeping\n");
                 return NULL; // Exit when all threads are sleeping
             }
             pthread_cond_wait(&frontier_cond, &frontier_mutex);
@@ -258,7 +258,7 @@ void *do_work(void *arg)
         // Pop a URL from the frontier stack
         struct UrlStackElement url;
         pop(frontier_stack, &url);
-        printf(" == > POP URL from Frontier: %s\n", url.url_ptr);
+        // printf(" == > POP URL from Frontier: %s\n", url.url_ptr);
         pthread_mutex_unlock(&frontier_mutex);
 
         // // Skip fragment links (e.g., #top)
@@ -287,7 +287,7 @@ void *do_work(void *arg)
 
         if (curl_handle == NULL)
         {
-            fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
+            // fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
             free(url.url_ptr);
             curl_global_cleanup();
             abort();
@@ -296,11 +296,11 @@ void *do_work(void *arg)
         res = curl_easy_perform(curl_handle);
         curl_easy_getinfo(curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
         curl_easy_getinfo(curl_handle, CURLINFO_EFFECTIVE_URL, &final_url);
-        printf(" > respond code %ld for link: %s\n", response_code, url.url_ptr);
+        // printf(" > respond code %ld for link: %s\n", response_code, url.url_ptr);
 
         if (res != CURLE_OK)
         {
-            fprintf(stderr, "Error: CURL failed for URL: %s\n", url.url_ptr);
+            // fprintf(stderr, "Error: CURL failed for URL: %s\n", url.url_ptr);
         }
         else if (response_code >= 200 && response_code < 300)
         {
@@ -326,20 +326,21 @@ void *do_work(void *arg)
                 pthread_mutex_lock(&visited_mutex);
                 if (v == 1)
                 {
-                    pthread_mutex_lock(&png_mutex);
-                    int png_count = total_png;
-                    pthread_mutex_unlock(&png_mutex);
+                    // pthread_mutex_lock(&png_mutex);
+                    // int png_count = total_png;
+                    // pthread_mutex_unlock(&png_mutex);
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
-                        fprintf(fp, "[%ld] Thread %lu Visiting: %s\n", time(NULL), pthread_self(), url.url_ptr);
-                        fprintf(fp, "Total PNGs found: %d\n", png_count);
+                        // fprintf(fp, "[%ld] Thread %lu Visiting: %s\n", time(NULL), pthread_self(), url.url_ptr);
+                        // fprintf(fp, "Total PNGs found: %d\n", png_count);
+                        fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
-                        printf(" === Logged URL to log.txt: %s\n", url.url_ptr);
+                        // printf(" === Logged URL to log.txt: %s\n", url.url_ptr);
                     }
                     else
                     {
-                        perror(" === Failed to open log file\n");
+                        // perror(" === Failed to open log file\n");
                     }
                 }
                 visited++;
@@ -347,7 +348,7 @@ void *do_work(void *arg)
             }
             else
             {
-                printf("Exist in hash table\n");
+                // printf("Exist in hash table\n");
                 free(entry.key);
                 pthread_mutex_unlock(&visited_mutex);
             }
@@ -369,31 +370,32 @@ void *do_work(void *arg)
                 // Write the URL to the log file if logging is enabled
                 if (v == 1)
                 {
-                    pthread_mutex_lock(&png_mutex);
-                    int png_count = total_png;
-                    pthread_mutex_unlock(&png_mutex);
+                    // pthread_mutex_lock(&png_mutex);
+                    // int png_count = total_png;
+                    // pthread_mutex_unlock(&png_mutex);
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
-                        fprintf(fp, "Visiting: %s\n", url.url_ptr);
-                        fprintf(fp, "Total PNGs found: %d\n", png_count);
+                        // fprintf(fp, "Visiting: %s\n", url.url_ptr);
+                        // fprintf(fp, "Total PNGs found: %d\n", png_count);
+                        fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
-                        printf("Logged URL to log.txt: %s\n", url.url_ptr);
+                        // printf("Logged URL to log.txt: %s\n", url.url_ptr);
                     }
                     else
                     {
-                        perror("Failed to open log file\n");
+                        // perror("Failed to open log file\n");
                     }
                 }
                 visited++;
             }
             else
             {
-                printf("Exist in hash table\n");
+                // printf("Exist in hash table\n");
                 free(entry.key);
             }
             pthread_mutex_unlock(&visited_mutex);
-            printf("    HTTP error for URL %s: %ld\n", url.url_ptr, response_code);
+            // printf("    HTTP error for URL %s: %ld\n", url.url_ptr, response_code);
         }
         free(url.url_ptr);
         cleanup(curl_handle, &recv_buf);
@@ -456,7 +458,7 @@ int main(int argc, char *argv[])
         FILE *log_file = fopen(log_file_name, "w");
         if (log_file == NULL)
         {
-            perror("Failed to create log file");
+            // perror("Failed to create log file");
             exit(EXIT_FAILURE);
         }
         fclose(log_file);
@@ -490,7 +492,7 @@ int main(int argc, char *argv[])
         pthread_join(threads[i], NULL);
     }
 
-    printf(">> png url in stack: %d\n", png_stack->num_items);
+    // printf(">> png url in stack: %d\n", png_stack->num_items);
     // Write visited URLs to the output file
     FILE *png_file = fopen("png_urls.txt", "w");
     while (png_stack->num_items > 0)
