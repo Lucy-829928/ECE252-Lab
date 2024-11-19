@@ -1,0 +1,65 @@
+==1198355== Memcheck, a memory error detector
+==1198355== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==1198355== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==1198355== Command: ./findpng2 -t 14 -m 100 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+==1198355== 
+  total png = 1
+  total png = 2
+  total png = 3
+  total png = 4
+  total png = 5
+  total png = 6
+  total png = 7
+  total png = 8
+  total png = 9
+  total png = 10
+  total png = 11
+  total png = 12
+  total png = 13
+  total png = 14
+  total png = 15
+  total png = 16
+  total png = 17
+  total png = 18
+  total png = 19
+  total png = 20
+  total png = 21
+  total png = 22
+  total png = 23
+  total png = 24
+  total png = 25
+  total png = 26
+  total png = 27
+  total png = 28
+  total png = 29
+  total png = 30
+  total png = 31
+  total png = 32
+  total png = 33
+  total png = 34
+  total png = 35
+  total png = 36
+  total png = 37
+  total png = 38
+  total png = 39
+  total png = 40
+  total png = 41
+  total png = 42
+  total png = 43
+  total png = 44
+  total png = 45
+  total png = 46
+  total png = 47
+  total png = 48
+  total png = 49
+  total png = 50
+findpng2 execution time: 17.011310 seconds
+==1198355== 
+==1198355== HEAP SUMMARY:
+==1198355==     in use at exit: 0 bytes in 0 blocks
+==1198355==   total heap usage: 135,121 allocs, 135,121 frees, 632,563,985 bytes allocated
+==1198355== 
+==1198355== All heap blocks were freed -- no leaks are possible
+==1198355== 
+==1198355== For lists of detected and suppressed errors, rerun with: -s
+==1198355== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
