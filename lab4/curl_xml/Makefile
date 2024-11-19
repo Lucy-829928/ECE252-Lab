@@ -4,7 +4,7 @@
 CC = gcc 
 CFLAGS_XML2 = $(shell xml2-config --cflags)
 CFLAGS_CURL = $(shell curl-config --cflags)
-CFLAGS = -Wall $(CFLAGS_XML2) $(CFLAGS_CURL) -std=gnu99 -g -DDEBUG1_
+CFLAGS = -Wall $(CFLAGS_XML2) $(CFLAGS_CURL) -std=gnu99 -g
 LD = gcc
 LDFLAGS = -std=gnu99 -g 
 LDLIBS_XML2 = $(shell xml2-config --libs)
