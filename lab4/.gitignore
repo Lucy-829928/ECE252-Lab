@@ -60,9 +60,7 @@
 # boutput.txt
 
 findpng2
-log.txt
-png_urls.txt
 # output.txt
 
 # other
-*.txt
+# *.txt
