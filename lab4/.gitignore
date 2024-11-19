@@ -60,7 +60,9 @@
 # boutput.txt
 
 findpng2
+valgrind.txt
+helgrind.txt
 # output.txt
 
 # other
-# *.txt
+*.txt
