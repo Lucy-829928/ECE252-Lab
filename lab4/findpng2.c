@@ -24,6 +24,7 @@ pthread_mutex_t frontier_mutex; // Mutex to protect access to the frontier stack
 pthread_mutex_t visited_mutex;  // Mutex to protect access to visited hash table
 pthread_mutex_t png_mutex;      // Mutex to protect access to PNG count
 pthread_cond_t frontier_cond;   // Condition variable for frontier stack availability
+pthread_mutex_t exit_mutex;     // Mutex to protect the exit flag
 
 ISTACK *frontier_stack;   // Stack to manage the frontier of URLs to visit
 ISTACK *png_stack;        // Stack to track visited URLs
@@ -34,6 +35,7 @@ int t = 1;                // Number of worker threads
 int m = MAX_URL_NUM;      // User-specified maximum number of URLs to visit
 int v = 0;                // Indicates if logging is requested
 char log_entry[256];      // Name of the log file
+int exit_flag = 0;        // Global exit flag, initialize to 0
 
 typedef struct KeyNode
 {
@@ -41,7 +43,6 @@ typedef struct KeyNode
     struct KeyNode *next; // pointed to next node
 } KeyNode;
 KeyNode *key_list = NULL; // linked list head
-
 
 int find_http_2(char *buf, int size, int follow_relative_links, const char *base_url)
 {
@@ -165,14 +166,20 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
 
         // Log the PNG URL to png_urls.txt
         pthread_mutex_lock(&png_mutex);
-        if (total_png >= m || total_png >= MAX_PNG_URLS)
+
+        // Exit when total png reach m
+        if (total_png >= m)
         {
+            pthread_mutex_lock(&exit_mutex);
+            exit_flag = 1; // Set exit flag
+            pthread_mutex_unlock(&exit_mutex);
+            pthread_cond_broadcast(&frontier_cond); // Notify all threads
             pthread_mutex_unlock(&png_mutex);
             return -1; // Exit early if target reached
         }
-        
+
         total_png++;
-        printf("  total png = %d\n", total_png);
+        // printf("  total png = %d\n", total_png);
         FILE *png_file = fopen("png_urls.txt", "a");
         if (png_file)
         {
@@ -184,7 +191,18 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         // printf(">> PNG URL pushed to png_stack: %s\n", png_url.url_ptr);
         // printf(">>> PNG stack size: %d\n", png_stack->num_items);
         // free(png_url.url_ptr);
-        
+
+        // Exit when total png reach m
+        if (total_png >= m)
+        {
+            pthread_mutex_lock(&exit_mutex);
+            exit_flag = 1; // Set exit flag
+            pthread_mutex_unlock(&exit_mutex);
+            pthread_cond_broadcast(&frontier_cond); // Notify all threads
+            pthread_mutex_unlock(&png_mutex);
+            return -1; // Exit early if target reached
+        }
+
         pthread_mutex_unlock(&png_mutex);
 
         // Save the PNG locally
@@ -230,9 +248,25 @@ void *do_work(void *arg)
         pthread_mutex_lock(&frontier_mutex);
         pthread_mutex_lock(&png_mutex);
 
-        // Exit condition: frontier stack empty or total png reach max number
-        if ((frontier_stack->num_items == 0 && sleeping_threads == t - 1) || (total_png >= m || total_png >= MAX_PNG_URLS))
+        printf("Frontier stack item number = %d\n", frontier_stack->num_items);
+
+        // Check global exit flag
+        pthread_mutex_lock(&exit_mutex);
+        if (exit_flag)
         {
+            pthread_mutex_unlock(&exit_mutex);
+            pthread_mutex_unlock(&png_mutex);
+            pthread_mutex_unlock(&frontier_mutex);
+            return NULL; // Exit thread
+        }
+        pthread_mutex_unlock(&exit_mutex);
+
+        // Exit condition: frontier stack empty or total png reach max number
+        if ((frontier_stack->num_items == 0 && sleeping_threads == t - 1) || total_png >= m)
+        {
+            pthread_mutex_lock(&exit_mutex);
+            exit_flag = 1; // Set exit flag
+            pthread_mutex_unlock(&exit_mutex);
             pthread_cond_broadcast(&frontier_cond); // wake all thread
             pthread_mutex_unlock(&png_mutex);
             pthread_mutex_unlock(&frontier_mutex);
@@ -248,21 +282,42 @@ void *do_work(void *arg)
         {
             sleeping_threads++;
             // If all threads are sleeping, signal completion and exit
+            // printf("sleeping threads = %d\n", sleeping_threads);
             if (sleeping_threads == t)
             {
+                pthread_mutex_lock(&exit_mutex);
+                exit_flag = 1; // Set exit flag
+                pthread_mutex_unlock(&exit_mutex);
                 pthread_cond_broadcast(&frontier_cond);
                 pthread_mutex_unlock(&frontier_mutex);
                 // printf("~~~ EXIT: all threads sleeping\n");
                 return NULL; // Exit when all threads are sleeping
             }
-            pthread_cond_wait(&frontier_cond, &frontier_mutex);
+
+            // pthread_mutex_lock(&exit_mutex);
+            // while (frontier_stack->num_items == 0 && !exit_flag)
+            // {
+                pthread_cond_wait(&frontier_cond, &frontier_mutex);
+            // }
+            // pthread_mutex_unlock(&exit_mutex);
             sleeping_threads--;
-            pthread_mutex_unlock(&frontier_mutex);
-            continue; // Check the condition again
+            // printf("waiting all threads waking\n");
+
+            pthread_mutex_lock(&exit_mutex);
+            if (exit_flag)
+            {
+                pthread_mutex_unlock(&exit_mutex);
+                pthread_mutex_unlock(&frontier_mutex);
+                return NULL; // Exit thread
+            }
+            pthread_mutex_unlock(&exit_mutex);
+            // continue; // Check the condition again
         }
+        pthread_mutex_unlock(&frontier_mutex);
 
         // Pop a URL from the frontier stack
         struct UrlStackElement url;
+        pthread_mutex_lock(&frontier_mutex);
         pop(frontier_stack, &url);
         // printf(" == > POP URL from Frontier: %s\n", url.url_ptr);
         pthread_mutex_unlock(&frontier_mutex);
@@ -293,7 +348,7 @@ void *do_work(void *arg)
 
         if (curl_handle == NULL)
         {
-            // fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
+            fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
             free(url.url_ptr);
             curl_global_cleanup();
             abort();
@@ -330,8 +385,11 @@ void *do_work(void *arg)
 
                 // Read the updated total_png
                 pthread_mutex_lock(&png_mutex);
-                if (total_png >= MAX_PNG_URLS || total_png >= m)
+                if (total_png >= m)
                 {
+                    pthread_mutex_lock(&exit_mutex);
+                    exit_flag = 1; // Set exit flag
+                    pthread_mutex_unlock(&exit_mutex);
                     pthread_cond_broadcast(&frontier_cond); // Notify threads to exit
                 }
                 pthread_mutex_unlock(&png_mutex);
@@ -340,14 +398,14 @@ void *do_work(void *arg)
                 pthread_mutex_lock(&visited_mutex);
                 if (v == 1)
                 {
-                    pthread_mutex_lock(&png_mutex);
-                    int png_count = total_png;
-                    pthread_mutex_unlock(&png_mutex);
+                    // pthread_mutex_lock(&png_mutex);
+                    // int png_count = total_png;
+                    // pthread_mutex_unlock(&png_mutex);
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
                         // fprintf(fp, "[%ld] Thread %lu Visiting: %s\n", time(NULL), pthread_self(), url.url_ptr);
-                        fprintf(fp, "Total PNGs found: %d\n", png_count);
+                        // fprintf(fp, "Total PNGs found: %d\n", png_count);
                         fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
                         // printf(" === Logged URL to log.txt: %s\n", url.url_ptr);
@@ -482,6 +540,7 @@ int main(int argc, char *argv[])
     pthread_mutex_init(&frontier_mutex, NULL);
     pthread_mutex_init(&visited_mutex, NULL);
     pthread_mutex_init(&png_mutex, NULL);
+    pthread_mutex_init(&exit_mutex, NULL);
     pthread_cond_init(&frontier_cond, NULL);
 
     // Initialize hash table and stacks
@@ -556,6 +615,7 @@ int main(int argc, char *argv[])
     pthread_mutex_destroy(&frontier_mutex);
     pthread_mutex_destroy(&visited_mutex);
     pthread_mutex_destroy(&png_mutex);
+    pthread_mutex_destroy(&exit_mutex);
     pthread_cond_destroy(&frontier_cond);
     xmlCleanupParser();
 
