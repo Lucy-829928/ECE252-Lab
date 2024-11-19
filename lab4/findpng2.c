@@ -107,6 +107,8 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
             pthread_mutex_lock(&frontier_mutex);
             if (hsearch(entry, FIND) == NULL)
             {
+                // hsearch(entry, ENTER);
+                free(entry.key);
                 struct UrlStackElement new_element = {.url_ptr = strdup((const char *)href)};
                 push(frontier_stack, new_element);
                 // printf("    ?? PUSH to frontier\n");
@@ -225,7 +227,7 @@ void *do_work(void *arg)
         pthread_mutex_lock(&png_mutex);
 
         // Exit condition: frontier stack empty or total png reach max number
-        if ((frontier_stack->num_items == 0 && sleeping_threads == t - 1) || total_png >= m)
+        if ((frontier_stack->num_items == 0 && sleeping_threads == t - 1) || (total_png >= m || total_png >= MAX_PNG_URLS))
         {
             pthread_cond_broadcast(&frontier_cond); // wake all thread
             pthread_mutex_unlock(&png_mutex);
@@ -511,6 +513,7 @@ int main(int argc, char *argv[])
     destroy_stack(frontier_stack);
     destroy_stack(png_stack);
 
+    // Clean up hash table keys
     KeyNode *current = key_list;
     while (current != NULL)
     {
@@ -521,6 +524,22 @@ int main(int argc, char *argv[])
     }
     key_list = NULL;
     hdestroy();
+
+    // // Clean up frontier_stack
+    // while (frontier_stack->num_items > 0)
+    // {
+    //     struct UrlStackElement element;
+    //     pop(frontier_stack, &element);
+    //     free(element.url_ptr); // Free dynamically allocated URL
+    // }
+
+    // // Clean up png_stack
+    // while (png_stack->num_items > 0)
+    // {
+    //     struct UrlStackElement element;
+    //     pop(png_stack, &element);
+    //     free(element.url_ptr); // Free dynamically allocated URL
+    // }
 
     pthread_mutex_destroy(&frontier_mutex);
     pthread_mutex_destroy(&visited_mutex);
