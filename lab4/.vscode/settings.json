@@ -59,6 +59,10 @@
   "files.associations": {
     "stdio.h": "c",
     "stdlib.h": "c",
-    "unistd.h": "c"
+    "unistd.h": "c",
+    "executor": "c",
+    "io_context": "c",
+    "istream": "c",
+    "streambuf": "c"
   }
 }
