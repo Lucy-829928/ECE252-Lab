@@ -1,0 +1,1259 @@
+==1199055== Helgrind, a thread error detector
+==1199055== Copyright (C) 2007-2017, and GNU GPL'd, by OpenWorks LLP et al.
+==1199055== Using Valgrind-3.15.0-608cb11914-20190413 and LibVEX; rerun with -h for copyright info
+==1199055== Command: ./findpng2 -t 14 -m 100 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+==1199055== 
+--1199055-- Valgrind options:
+--1199055--    --tool=helgrind
+--1199055--    -v
+--1199055-- Contents of /proc/version:
+--1199055--   Linux version 5.15.0-117-generic (buildd@lcy02-amd64-037) (gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #127~20.04.1-Ubuntu SMP Thu Jul 11 15:36:12 UTC 2024
+--1199055-- 
+--1199055-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand
+--1199055-- Page sizes: currently 4096, max supported 4096
+--1199055-- Valgrind library directory: /usr/lib/x86_64-linux-gnu/valgrind
+==1199055== helgrind --delta-stacktrace=yes only works with --vex-guest-chase-thresh=0
+==1199055== => (re-setting it to 0
+--1199055-- Reading syms from /home/h24son/group8-lab/lab4/findpng2
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/ld-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/db/0420f708b806cf03260aadb916c330049580b7.debug ..
+--1199055--   .. build-id is valid
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/helgrind-amd64-linux
+--1199055--    object doesn't have a symbol table
+--1199055--    object doesn't have a dynamic symbol table
+--1199055-- Scheduler: using generic scheduler lock implementation.
+--1199055-- Reading suppressions file: /usr/lib/x86_64-linux-gnu/valgrind/default.supp
+==1199055== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-1199055-by-h24son-on-ecetesla0
+==1199055== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-1199055-by-h24son-on-ecetesla0
+==1199055== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-1199055-by-h24son-on-ecetesla0
+==1199055== 
+==1199055== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==1199055== don't want to do, unless you know exactly what you're doing,
+==1199055== or are doing some strange experiment):
+==1199055==   /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=1199055 ...command...
+==1199055== 
+==1199055== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==1199055==   /path/to/gdb ./findpng2
+==1199055== and then give GDB the following command
+==1199055==   target remote | /usr/lib/x86_64-linux-gnu/valgrind/../../bin/vgdb --pid=1199055
+==1199055== --pid is optional if only one valgrind process is running
+==1199055== 
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_core-amd64-linux.so
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so
+--1199055--    object doesn't have a symbol table
+--1199055-- REDIR: 0x401f600 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4845900 (strcmp)
+--1199055-- REDIR: 0x4022e20 (ld-linux-x86-64.so.2:strlen) redirected to 0x4844d90 (strlen)
+--1199055-- REDIR: 0x4023380 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4848a00 (mempcpy)
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libpthread-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/9a/65bb469e45a1c6fbcffae5b82a2fd7a69eb479.debug ..
+--1199055--   .. build-id is valid
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x04929910 (pthread_spin_init   ) W-> (0000.0) 0x04844340 pthread_spin_init
+--1199055--     new: 0x04929910 (pthread_spin_init   ) W-> (0000.0) 0x04844350 pthread_spin_unlock
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x04929910 (pthread_spin_init   ) W-> (0000.0) 0x04844340 pthread_spin_init
+--1199055--     new: 0x04929910 (pthread_spin_init   ) W-> (0000.0) 0x04844350 pthread_spin_unlock
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x0492b590 (sem_wait@@GLIBC_2.2.) W-> (0000.0) 0x04844430 sem_wait@*
+--1199055--     new: 0x0492b590 (sem_wait@@GLIBC_2.2.) W-> (0000.0) 0x04844420 sem_wait
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x0492ba90 (sem_post@@GLIBC_2.2.) W-> (0000.0) 0x04844450 sem_post@*
+--1199055--     new: 0x0492ba90 (sem_post@@GLIBC_2.2.) W-> (0000.0) 0x04844440 sem_post
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libc-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/07/02430aef5fa3dda43986563e9ffcc47efbd75e.debug ..
+--1199055--   .. build-id is valid
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libnghttp2.so.14.19.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libidn2.so.0.3.6
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/librtmp.so.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libssh.so.4.8.4
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libpsl.so.5.3.2
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libssl.so.1.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libgssapi_krb5.so.2.2
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libldap_r-2.4.so.2.10.12
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/liblber-2.4.so.2.10.12
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libbrotlidec.so.1.0.7
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libz.so.1.2.11
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libdl-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/25/372f43dbcc661aa02020d0365c948e89f6e612.debug ..
+--1199055--   .. build-id is valid
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libicuuc.so.66.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/liblzma.so.5.2.4
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libm-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/8d/2573eff281739f0e2b0eb710c860ce0b7261cf.debug ..
+--1199055--   .. build-id is valid
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libunistring.so.2.1.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libgnutls.so.30.27.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libhogweed.so.5.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libnettle.so.7.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libgmp.so.10.4.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libkrb5.so.3.3
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libk5crypto.so.3.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libcom_err.so.2.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libkrb5support.so.0.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libresolv-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/08/f526f3424a323f041d27d040659e7fd07a8be5.debug ..
+--1199055--   .. build-id is valid
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libsasl2.so.2.0.25
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libgssapi.so.3.0.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libbrotlicommon.so.1.0.7
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libicudata.so.66.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.28
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libgcc_s.so.1
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libtasn1.so.6.6.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libkeyutils.so.1.8
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libheimntlm.so.0.1.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libkrb5.so.26.0.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libasn1.so.8.0.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libhcrypto.so.4.1.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libroken.so.18.1.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libffi.so.7.1.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libwind.so.0.0.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libheimbase.so.1.0.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libhx509.so.5.0.0
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /usr/lib/x86_64-linux-gnu/libsqlite3.so.0.8.6
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libcrypt.so.1.1.0
+--1199055--    object doesn't have a symbol table
+--1199055-- REDIR: 0x4b96480 (libc.so.6:memmove) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95780 (libc.so.6:strncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b967b0 (libc.so.6:strcasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b950a0 (libc.so.6:strcat) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b957e0 (libc.so.6:rindex) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b97c50 (libc.so.6:rawmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4bb2ce0 (libc.so.6:wmemchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4bb2820 (libc.so.6:wcscmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b965e0 (libc.so.6:mempcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b96410 (libc.so.6:bcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95710 (libc.so.6:strncmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95150 (libc.so.6:strcmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b96540 (libc.so.6:memset) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4bb27e0 (libc.so.6:wcschr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95670 (libc.so.6:strnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95230 (libc.so.6:strcspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b96800 (libc.so.6:strncasecmp) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b951d0 (libc.so.6:strcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b96950 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4bb3f50 (libc.so.6:wcsnlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4bb2860 (libc.so.6:wcscpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95820 (libc.so.6:strpbrk) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95100 (libc.so.6:index) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95630 (libc.so.6:strlen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b9ebb0 (libc.so.6:memrchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b96850 (libc.so.6:strcasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b963d0 (libc.so.6:memchr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4bb2930 (libc.so.6:wcslen) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b95ae0 (libc.so.6:strspn) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b96750 (libc.so.6:stpncpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b966f0 (libc.so.6:stpcpy) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b97c90 (libc.so.6:strchrnul) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b968a0 (libc.so.6:strncasecmp_l) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4c23a70 (libc.so.6:__memcpy_chk) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4b962f0 (libc.so.6:strstr) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+--1199055-- REDIR: 0x4c23b30 (libc.so.6:__memmove_chk) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x04c81900 (__memcpy_chk_avx_una) R-> (2030.0) 0x04848a60 __memcpy_chk
+--1199055--     new: 0x04c81900 (__memcpy_chk_avx_una) R-> (2024.0) 0x048486f0 __memmove_chk
+--1199055-- REDIR: 0x4b956b0 (libc.so.6:strncat) redirected to 0x48311d0 (_vgnU_ifunc_wrapper)
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x04c81900 (__memcpy_chk_avx_una) R-> (2030.0) 0x04848a60 __memcpy_chk
+--1199055--     new: 0x04c81900 (__memcpy_chk_avx_una) R-> (2024.0) 0x048486f0 __memmove_chk
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x04c81900 (__memcpy_chk_avx_una) R-> (2030.0) 0x04848a60 __memcpy_chk
+--1199055--     new: 0x04c81900 (__memcpy_chk_avx_una) R-> (2024.0) 0x048486f0 __memmove_chk
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x04c81900 (__memcpy_chk_avx_una) R-> (2030.0) 0x04848a60 __memcpy_chk
+--1199055--     new: 0x04c81900 (__memcpy_chk_avx_una) R-> (2024.0) 0x048486f0 __memmove_chk
+==1199055== WARNING: new redirection conflicts with existing -- ignoring it
+--1199055--     old: 0x04c81900 (__memcpy_chk_avx_una) R-> (2030.0) 0x04848a60 __memcpy_chk
+--1199055--     new: 0x04c81900 (__memcpy_chk_avx_una) R-> (2024.0) 0x048486f0 __memmove_chk
+--1199055-- REDIR: 0x4c7e730 (libc.so.6:__strrchr_avx2) redirected to 0x4844930 (rindex)
+--1199055-- REDIR: 0x492a850 (libpthread.so.0:sem_init@@GLIBC_2.2.5) redirected to 0x4844400 (sem_init@*)
+--1199055-- REDIR: 0x4c7e900 (libc.so.6:__strlen_avx2) redirected to 0x4844c70 (strlen)
+--1199055-- REDIR: 0x4c7a230 (libc.so.6:__strncmp_avx2) redirected to 0x4844fa0 (strncmp)
+--1199055-- REDIR: 0x4c7e310 (libc.so.6:__strchr_avx2) redirected to 0x4844b10 (index)
+--1199055-- REDIR: 0x4926d30 (libpthread.so.0:pthread_rwlock_wrlock) redirected to 0x48443b0 (pthread_rwlock_wrlock)
+--1199055-- REDIR: 0x4c79df0 (libc.so.6:__strcmp_avx2) redirected to 0x4845800 (strcmp)
+--1199055-- REDIR: 0x4b900e0 (libc.so.6:malloc) redirected to 0x483c820 (malloc)
+--1199055-- REDIR: 0x4927b60 (libpthread.so.0:pthread_rwlock_unlock) redirected to 0x48443f0 (pthread_rwlock_unlock)
+--1199055-- REDIR: 0x4c81910 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4847c10 (memmove)
+--1199055-- REDIR: 0x4b91b10 (libc.so.6:calloc) redirected to 0x483ed80 (calloc)
+--1199055-- REDIR: 0x4c81900 (libc.so.6:__memcpy_chk_avx_unaligned_erms) redirected to 0x4848a60 (__memcpy_chk)
+--1199055-- REDIR: 0x4b906d0 (libc.so.6:free) redirected to 0x483da70 (free)
+--1199055-- REDIR: 0x4923690 (libpthread.so.0:pthread_mutex_init) redirected to 0x4843c80 (pthread_mutex_init)
+--1199055-- REDIR: 0x4c81d90 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4847b00 (memset)
+--1199055-- REDIR: 0x4923fc0 (libpthread.so.0:pthread_mutex_lock) redirected to 0x4843e40 (pthread_mutex_lock)
+--1199055-- REDIR: 0x4927d90 (libpthread.so.0:pthread_cond_init@@GLIBC_2.3.2) redirected to 0x4843ec0 (pthread_cond_init@*)
+--1199055-- REDIR: 0x49257b0 (libpthread.so.0:pthread_mutex_unlock) redirected to 0x4843e70 (pthread_mutex_unlock)
+--1199055-- REDIR: 0x4c801d0 (libc.so.6:__strncpy_avx2) redirected to 0x4844e20 (strncpy)
+--1199055-- REDIR: 0x4b95fa0 (libc.so.6:__GI_strstr) redirected to 0x4848b60 (__strstr_sse2)
+--1199055-- REDIR: 0x49218d0 (libpthread.so.0:pthread_create@@GLIBC_2.2.5) redirected to 0x4843a30 (pthread_create@*)
+--1199055-- REDIR: 0x4926390 (libpthread.so.0:pthread_rwlock_init) redirected to 0x4844390 (pthread_rwlock_init)
+--1199055-- REDIR: 0x4928160 (libpthread.so.0:pthread_cond_wait@@GLIBC_2.3.2) redirected to 0x4843e80 (pthread_cond_wait@*)
+--1199055-- REDIR: 0x4c7b2d0 (libc.so.6:__strcasecmp_avx) redirected to 0x4845160 (strcasecmp)
+--1199055-- REDIR: 0x4b90e80 (libc.so.6:realloc) redirected to 0x483efd0 (realloc)
+--1199055-- REDIR: 0x4c7fe40 (libc.so.6:__strcpy_avx2) redirected to 0x4844dc0 (strcpy)
+--1199055-- REDIR: 0x49229e0 (libpthread.so.0:pthread_join) redirected to 0x4843a40 (pthread_join)
+--1199055-- REDIR: 0x49263e0 (libpthread.so.0:pthread_rwlock_rdlock) redirected to 0x48443c0 (pthread_rwlock_rdlock)
+--1199055-- REDIR: 0x4c80b30 (libc.so.6:__stpcpy_avx2) redirected to 0x4847990 (stpcpy)
+--1199055-- REDIR: 0x4c818f0 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x4848880 (mempcpy)
+--1199055-- REDIR: 0x4c7a760 (libc.so.6:__memchr_avx2) redirected to 0x4845980 (memchr)
+--1199055-- REDIR: 0x49263d0 (libpthread.so.0:pthread_rwlock_destroy) redirected to 0x48443a0 (pthread_rwlock_destroy)
+--1199055-- REDIR: 0x4c7c950 (libc.so.6:__strncasecmp_avx) redirected to 0x4845240 (strncasecmp)
+--1199055-- REDIR: 0x4c79a40 (libc.so.6:__strcspn_sse42) redirected to 0x4848cd0 (strcspn)
+--1199055-- REDIR: 0x4c7aa30 (libc.so.6:__rawmemchr_avx2) redirected to 0x48487a0 (rawmemchr)
+--1199055-- REDIR: 0x4c7e540 (libc.so.6:__strchrnul_avx2) redirected to 0x4848760 (strchrnul)
+--1199055-- REDIR: 0x4c79b80 (libc.so.6:__strpbrk_sse42) redirected to 0x4848c60 (strpbrk)
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libnss_files-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/bf/5d15ed44bba3ce0b0de0d967d14254933c6fb7.debug ..
+--1199055--   .. build-id is valid
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2
+--1199055--    object doesn't have a symbol table
+--1199055-- Reading syms from /lib/x86_64-linux-gnu/libnss_dns-2.31.so
+--1199055--   Considering /usr/lib/debug/.build-id/08/26a9fa18d9602f638f068450ceb1a9e124c034.debug ..
+--1199055--   .. build-id is valid
+--1199055-- REDIR: 0x4923870 (libpthread.so.0:pthread_mutex_destroy) redirected to 0x4843e30 (pthread_mutex_destroy)
+--1199055-- REDIR: 0x4c7aef0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4847870 (bcmp)
+--1199055-- REDIR: 0x4bb13f0 (libc.so.6:__strstr_sse2_unaligned) redirected to 0x4848ae0 (strstr)
+--1199055-- REDIR: 0x4928f40 (libpthread.so.0:pthread_cond_signal@@GLIBC_2.3.2) redirected to 0x4843ea0 (pthread_cond_signal@*)
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #8 was created
+==1199055==    at 0x4C15342: clone (clone.S:71)
+==1199055==    by 0x49202EB: create_thread (createthread.c:101)
+==1199055==    by 0x4921E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10BBCC: main (findpng2.c:500)
+==1199055== 
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #6 was created
+==1199055==    at 0x4C15342: clone (clone.S:71)
+==1199055==    by 0x49202EB: create_thread (createthread.c:101)
+==1199055==    by 0x4921E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10BBCC: main (findpng2.c:500)
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during read of size 4 at 0x491843C by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x48B7020: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 4 at 0x491843C by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #2 was created
+==1199055==    at 0x4C15342: clone (clone.S:71)
+==1199055==    by 0x49202EB: create_thread (createthread.c:101)
+==1199055==    by 0x4921E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10BBCC: main (findpng2.c:500)
+==1199055== 
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #7 was created
+==1199055==    at 0x4C15342: clone (clone.S:71)
+==1199055==    by 0x49202EB: create_thread (createthread.c:101)
+==1199055==    by 0x4921E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10BBCC: main (findpng2.c:500)
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during read of size 4 at 0x491843C by thread #2
+==1199055== Locks held: none
+==1199055==    at 0x48B7314: curl_global_cleanup (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10C54B: cleanup (curl_xml.c:217)
+==1199055==    by 0x10B682: do_work (findpng2.c:415)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #7
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 4 at 0x491843C by thread #2
+==1199055== Locks held: none
+==1199055==    at 0x48B7321: curl_global_cleanup (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10C54B: cleanup (curl_xml.c:217)
+==1199055==    by 0x10B682: do_work (findpng2.c:415)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #7
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #10 was created
+==1199055==    at 0x4C15342: clone (clone.S:71)
+==1199055==    by 0x49202EB: create_thread (createthread.c:101)
+==1199055==    by 0x4921E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10BBCC: main (findpng2.c:500)
+==1199055== 
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #4 was created
+==1199055==    at 0x4C15342: clone (clone.S:71)
+==1199055==    by 0x49202EB: create_thread (createthread.c:101)
+==1199055==    by 0x4921E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10BBCC: main (findpng2.c:500)
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during read of size 4 at 0x491843C by thread #10
+==1199055== Locks held: none
+==1199055==    at 0x48B7368: curl_easy_init (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D7207: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48BDD81: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B75C6: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #4
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F050 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B84: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f050 is 16 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F058 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B87: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f058 is 24 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F060 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B8B: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f060 is 32 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F068 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B8F: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f068 is 40 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F190 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847BB4: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f190 is 336 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F198 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847BD0: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f198 is 344 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #15 was created
+==1199055==    at 0x4C15342: clone (clone.S:71)
+==1199055==    by 0x49202EB: create_thread (createthread.c:101)
+==1199055==    by 0x4921E0F: pthread_create@@GLIBC_2.2.5 (pthread_create.c:817)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10BBCC: main (findpng2.c:500)
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x4AF5098 by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x49F5003: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 8 by thread #15
+==1199055== Locks held: none
+==1199055==    at 0x49F5003: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==  Address 0x4af5098 is 0 bytes inside data symbol "xmlXPathNAN"
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x4AF5090 by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x49F500D: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 8 by thread #15
+==1199055== Locks held: none
+==1199055==    at 0x49F500D: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==  Address 0x4af5090 is 0 bytes inside data symbol "xmlXPathPINF"
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x4AF5088 by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x49F5017: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 8 by thread #15
+==1199055== Locks held: none
+==1199055==    at 0x49F5017: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==  Address 0x4af5088 is 0 bytes inside data symbol "xmlXPathNINF"
+==1199055== 
+--1199055-- REDIR: 0x4929290 (libpthread.so.0:pthread_cond_broadcast@@GLIBC_2.3.2) redirected to 0x4843eb0 (pthread_cond_broadcast@*)
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Thread #2: pthread_cond_{signal,broadcast}: dubious: associated lock is not held by any thread
+==1199055==    at 0x48407B6: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10B3F4: do_work (findpng2.c:335)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+--1199055-- REDIR: 0x4927dd0 (libpthread.so.0:pthread_cond_destroy@@GLIBC_2.3.2) redirected to 0x4843ed0 (pthread_cond_destroy@*)
+==1199055== ---Thread-Announcement------------------------------------------
+==1199055== 
+==1199055== Thread #1 is the program's root thread
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Thread #1: pthread_mutex_destroy with invalid argument
+==1199055==    at 0x483FC96: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x792116F: ??? (in /usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0)
+==1199055==    by 0x4011F6A: _dl_fini (dl-fini.c:138)
+==1199055==    by 0x4B3C8A6: __run_exit_handlers (exit.c:108)
+==1199055==    by 0x4B3CA5F: exit (exit.c:139)
+==1199055==    by 0x4B1A089: (below main) (libc-start.c:342)
+==1199055== 
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Thread #1: pthread_mutex_destroy with invalid argument
+==1199055==    at 0x483FC96: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4011F6A: _dl_fini (dl-fini.c:138)
+==1199055==    by 0x4B3C8A6: __run_exit_handlers (exit.c:108)
+==1199055==    by 0x4B3CA5F: exit (exit.c:139)
+==1199055==    by 0x4B1A089: (below main) (libc-start.c:342)
+==1199055== 
+--1199055-- REDIR: 0x492a890 (libpthread.so.0:sem_destroy@@GLIBC_2.2.5) redirected to 0x4844410 (sem_destroy@*)
+  total png = 1
+  total png = 2
+  total png = 3
+  total png = 4
+  total png = 5
+  total png = 6
+  total png = 7
+  total png = 8
+  total png = 9
+  total png = 10
+  total png = 11
+  total png = 12
+  total png = 13
+  total png = 14
+  total png = 15
+  total png = 16
+  total png = 17
+  total png = 18
+  total png = 19
+  total png = 20
+  total png = 21
+  total png = 22
+  total png = 23
+  total png = 24
+  total png = 25
+  total png = 26
+  total png = 27
+  total png = 28
+  total png = 29
+  total png = 30
+  total png = 31
+  total png = 32
+  total png = 33
+  total png = 34
+  total png = 35
+  total png = 36
+  total png = 37
+  total png = 38
+  total png = 39
+  total png = 40
+  total png = 41
+  total png = 42
+  total png = 43
+  total png = 44
+  total png = 45
+  total png = 46
+  total png = 47
+  total png = 48
+  total png = 49
+  total png = 50
+findpng2 execution time: 24.904098 seconds
+==1199055== 
+==1199055== ERROR SUMMARY: 22351 errors from 17 contexts (suppressed: 95868 from 294)
+==1199055== 
+==1199055== 1 errors in context 1 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Thread #1: pthread_mutex_destroy with invalid argument
+==1199055==    at 0x483FC96: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4011F6A: _dl_fini (dl-fini.c:138)
+==1199055==    by 0x4B3C8A6: __run_exit_handlers (exit.c:108)
+==1199055==    by 0x4B3CA5F: exit (exit.c:139)
+==1199055==    by 0x4B1A089: (below main) (libc-start.c:342)
+==1199055== 
+==1199055== 
+==1199055== 1 errors in context 2 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Thread #1: pthread_mutex_destroy with invalid argument
+==1199055==    at 0x483FC96: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x792116F: ??? (in /usr/lib/x86_64-linux-gnu/libp11-kit.so.0.3.0)
+==1199055==    by 0x4011F6A: _dl_fini (dl-fini.c:138)
+==1199055==    by 0x4B3C8A6: __run_exit_handlers (exit.c:108)
+==1199055==    by 0x4B3CA5F: exit (exit.c:139)
+==1199055==    by 0x4B1A089: (below main) (libc-start.c:342)
+==1199055== 
+==1199055== 
+==1199055== 1 errors in context 3 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Thread #2: pthread_cond_{signal,broadcast}: dubious: associated lock is not held by any thread
+==1199055==    at 0x48407B6: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x10B3F4: do_work (findpng2.c:335)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== 
+==1199055== 26 errors in context 4 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during read of size 4 at 0x491843C by thread #10
+==1199055== Locks held: none
+==1199055==    at 0x48B7368: curl_easy_init (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D7207: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48BDD81: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B75C6: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #4
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== 
+==1199055== 62 errors in context 5 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x4AF5088 by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x49F5017: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 8 by thread #15
+==1199055== Locks held: none
+==1199055==    at 0x49F5017: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==  Address 0x4af5088 is 0 bytes inside data symbol "xmlXPathNINF"
+==1199055== 
+==1199055== 
+==1199055== 62 errors in context 6 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x4AF5090 by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x49F500D: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 8 by thread #15
+==1199055== Locks held: none
+==1199055==    at 0x49F500D: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==  Address 0x4af5090 is 0 bytes inside data symbol "xmlXPathPINF"
+==1199055== 
+==1199055== 
+==1199055== 62 errors in context 7 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x4AF5098 by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x49F5003: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 8 by thread #15
+==1199055== Locks held: none
+==1199055==    at 0x49F5003: xmlXPathEvalExpression (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==1199055==    by 0x10C0DC: getnodeset (curl_xml.c:64)
+==1199055==    by 0x10AA47: find_http_2 (findpng2.c:68)
+==1199055==    by 0x10AD75: process_html_2 (findpng2.c:147)
+==1199055==    by 0x10B00F: process_data_2 (findpng2.c:212)
+==1199055==    by 0x10B3C1: do_work (findpng2.c:329)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==  Address 0x4af5098 is 0 bytes inside data symbol "xmlXPathNAN"
+==1199055== 
+==1199055== 
+==1199055== 466 errors in context 8 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F198 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847BD0: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f198 is 344 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== 
+==1199055== 466 errors in context 9 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F190 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847BB4: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f190 is 336 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== 
+==1199055== 640 errors in context 10 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 4 at 0x491843C by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== 
+==1199055== 640 errors in context 11 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during read of size 4 at 0x491843C by thread #8
+==1199055== Locks held: none
+==1199055==    at 0x48B7020: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== 
+==1199055== 642 errors in context 12 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 4 at 0x491843C by thread #2
+==1199055== Locks held: none
+==1199055==    at 0x48B7321: curl_global_cleanup (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10C54B: cleanup (curl_xml.c:217)
+==1199055==    by 0x10B682: do_work (findpng2.c:415)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #7
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== 
+==1199055== 642 errors in context 13 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during read of size 4 at 0x491843C by thread #2
+==1199055== Locks held: none
+==1199055==    at 0x48B7314: curl_global_cleanup (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10C54B: cleanup (curl_xml.c:217)
+==1199055==    by 0x10B682: do_work (findpng2.c:415)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055== 
+==1199055== This conflicts with a previous write of size 4 by thread #7
+==1199055== Locks held: none
+==1199055==    at 0x48B7029: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B1FE: do_work (findpng2.c:291)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921608: start_thread (pthread_create.c:477)
+==1199055==    by 0x4C15352: clone (clone.S:95)
+==1199055==  Address 0x491843c is in the BSS segment of /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0
+==1199055== 
+==1199055== 
+==1199055== 4660 errors in context 14 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F068 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B8F: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f068 is 40 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== 
+==1199055== 4660 errors in context 15 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F060 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B8B: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f060 is 32 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== 
+==1199055== 4660 errors in context 16 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F058 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B87: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f058 is 24 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+==1199055== 
+==1199055== 4660 errors in context 17 of 17:
+==1199055== ----------------------------------------------------------------
+==1199055== 
+==1199055== Possible data race during write of size 8 at 0x1188F050 by thread #6
+==1199055== Locks held: none
+==1199055==    at 0x4847B84: memset (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x4921C5D: get_cached_stack (allocatestack.c:244)
+==1199055==    by 0x4921C5D: allocate_stack (allocatestack.c:547)
+==1199055==    by 0x4921C5D: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==    by 0x4842B1A: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==  Address 0x1188f050 is 16 bytes inside a block of size 352 alloc'd
+==1199055==    at 0x483EE39: calloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x40149DA: allocate_dtv (dl-tls.c:286)
+==1199055==    by 0x40149DA: _dl_allocate_tls (dl-tls.c:532)
+==1199055==    by 0x4922322: allocate_stack (allocatestack.c:622)
+==1199055==    by 0x4922322: pthread_create@@GLIBC_2.2.5 (pthread_create.c:660)
+==1199055==    by 0x4842917: ??? (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_helgrind-amd64-linux.so)
+==1199055==    by 0x48D0D75: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48D41F3: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x4898874: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48AE2AD: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C022E: ??? (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48C1090: curl_multi_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x48B750A: curl_easy_perform (in /usr/lib/x86_64-linux-gnu/libcurl.so.4.6.0)
+==1199055==    by 0x10B24A: do_work (findpng2.c:302)
+==1199055==  Block was alloc'd by thread #10
+==1199055== 
+--1199055-- 
+--1199055-- used_suppression:  66731 helgrind-glibc2X-005 /usr/lib/x86_64-linux-gnu/valgrind/default.supp:963
+--1199055-- used_suppression:  29137 helgrind-glibc2X-004 /usr/lib/x86_64-linux-gnu/valgrind/default.supp:949
+==1199055== 
+==1199055== ERROR SUMMARY: 22351 errors from 17 contexts (suppressed: 95868 from 294)

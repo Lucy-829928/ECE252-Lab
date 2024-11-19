@@ -24,7 +24,7 @@ pthread_mutex_t frontier_mutex; // Mutex to protect access to the frontier stack
 pthread_mutex_t visited_mutex;  // Mutex to protect access to visited hash table
 pthread_mutex_t png_mutex;      // Mutex to protect access to PNG count
 pthread_cond_t frontier_cond;   // Condition variable for frontier stack availability
-pthread_mutex_t exit_mutex; // Mutex to protect the exit flag
+pthread_mutex_t exit_mutex;     // Mutex to protect the exit flag
 
 ISTACK *frontier_stack;   // Stack to manage the frontier of URLs to visit
 ISTACK *png_stack;        // Stack to track visited URLs
@@ -248,7 +248,7 @@ void *do_work(void *arg)
         pthread_mutex_lock(&frontier_mutex);
         pthread_mutex_lock(&png_mutex);
 
-        // printf("Frontier stack item number = %d\n", frontier_stack->num_items);
+        printf("Frontier stack item number = %d\n", frontier_stack->num_items);
 
         // Check global exit flag
         pthread_mutex_lock(&exit_mutex);
@@ -293,10 +293,13 @@ void *do_work(void *arg)
                 // printf("~~~ EXIT: all threads sleeping\n");
                 return NULL; // Exit when all threads are sleeping
             }
-            while (frontier_stack->num_items == 0 && !exit_flag)
-            {
+
+            // pthread_mutex_lock(&exit_mutex);
+            // while (frontier_stack->num_items == 0 && !exit_flag)
+            // {
                 pthread_cond_wait(&frontier_cond, &frontier_mutex);
-            }
+            // }
+            // pthread_mutex_unlock(&exit_mutex);
             sleeping_threads--;
             // printf("waiting all threads waking\n");
 
@@ -314,6 +317,7 @@ void *do_work(void *arg)
 
         // Pop a URL from the frontier stack
         struct UrlStackElement url;
+        pthread_mutex_lock(&frontier_mutex);
         pop(frontier_stack, &url);
         // printf(" == > POP URL from Frontier: %s\n", url.url_ptr);
         pthread_mutex_unlock(&frontier_mutex);
@@ -344,7 +348,7 @@ void *do_work(void *arg)
 
         if (curl_handle == NULL)
         {
-            // fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
+            fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
             free(url.url_ptr);
             curl_global_cleanup();
             abort();

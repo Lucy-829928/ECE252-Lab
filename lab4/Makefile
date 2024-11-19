@@ -46,7 +46,8 @@ $(TARGETS): %: %.o $(UTIL_OBJS)
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) *.o *.d *.out *.txt *.html
+	rm -f $(TARGETS) *.o *.d *.out *.html
 #	rm -f $(PRE_TARGETS) *.o *.d *.out
 	rm -f curl_xml/*.o curl_xml/*.d curl_xml/*.out
 	rm -f shm/*.o shm/*.d shm/*.out
+	find . -type f -name "*.txt" ! -name "valgrind.txt" ! -name "helgrind.txt" -exec rm -f {} +
