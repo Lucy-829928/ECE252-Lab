@@ -391,6 +391,7 @@ int process_data(CURL *curl_handle, RECV_BUF *p_recv_buf)
         return 2;
     }
 
+    // Process HTML or PNG based on content type
     if ( strstr(ct, CT_HTML) ) {
         return process_html(curl_handle, p_recv_buf);
     } else if ( strstr(ct, CT_PNG) ) {

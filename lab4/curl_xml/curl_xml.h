@@ -27,7 +27,6 @@ typedef struct recv_buf2 {
                      /* <0 indicates an invalid seq number */
 } RECV_BUF;
 
-
 htmlDocPtr mem_getdoc(char *buf, int size, const char *url);
 xmlXPathObjectPtr getnodeset (xmlDocPtr doc, xmlChar *xpath);
 int find_http(char *fname, int size, int follow_relative_links, const char *base_url);

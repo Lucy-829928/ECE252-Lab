@@ -135,6 +135,7 @@ int push(ISTACK *p, UrlStackElement item)
     ++(p->pos);
     p->items[p->pos] = item;
     p->num_items++;
+    printf("push(): Pushing %s to stack %p\n", item.url_ptr, (void *)p);
     return 0;
 }
 
