@@ -343,9 +343,20 @@ int process_png(CURL *curl_handle, RECV_BUF *p_recv_buf)
     if ( eurl != NULL) {
         printf("The PNG url is: %s\n", eurl);
     }
+    // Validate PNG signature (first 8 bytes)
+    if (p_recv_buf->size >= 8 && memcmp(p_recv_buf->buf, "\x89PNG\r\n\x1a\n", 8) == 0)
+    {
+        printf("Valid PNG file detected at URL: %s\n", eurl);
 
-    sprintf(fname, "./output_%d_%d.png", p_recv_buf->seq, pid);
-    return write_file(fname, p_recv_buf->buf, p_recv_buf->size);
+        // Save the valid PNG file
+        sprintf(fname, "./output_%d_%d.png", p_recv_buf->seq, pid);
+        return write_file(fname, p_recv_buf->buf, p_recv_buf->size);
+    }
+    else
+    {
+        fprintf(stderr, "Invalid PNG file detected at URL: %s\n", eurl);
+        return 1; // Indicate invalid PNG
+    }
 }
 /**
  * @brief process teh download data by curl
