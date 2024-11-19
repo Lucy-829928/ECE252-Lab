@@ -87,18 +87,18 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
             }
 
             // Skip fragment links (e.g., #top)
-            if (strchr((const char *)href, '#') != NULL)
-            {
-                xmlFree(href); // Free memory for ignored URL
-                continue;
-            }
+            // if (strchr((const char *)href, '#') != NULL)
+            // {
+            //     xmlFree(href); // Free memory for ignored URL
+            //     continue;
+            // }
 
-            // Skip non-HTTP/HTTPS links
-            if (strncmp((const char *)href, "http://", 7) != 0)
-            {
-                xmlFree(href);
-                continue;
-            }
+            // // Skip non-HTTP/HTTPS links
+            // if (strncmp((const char *)href, "http://", 7) != 0)
+            // {
+            //     xmlFree(href);
+            //     continue;
+            // }
 
             // printf(" ---- > Extracted URL: %s\n", href);
 
