@@ -248,7 +248,7 @@ void *do_work(void *arg)
         pthread_mutex_lock(&frontier_mutex);
         pthread_mutex_lock(&png_mutex);
 
-        printf("Frontier stack item number = %d\n", frontier_stack->num_items);
+        // printf("Frontier stack item number = %d\n", frontier_stack->num_items);
 
         // Check global exit flag
         pthread_mutex_lock(&exit_mutex);
