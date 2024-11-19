@@ -225,7 +225,7 @@ void *do_work(void *arg)
         pthread_mutex_lock(&png_mutex);
 
         // Exit condition: frontier stack empty or total png reach max number
-        if ((frontier_stack->num_items == 0 && sleeping_threads == t - 1) || total_png >= MAX_PNG_URLS)
+        if ((frontier_stack->num_items == 0 && sleeping_threads == t - 1) || total_png >= m)
         {
             pthread_cond_broadcast(&frontier_cond); // wake all thread
             pthread_mutex_unlock(&png_mutex);

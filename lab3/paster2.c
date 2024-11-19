@@ -228,6 +228,7 @@ void producer(char *url_template)
     /* close process */
 }
 
+/* Consumer function: a routine that can run as a process */
 void consumer()
 {
     while (1)
@@ -309,9 +310,7 @@ void consumer()
     }
 }
 
-
-
-/* Set up shared memory for communication between processes */
+/* set up shared memory for communication between processes */
 void setup_shared_memory()
 {
     /* create space */
@@ -390,7 +389,7 @@ void setup_shared_memory()
     //printf("Semaphore setup complete.\n");
 }
 
-/* Clean up shared memory and semaphores */
+/* clean up shared memory and semaphores */
 void cleanup()
 {
     //printf("Cleaning up shared memory and semaphores...\n");
@@ -472,6 +471,7 @@ double execute_experiment(int B, int P, int C, int X, int N)
     {
         if (fork() == 0)
         {
+            printf("Created producer process %d\n", i + 1);
             char url_template[256];
             snprintf(url_template, sizeof(url_template), "http://ece252-%d.uwaterloo.ca:2530/image?img=%d&part=%%d", (i % 3) + 1, image_num);
             producer(url_template);
@@ -484,6 +484,7 @@ double execute_experiment(int B, int P, int C, int X, int N)
     {
         if (fork() == 0)
         {
+            printf("Created consumer process %d\n", i + 1);
             consumer();
             exit(0);
         }
