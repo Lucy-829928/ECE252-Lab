@@ -32,7 +32,7 @@ int total_png = 0;        // Total number of valid PNG URLs found
 int visited = 0;          // Total number of URLs visited
 int sleeping_threads = 0; // Number of threads waiting for URLs
 int t = 1;                // Number of worker threads
-int m = MAX_URL_NUM;      // User-specified maximum number of URLs to visit
+int m = MAX_PNG_URLS;      // User-specified maximum number of URLs to visit
 int v = 0;                // Indicates if logging is requested
 char log_entry[256];      // Name of the log file
 int exit_flag = 0;        // Global exit flag, initialize to 0
@@ -536,11 +536,8 @@ int main(int argc, char *argv[])
             v = 1; // Enable logging
             break;
         default: // Default option
-            t = 1;
-            m = MAX_PNG_URLS;
-            v = 0;
-            // fprintf(stderr, "Usage: %s [-t NUM_THREADS] [-m MAX_URLS] [-v LOG_FILE] SEED_URL\n", argv[0]);
-            // return EXIT_FAILURE;
+            fprintf(stderr, "Usage: %s [-t NUM_THREADS] [-m MAX_URLS] [-v LOG_FILE] SEED_URL\n", argv[0]);
+            return EXIT_FAILURE;
         }
     }
     if (optind < argc)
