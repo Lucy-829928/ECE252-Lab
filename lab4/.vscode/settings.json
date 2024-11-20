@@ -63,6 +63,7 @@
     "executor": "c",
     "io_context": "c",
     "istream": "c",
-    "streambuf": "c"
+    "streambuf": "c",
+    "lab_png.h": "c"
   }
 }

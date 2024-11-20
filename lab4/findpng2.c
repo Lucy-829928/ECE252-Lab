@@ -167,15 +167,15 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         // Log the PNG URL to png_urls.txt
         pthread_mutex_lock(&png_mutex);
         // Exit when total png reach m
-        // if (total_png >= m)
-        // {
-        //     pthread_mutex_lock(&exit_mutex);
-        //     exit_flag = 1; // Set exit flag
-        //     pthread_mutex_unlock(&exit_mutex);
-        //     pthread_cond_broadcast(&frontier_cond); // Notify all threads
-        //     pthread_mutex_unlock(&png_mutex);
-        //     return -1; // Exit early if target reached
-        // }
+        if (total_png >= m)
+        {
+            pthread_mutex_lock(&exit_mutex);
+            exit_flag = 1; // Set exit flag
+            pthread_mutex_unlock(&exit_mutex);
+            pthread_cond_broadcast(&frontier_cond); // Notify all threads
+            pthread_mutex_unlock(&png_mutex);
+            return -1; // Exit early if target reached
+        }
 
         total_png++;
         // printf("  total png = %d\n", total_png);
@@ -535,9 +535,12 @@ int main(int argc, char *argv[])
             strncpy(log_entry, log_file_name, MAX_URL_LENGTH - 1);
             v = 1; // Enable logging
             break;
-        default: // Invalid option
-            fprintf(stderr, "Usage: %s [-t NUM_THREADS] [-m MAX_URLS] [-v LOG_FILE] SEED_URL\n", argv[0]);
-            return EXIT_FAILURE;
+        default: // Default option
+            t = 1;
+            m = MAX_PNG_URLS;
+            v = 0;
+            // fprintf(stderr, "Usage: %s [-t NUM_THREADS] [-m MAX_URLS] [-v LOG_FILE] SEED_URL\n", argv[0]);
+            // return EXIT_FAILURE;
         }
     }
     if (optind < argc)
@@ -561,6 +564,15 @@ int main(int argc, char *argv[])
         }
         fclose(log_file);
     }
+
+    // Overwrite or create png_urls.txt
+    FILE *png_file = fopen("png_urls.txt", "w");
+    if (png_file == NULL)
+    {
+        perror("Failed to create png_urls.txt");
+        exit(EXIT_FAILURE);
+    }
+    fclose(png_file);
 
     // Initialize mutexes and condition variables
     pthread_mutex_init(&frontier_mutex, NULL);
@@ -593,7 +605,7 @@ int main(int argc, char *argv[])
 
     // printf(">> png url in stack: %d\n", png_stack->num_items);
     // Write visited URLs to the output file
-    FILE *png_file = fopen("png_urls.txt", "w");
+    png_file = fopen("png_urls.txt", "w");
     while (png_stack->num_items > 0)
     {
         struct UrlStackElement popped_url;
