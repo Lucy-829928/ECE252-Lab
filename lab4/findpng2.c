@@ -166,6 +166,16 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
 
         // Log the PNG URL to png_urls.txt
         pthread_mutex_lock(&png_mutex);
+        // Exit when total png reach m
+        // if (total_png >= m)
+        // {
+        //     pthread_mutex_lock(&exit_mutex);
+        //     exit_flag = 1; // Set exit flag
+        //     pthread_mutex_unlock(&exit_mutex);
+        //     pthread_cond_broadcast(&frontier_cond); // Notify all threads
+        //     pthread_mutex_unlock(&png_mutex);
+        //     return -1; // Exit early if target reached
+        // }
 
         total_png++;
         // printf("  total png = %d\n", total_png);
@@ -274,7 +284,7 @@ void *do_work(void *arg)
 
         if (curl_handle == NULL)
         {
-            fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
+            // fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
             free(url.url_ptr);
             curl_global_cleanup();
             abort();
@@ -312,19 +322,20 @@ void *do_work(void *arg)
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
-                        fprintf(fp, "200 OK: %s\n", url.url_ptr);
+                        // fprintf(fp, "200 OK: %s\n", url.url_ptr);
+                        fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
                     }
                 }
+                pthread_mutex_unlock(&visited_mutex);
+                // Process data
+                process_data_2(curl_handle, &recv_buf);
             }
             else
             {
                 free(entry.key);
+                pthread_mutex_unlock(&visited_mutex);
             }
-            pthread_mutex_unlock(&visited_mutex);
-
-            // Process data
-            process_data_2(curl_handle, &recv_buf);
         }
         else if (response_code >= 300 && response_code < 400 && final_url && res == CURLE_OK)
         {
@@ -347,17 +358,24 @@ void *do_work(void *arg)
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
-                        fprintf(fp, "Redirect (From): %s\n", url.url_ptr);
+                        // fprintf(fp, "Redirect (From): %s\n", url.url_ptr);
+                        fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
                     }
                 }
+                pthread_mutex_unlock(&visited_mutex);
+
+                // Process data
+                process_data_2(curl_handle, &recv_buf);
             }
             else
             {
                 free(entry_original.key);
+                pthread_mutex_unlock(&visited_mutex);
             }
 
             // Log final url
+            pthread_mutex_lock(&visited_mutex);
             ENTRY entry_redirected = {.key = strdup(final_url)};
             if (hsearch(entry_redirected, FIND) == NULL)
             {
@@ -376,16 +394,21 @@ void *do_work(void *arg)
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
-                        fprintf(fp, "Redirect (To): %s\n", final_url);
+                        // fprintf(fp, "Redirect (To): %s\n", final_url);
+                        fprintf(fp, "%s\n", final_url);
                         fclose(fp);
                     }
                 }
+                pthread_mutex_unlock(&visited_mutex);
+
+                // Process data
+                process_data_2(curl_handle, &recv_buf);
             }
             else
             {
                 free(entry_redirected.key);
+                pthread_mutex_unlock(&visited_mutex);
             }
-            pthread_mutex_unlock(&visited_mutex);
         }
 
         else if (response_code >= 400 && response_code < 600)
@@ -408,7 +431,8 @@ void *do_work(void *arg)
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
-                        fprintf(fp, "HTTP Error %ld: %s\n", response_code, url.url_ptr);
+                        // fprintf(fp, "HTTP Error %ld: %s\n", response_code, url.url_ptr);
+                        fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
                     }
                 }
@@ -441,7 +465,8 @@ void *do_work(void *arg)
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
-                        fprintf(fp, "Respond code Error %ld: %s\n", response_code, url.url_ptr);
+                        // fprintf(fp, "Respond code Error %ld: %s\n", response_code, url.url_ptr);
+                        fprintf(fp, "%s\n", url.url_ptr);
                         fclose(fp);
                     }
                 }
@@ -575,6 +600,7 @@ int main(int argc, char *argv[])
         char *url = popped_url.url_ptr;
         fprintf(png_file, "%s\n", url);
         free(popped_url.url_ptr); // Free dynamically allocated memory for the URL
+        // free(url);
     }
     fclose(png_file);
 
