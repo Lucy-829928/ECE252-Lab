@@ -365,7 +365,46 @@ void *do_work(void *arg)
         // printf(" > respond code %ld for link: %s\n", response_code, url.url_ptr);
 
         if (res != CURLE_OK)
-        {
+        {   
+            pthread_mutex_lock(&visited_mutex);
+            ENTRY entry = {.key = strdup(url.url_ptr)};
+            if (hsearch(entry, FIND) == NULL)
+            {
+                hsearch(entry, ENTER);
+                // Save key to linked list
+                KeyNode *new_node = malloc(sizeof(KeyNode));
+                new_node->key = entry.key; // key address
+                new_node->next = key_list;
+                key_list = new_node; // update list head
+                // free(entry.key);
+                // Write the URL to the log file if logging is enabled
+                if (v == 1)
+                {
+                    // pthread_mutex_lock(&png_mutex);
+                    // int png_count = total_png;
+                    // pthread_mutex_unlock(&png_mutex);
+                    FILE *fp = fopen(log_entry, "a+");
+                    if (fp)
+                    {
+                        // fprintf(fp, "Visiting: %s\n", url.url_ptr);
+                        // fprintf(fp, "Total PNGs found: %d\n", png_count);
+                        fprintf(fp, "%s\n", url.url_ptr);
+                        fclose(fp);
+                        // printf("Logged URL to log.txt: %s\n", url.url_ptr);
+                    }
+                    else
+                    {
+                        // perror("Failed to open log file\n");
+                    }
+                }
+                visited++;
+            }
+            else
+            {
+                // printf("Exist in hash table\n");
+                free(entry.key);
+            }
+            pthread_mutex_unlock(&visited_mutex);
             // fprintf(stderr, "Error: CURL failed for URL: %s\n", url.url_ptr);
         }
         else if (response_code >= 200 && response_code < 400)
