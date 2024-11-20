@@ -33,7 +33,7 @@ int visited = 0;          // Total number of URLs visited
 int sleeping_threads = 0; // Number of threads waiting for URLs
 int processing_thread = 0; // Number of threads processing URLs
 int t = 1;                // Number of worker threads
-int m = MAX_URL_NUM;      // User-specified maximum number of URLs to visit
+int m = MAX_PNG_URLS;      // User-specified maximum number of URLs to visit
 int v = 0;                // Indicates if logging is requested
 char log_entry[256];      // Name of the log file
 int exit_flag = 0;        // Global exit flag, initialize to 0
