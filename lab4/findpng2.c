@@ -205,15 +205,15 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         // free(png_url.url_ptr);
 
         // Exit when total png reach m
-        // if (total_png >= m)
-        // {
-        //     pthread_mutex_lock(&exit_mutex);
-        //     exit_flag = 1; // Set exit flag
-        //     pthread_mutex_unlock(&exit_mutex);
-        //     pthread_cond_broadcast(&frontier_cond); // Notify all threads
-        //     pthread_mutex_unlock(&png_mutex);
-        //     return -1; // Exit early if target reached
-        // }
+        if (total_png >= m)
+        {
+            pthread_mutex_lock(&exit_mutex);
+            exit_flag = 1; // Set exit flag
+            pthread_mutex_unlock(&exit_mutex);
+            pthread_cond_broadcast(&frontier_cond); // Notify all threads
+            pthread_mutex_unlock(&png_mutex);
+            return -1; // Exit early if target reached
+        }
 
         pthread_mutex_unlock(&png_mutex);
 
@@ -266,12 +266,10 @@ void *do_work(void *arg)
             printf("Thread going to sleep. Sleeping threads: %d\n", sleeping_threads);
 
             // If all threads are sleeping, set the exit flag
-            if (sleeping_threads == t)
+            if ((sleeping_threads == t && frontier_stack->num_items == 0) || total_png>=m)
             {
                 pthread_mutex_lock(&exit_mutex);
-                if (frontier_stack->num_items == 0) {
-                    exit_flag = 1; // Set exit flag
-                }
+                exit_flag = 1; // Set exit flag
                 pthread_mutex_unlock(&exit_mutex);
 
                 pthread_cond_broadcast(&frontier_cond); // Wake all threads to exit
