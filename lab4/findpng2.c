@@ -344,14 +344,12 @@ void *do_work(void *arg)
         long response_code = 0;
         //char *final_url = NULL;
 
-        curl_global_init(CURL_GLOBAL_DEFAULT);
         curl_handle = easy_handle_init(&recv_buf, url.url_ptr);
 
         if (curl_handle == NULL)
         {
             fprintf(stderr, "Error: Failed to initialize CURL for URL: %s\n", url.url_ptr);
             free(url.url_ptr);
-            curl_global_cleanup();
             abort();
         }
 
@@ -444,7 +442,6 @@ void *do_work(void *arg)
                         break;
                     }
                 }
-                free(current_url);
             }
 
             // Process the data and mark the final URL as visited
@@ -564,6 +561,7 @@ void *do_work(void *arg)
 int main(int argc, char *argv[])
 {
     xmlInitParser();                          // Initialize the XML parser library
+    curl_global_init(CURL_GLOBAL_DEFAULT);        // Initialize the CURL library
     char seed_url[MAX_URL_LENGTH];            // Seed URL
     char log_file_name[MAX_URL_LENGTH] = {0}; // Log file name
 
@@ -578,23 +576,25 @@ int main(int argc, char *argv[])
         {
         case 't': // Number of threads
             t = atoi(optarg);
+            if (t <= 0) {
+                fprintf(stderr, "Error: Number of threads must be greater than 0.\n");
+                return EXIT_FAILURE;
+            }
             break;
         case 'm': // Maximum number of URLs to visit
             m = atoi(optarg);
+            if (m <= 0) {
+                fprintf(stderr, "Error: Maximum number of URLs must be greater than 0.\n");
+                return EXIT_FAILURE;
+            }
             break;
         case 'v': // Log file name
             strncpy(log_file_name, optarg, MAX_URL_LENGTH - 1);
             strncpy(log_entry, log_file_name, MAX_URL_LENGTH - 1);
-            if (strlen(optarg) <= 0)
-            {
-                v = 0;
-            }
-            else
-            {
-                v = 1;
-            }
+            v = 1; // Enable logging
             break;
-        default:
+        default: // Invalid option
+            fprintf(stderr, "Usage: %s [-t NUM_THREADS] [-m MAX_URLS] [-v LOG_FILE] SEED_URL\n", argv[0]);
             return EXIT_FAILURE;
         }
     }
@@ -701,6 +701,7 @@ int main(int argc, char *argv[])
     pthread_mutex_destroy(&png_mutex);
     pthread_mutex_destroy(&exit_mutex);
     pthread_cond_destroy(&frontier_cond);
+    curl_global_cleanup();
     xmlCleanupParser();
 
     // Calculate and print execution time
