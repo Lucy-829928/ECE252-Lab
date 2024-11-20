@@ -28,11 +28,12 @@ pthread_mutex_t exit_mutex;     // Mutex to protect the exit flag
 
 ISTACK *frontier_stack;   // Stack to manage the frontier of URLs to visit
 ISTACK *png_stack;        // Stack to track visited URLs
+ISTACK *visited_stack;    // Stack to track visited URLs
 int total_png = 0;        // Total number of valid PNG URLs found
 int visited = 0;          // Total number of URLs visited
 int sleeping_threads = 0; // Number of threads waiting for URLs
 int t = 1;                // Number of worker threads
-int m = MAX_URL_NUM;      // User-specified maximum number of URLs to visit
+int m = MAX_PNG_URLS;      // User-specified maximum number of URLs to visit
 int v = 0;                // Indicates if logging is requested
 char log_entry[256];      // Name of the log file
 int exit_flag = 0;        // Global exit flag, initialize to 0
@@ -108,13 +109,24 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
             pthread_mutex_lock(&frontier_mutex);
             if (hsearch(entry, FIND) == NULL)
             {
-                // hsearch(entry, ENTER);
+                hsearch(entry, ENTER);
                 free(entry.key);
                 struct UrlStackElement new_element = {.url_ptr = strdup((const char *)href)};
+                pthread_mutex_lock(&frontier_mutex);
                 push(frontier_stack, new_element);
+                printf("URL added to frontier: %s\n", new_element.url_ptr);
                 // printf("    ?? PUSH to frontier\n");
                 pthread_cond_signal(&frontier_cond); // Signal waiting threads
+                printf("Signal sent to wake up a thread.\n");
+                pthread_mutex_unlock(&frontier_mutex);
                 // printf("    ??? URL not exist visited: %s, add to frontier\n", href);
+                pthread_mutex_lock(&frontier_mutex);
+                if (frontier_stack->num_items > 0) {
+                    printf("Frontier stack size: %d\n", frontier_stack->num_items);
+                } else {
+                    printf("Frontier stack is empty.\n");
+                }
+                pthread_mutex_unlock(&frontier_mutex);
             }
             else
             {
@@ -168,15 +180,15 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         pthread_mutex_lock(&png_mutex);
 
         // Exit when total png reach m
-        if (total_png >= m)
-        {
-            pthread_mutex_lock(&exit_mutex);
-            exit_flag = 1; // Set exit flag
-            pthread_mutex_unlock(&exit_mutex);
-            pthread_cond_broadcast(&frontier_cond); // Notify all threads
-            pthread_mutex_unlock(&png_mutex);
-            return -1; // Exit early if target reached
-        }
+        // if (total_png >= m)
+        // {
+        //     pthread_mutex_lock(&exit_mutex);
+        //     exit_flag = 1;
+        //     pthread_mutex_unlock(&exit_mutex);
+        //     pthread_cond_broadcast(&frontier_cond);
+        //     pthread_mutex_unlock(&png_mutex);
+        //     return -1; 
+        // }
 
         total_png++;
         // printf("  total png = %d\n", total_png);
@@ -193,15 +205,15 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         // free(png_url.url_ptr);
 
         // Exit when total png reach m
-        if (total_png >= m)
-        {
-            pthread_mutex_lock(&exit_mutex);
-            exit_flag = 1; // Set exit flag
-            pthread_mutex_unlock(&exit_mutex);
-            pthread_cond_broadcast(&frontier_cond); // Notify all threads
-            pthread_mutex_unlock(&png_mutex);
-            return -1; // Exit early if target reached
-        }
+        // if (total_png >= m)
+        // {
+        //     pthread_mutex_lock(&exit_mutex);
+        //     exit_flag = 1; // Set exit flag
+        //     pthread_mutex_unlock(&exit_mutex);
+        //     pthread_cond_broadcast(&frontier_cond); // Notify all threads
+        //     pthread_mutex_unlock(&png_mutex);
+        //     return -1; // Exit early if target reached
+        // }
 
         pthread_mutex_unlock(&png_mutex);
 
@@ -246,80 +258,139 @@ void *do_work(void *arg)
     while (1)
     {
         pthread_mutex_lock(&frontier_mutex);
-        pthread_mutex_lock(&png_mutex);
 
-        // printf("Frontier stack item number = %d\n", frontier_stack->num_items);
-
-        // Check global exit flag
-        pthread_mutex_lock(&exit_mutex);
-        if (exit_flag)
-        {
-            pthread_mutex_unlock(&exit_mutex);
-            pthread_mutex_unlock(&png_mutex);
-            pthread_mutex_unlock(&frontier_mutex);
-            return NULL; // Exit thread
-        }
-        pthread_mutex_unlock(&exit_mutex);
-
-        // Exit condition: frontier stack empty or total png reach max number
-        if ((frontier_stack->num_items == 0 && sleeping_threads == t - 1) || total_png >= m)
-        {
-            pthread_mutex_lock(&exit_mutex);
-            exit_flag = 1; // Set exit flag
-            pthread_mutex_unlock(&exit_mutex);
-            pthread_cond_broadcast(&frontier_cond); // wake all thread
-            pthread_mutex_unlock(&png_mutex);
-            pthread_mutex_unlock(&frontier_mutex);
-            // printf("~~~ EXIT: All URLs processed or max PNGs found\n");
-            return NULL; // exit thread
-        }
-        pthread_mutex_unlock(&png_mutex);
-        pthread_mutex_unlock(&frontier_mutex);
-
-        // Check if there are URLs in the frontier stack
-        pthread_mutex_lock(&frontier_mutex);
-        if (frontier_stack->num_items == 0)
+        // Check if there are URLs to process
+        while (frontier_stack->num_items == 0)
         {
             sleeping_threads++;
-            // If all threads are sleeping, signal completion and exit
-            // printf("sleeping threads = %d\n", sleeping_threads);
+            printf("Thread going to sleep. Sleeping threads: %d\n", sleeping_threads);
+
+            // If all threads are sleeping, set the exit flag
             if (sleeping_threads == t)
             {
                 pthread_mutex_lock(&exit_mutex);
-                exit_flag = 1; // Set exit flag
+                if (frontier_stack->num_items == 0) {
+                    exit_flag = 1; // Set exit flag
+                }
                 pthread_mutex_unlock(&exit_mutex);
-                pthread_cond_broadcast(&frontier_cond);
+
+                pthread_cond_broadcast(&frontier_cond); // Wake all threads to exit
                 pthread_mutex_unlock(&frontier_mutex);
-                // printf("~~~ EXIT: all threads sleeping\n");
-                return NULL; // Exit when all threads are sleeping
+                return NULL; // Exit thread
             }
 
-            // pthread_mutex_lock(&exit_mutex);
-            // while (frontier_stack->num_items == 0 && !exit_flag)
-            // {
-                pthread_cond_wait(&frontier_cond, &frontier_mutex);
-            // }
-            // pthread_mutex_unlock(&exit_mutex);
-            sleeping_threads--;
-            // printf("waiting all threads waking\n");
+            // Wait for new URLs to be added to the frontier stack
+            pthread_cond_wait(&frontier_cond, &frontier_mutex);
 
+            // Thread wakes up
+            sleeping_threads--;
+            printf("Thread waking up. Sleeping threads: %d\n", sleeping_threads);
+
+            // Check global exit flag after waking up
             pthread_mutex_lock(&exit_mutex);
+            printf("Checking exit flag: %d, sleeping_threads: %d, frontier items: %d\n", exit_flag, sleeping_threads, frontier_stack->num_items);
             if (exit_flag)
             {
                 pthread_mutex_unlock(&exit_mutex);
                 pthread_mutex_unlock(&frontier_mutex);
+                printf("[DEBUG] Thread %lu exiting due to exit_flag.\n", pthread_self());
                 return NULL; // Exit thread
             }
             pthread_mutex_unlock(&exit_mutex);
-            // continue; // Check the condition again
         }
         pthread_mutex_unlock(&frontier_mutex);
+
+        // pthread_mutex_lock(&frontier_mutex);
+        // pthread_mutex_lock(&png_mutex);
+
+        // printf("Frontier stack item number = %d\n", frontier_stack->num_items);
+
+        // Check global exit flag
+        // pthread_mutex_lock(&exit_mutex);
+        // if (exit_flag)
+        // {
+        //     pthread_mutex_unlock(&exit_mutex);
+        //     pthread_mutex_unlock(&png_mutex);
+        //     pthread_mutex_unlock(&frontier_mutex);
+        //     return NULL; // Exit thread
+        // }
+        // pthread_mutex_unlock(&exit_mutex);
+
+        // Exit condition: frontier stack empty
+        // if (frontier_stack->num_items == 0)
+        // {
+        //     sleeping_threads++;
+        //     pthread_cond_wait(&frontier_cond, &frontier_mutex);
+        //     sleeping_threads--;
+            
+        //     // Check for global exit condition
+        //     pthread_mutex_lock(&exit_mutex);
+        //     if (exit_flag) {
+        //         pthread_mutex_unlock(&exit_mutex);
+        //         pthread_mutex_unlock(&frontier_mutex);
+        //         return NULL; // Exit thread
+        //     }
+        //     pthread_mutex_unlock(&exit_mutex);
+
+        //     continue; // Recheck the frontier stack
+    
+        //     // pthread_mutex_lock(&exit_mutex);
+        //     // exit_flag = 1; // Set exit flag
+        //     // pthread_mutex_unlock(&exit_mutex);
+        //     // pthread_cond_broadcast(&frontier_cond); // wake all thread
+        //     // pthread_mutex_unlock(&png_mutex);
+        //     // pthread_mutex_unlock(&frontier_mutex);
+        //     // // printf("~~~ EXIT: All URLs processed or max PNGs found\n");
+        //     // return NULL; // exit thread
+        // }
+        // pthread_mutex_unlock(&png_mutex);
+        // pthread_mutex_unlock(&frontier_mutex);
+
+        // Check if there are URLs in the frontier stack
+        // pthread_mutex_lock(&frontier_mutex);
+        // while (frontier_stack->num_items == 0)
+        // {
+        //     sleeping_threads++;
+        //     printf("Thread going to sleep. Sleeping threads: %d\n", sleeping_threads);
+        //     // If all threads are sleeping, signal completion and exit
+        //     // printf("sleeping threads = %d\n", sleeping_threads);
+        //     if (sleeping_threads == t)
+        //     {
+        //         pthread_mutex_lock(&exit_mutex);
+        //         exit_flag = 1; // Set exit flag
+        //         pthread_mutex_unlock(&exit_mutex);
+        //         pthread_cond_broadcast(&frontier_cond);
+        //         // printf("~~~ EXIT: all threads sleeping\n");
+        //         return NULL; // Exit when all threads are sleeping
+        //     }
+
+        //     // pthread_mutex_lock(&exit_mutex);
+        //     // while (frontier_stack->num_items == 0 && !exit_flag)
+        //     // {
+        //     pthread_mutex_unlock(&frontier_mutex);
+        //     pthread_cond_wait(&frontier_cond, &frontier_mutex);
+        //     // }
+        //     // pthread_mutex_unlock(&exit_mutex);
+        //     sleeping_threads--;
+        //     printf("Thread waking up. Sleeping threads: %d\n", sleeping_threads);
+        //     // printf("waiting all threads waking\n");
+
+        //     pthread_mutex_lock(&exit_mutex);
+        //     if (exit_flag)
+        //     {
+        //         pthread_mutex_unlock(&exit_mutex);
+        //         pthread_mutex_unlock(&frontier_mutex);
+        //         return NULL; // Exit thread
+        //     }
+        //     pthread_mutex_unlock(&exit_mutex);
+        // }
+        // pthread_mutex_unlock(&frontier_mutex);
 
         // Pop a URL from the frontier stack
         struct UrlStackElement url;
         pthread_mutex_lock(&frontier_mutex);
         pop(frontier_stack, &url);
-        // printf(" == > POP URL from Frontier: %s\n", url.url_ptr);
+        printf(" == > POP URL from Frontier: %s\n", url.url_ptr);
         pthread_mutex_unlock(&frontier_mutex);
 
         // // Skip fragment links (e.g., #top)
@@ -341,7 +412,6 @@ void *do_work(void *arg)
         CURLcode res;
         RECV_BUF recv_buf;
         long response_code = 0;
-        char *final_url = NULL;
 
         curl_global_init(CURL_GLOBAL_DEFAULT);
         curl_handle = easy_handle_init(&recv_buf, url.url_ptr);
@@ -354,9 +424,12 @@ void *do_work(void *arg)
             abort();
         }
 
+        // Enable redirection handling
+        curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS, 5L);
+
         res = curl_easy_perform(curl_handle);
         curl_easy_getinfo(curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
-        curl_easy_getinfo(curl_handle, CURLINFO_EFFECTIVE_URL, &final_url);
         // printf(" > respond code %ld for link: %s\n", response_code, url.url_ptr);
 
         if (res != CURLE_OK)
@@ -367,16 +440,21 @@ void *do_work(void *arg)
         {
             // Process the data and mark the final URL as visited
             pthread_mutex_lock(&visited_mutex);
-            ENTRY entry = {.key = strdup(final_url)};
+            ENTRY entry = {.key = strdup(url.url_ptr)};
 
             if (hsearch(entry, FIND) == NULL)
             {
                 hsearch(entry, ENTER);
+
+                struct UrlStackElement visited_url = {.url_ptr = strdup(url.url_ptr)};
+                pthread_mutex_lock(&visited_mutex);
+                push(visited_stack, visited_url);
+                pthread_mutex_unlock(&visited_mutex);
                 // Save key to linked list
-                KeyNode *new_node = malloc(sizeof(KeyNode));
-                new_node->key = entry.key; // key address
-                new_node->next = key_list;
-                key_list = new_node; // update list head
+                // KeyNode *new_node = malloc(sizeof(KeyNode));
+                // new_node->key = entry.key; // key address
+                // new_node->next = key_list;
+                // key_list = new_node; // update list head
                 // free(entry.key);
                 pthread_mutex_unlock(&visited_mutex);
 
@@ -384,15 +462,15 @@ void *do_work(void *arg)
                 process_data_2(curl_handle, &recv_buf);
 
                 // Read the updated total_png
-                pthread_mutex_lock(&png_mutex);
-                if (total_png >= m)
-                {
-                    pthread_mutex_lock(&exit_mutex);
-                    exit_flag = 1; // Set exit flag
-                    pthread_mutex_unlock(&exit_mutex);
-                    pthread_cond_broadcast(&frontier_cond); // Notify threads to exit
-                }
-                pthread_mutex_unlock(&png_mutex);
+                // pthread_mutex_lock(&png_mutex);
+                // if (total_png >= m)
+                // {
+                //     pthread_mutex_lock(&exit_mutex);
+                //     exit_flag = 1; // Set exit flag
+                //     pthread_mutex_unlock(&exit_mutex);
+                //     pthread_cond_broadcast(&frontier_cond); // Notify threads to exit
+                // }
+                // pthread_mutex_unlock(&png_mutex);
 
                 // Write the URL to the log file if logging is enabled
                 pthread_mutex_lock(&visited_mutex);
@@ -401,6 +479,7 @@ void *do_work(void *arg)
                     // pthread_mutex_lock(&png_mutex);
                     // int png_count = total_png;
                     // pthread_mutex_unlock(&png_mutex);
+
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
@@ -425,6 +504,99 @@ void *do_work(void *arg)
                 pthread_mutex_unlock(&visited_mutex);
             }
         }
+        else if (response_code >= 300 && response_code < 400)
+        {
+            char *final_url = NULL;
+            curl_easy_getinfo(curl_handle, CURLINFO_EFFECTIVE_URL, &final_url);
+            printf("Redirection: Original URL: %s, Redirected URL: %s\n", url.url_ptr, final_url);
+
+            pthread_mutex_lock(&visited_mutex);
+            ENTRY original_entry = {.key = strdup(url.url_ptr)};
+            if (hsearch(original_entry, FIND) == NULL) {
+                hsearch(original_entry, ENTER);
+
+                struct UrlStackElement original_visited_url = {.url_ptr = strdup(url.url_ptr)};
+                pthread_mutex_lock(&visited_mutex);
+                push(visited_stack, original_visited_url);
+                pthread_mutex_unlock(&visited_mutex);
+                pthread_mutex_unlock(&visited_mutex);
+
+                // Write the URL to the log file if logging is enabled
+                pthread_mutex_lock(&visited_mutex);
+                if (v == 1)
+                {
+
+                    FILE *fp = fopen(log_entry, "a+");
+                     if (fp)
+                    {
+                        fprintf(fp, "%s\n", url.url_ptr);
+                        fclose(fp);
+                    }
+                    else
+                    {
+                        // perror(" === Failed to open log file\n");
+                    }
+                }
+                visited++;
+                pthread_mutex_unlock(&visited_mutex);
+            } else {
+                free(original_entry.key);
+                pthread_mutex_unlock(&visited_mutex);
+            }
+
+            if (final_url) {
+                pthread_mutex_lock(&visited_mutex);
+                ENTRY entry = {.key = strdup(final_url)};
+
+                if (hsearch(entry, FIND) == NULL)
+                {
+                    hsearch(entry, ENTER);
+                    struct UrlStackElement visited_url = {.url_ptr = strdup(final_url)};
+                    pthread_mutex_lock(&visited_mutex);
+                    push(visited_stack, visited_url);
+                    pthread_mutex_unlock(&visited_mutex);
+                    pthread_mutex_unlock(&visited_mutex);
+
+                    // Process data
+                    process_data_2(curl_handle, &recv_buf);
+
+                    // Read the updated total_png
+                    // pthread_mutex_lock(&png_mutex);
+                    // if (total_png >= m)
+                    // {
+                    //     pthread_mutex_lock(&exit_mutex);
+                    //     exit_flag = 1; // Set exit flag
+                    //     pthread_mutex_unlock(&exit_mutex);
+                    //     pthread_cond_broadcast(&frontier_cond); // Notify threads to exit
+                    // }
+                    // pthread_mutex_unlock(&png_mutex);
+
+                    // Write the URL to the log file if logging is enabled
+                    pthread_mutex_lock(&visited_mutex);
+                    if (v == 1)
+                    {
+
+                        FILE *fp = fopen(log_entry, "a+");
+                        if (fp)
+                        {
+                            fprintf(fp, "%s\n", final_url);
+                            fclose(fp);
+                        }
+                        else
+                        {
+                            // perror(" === Failed to open log file\n");
+                        }
+                    }
+                    visited++;
+                    pthread_mutex_unlock(&visited_mutex);
+                }
+                else
+                {
+                    free(entry.key);
+                    pthread_mutex_unlock(&visited_mutex);
+                }
+            }
+        }
         else if (response_code >= 400 && response_code < 600)
         {
             // Mark the original URL as visited
@@ -433,11 +605,17 @@ void *do_work(void *arg)
             if (hsearch(entry, FIND) == NULL)
             {
                 hsearch(entry, ENTER);
+
+                struct UrlStackElement visited_url;;
+                visited_url.url_ptr = url.url_ptr;
+                pthread_mutex_lock(&visited_mutex);
+                push(visited_stack, visited_url);
+                pthread_mutex_unlock(&visited_mutex);
                 // Save key to linked list
-                KeyNode *new_node = malloc(sizeof(KeyNode));
-                new_node->key = entry.key; // key address
-                new_node->next = key_list;
-                key_list = new_node; // update list head
+                //KeyNode *new_node = malloc(sizeof(KeyNode));
+                //new_node->key = entry.key; // key address
+                //new_node->next = key_list;
+                //key_list = new_node; // update list head
                 // free(entry.key);
                 // Write the URL to the log file if logging is enabled
                 if (v == 1)
@@ -445,6 +623,9 @@ void *do_work(void *arg)
                     // pthread_mutex_lock(&png_mutex);
                     // int png_count = total_png;
                     // pthread_mutex_unlock(&png_mutex);
+
+                    pthread_mutex_lock(&visited_mutex);
+
                     FILE *fp = fopen(log_entry, "a+");
                     if (fp)
                     {
@@ -458,6 +639,7 @@ void *do_work(void *arg)
                     {
                         // perror("Failed to open log file\n");
                     }
+                    pthread_mutex_unlock(&visited_mutex);
                 }
                 visited++;
             }
@@ -469,7 +651,9 @@ void *do_work(void *arg)
             pthread_mutex_unlock(&visited_mutex);
             // printf("    HTTP error for URL %s: %ld\n", url.url_ptr, response_code);
         }
-        free(url.url_ptr);
+        if (url.url_ptr) {
+            free(url.url_ptr);
+        }
         cleanup(curl_handle, &recv_buf);
     }
 
@@ -546,14 +730,19 @@ int main(int argc, char *argv[])
     // Initialize hash table and stacks
     hcreate(MAX_URL_NUM);
     frontier_stack = create_stack(MAX_URL_NUM);
-    png_stack = create_stack(MAX_URL_NUM);
+    png_stack = create_stack(MAX_PNG_URLS);
+    visited_stack = create_stack(MAX_URL_NUM);
 
     // Add the seed URL to the frontier stack
     struct UrlStackElement first_url = {.url_ptr = strdup(seed_url)};
+    pthread_mutex_lock(&frontier_mutex);
     push(frontier_stack, first_url);
+    pthread_cond_signal(&frontier_cond);
+    pthread_mutex_unlock(&frontier_mutex);
+    printf("URL added to frontier: %s\n", first_url.url_ptr);
 
     // Create worker threads
-    pthread_t threads[t];
+    pthread_t *threads = malloc(t * sizeof(pthread_t));
     for (int i = 0; i < t; i++)
     {
         pthread_create(&threads[i], NULL, do_work, NULL);
@@ -578,40 +767,53 @@ int main(int argc, char *argv[])
     }
     fclose(png_file);
 
+    // Clean up hash table keys
+    // KeyNode *current = key_list;
+    // while (current != NULL)
+    // {
+    //     KeyNode *next = current->next;
+    //     free(current->key); // Release key
+    //     free(current);      // Release node
+    //     current = next;
+    // }
+    // key_list = NULL;
+
+    // Clean up frontier_stack
+    while (frontier_stack->num_items > 0) {
+        struct UrlStackElement element;
+        pop(frontier_stack, &element);
+        if (element.url_ptr) {
+            free(element.url_ptr);  // Free only if allocated by strdup
+        }
+    }
+
+    // Clean up png_stack
+    while (png_stack->num_items > 0) {
+        struct UrlStackElement element;
+        pop(png_stack, &element);
+        if (element.url_ptr) {
+            free(element.url_ptr);  // Free only if allocated by strdup
+        }
+    }
+
+    // Clean up visited_stack
+    while (visited_stack->num_items > 0) {
+        struct UrlStackElement element;
+        pop(visited_stack, &element);
+        if (element.url_ptr) {
+            free(element.url_ptr);  // Free only if allocated by strdup
+        }
+    }
+
     // Clean up resources
     destroy_stack_elements(frontier_stack);
     destroy_stack_elements(png_stack);
+    destroy_stack_elements(visited_stack);
     destroy_stack(frontier_stack);
     destroy_stack(png_stack);
-
-    // Clean up hash table keys
-    KeyNode *current = key_list;
-    while (current != NULL)
-    {
-        KeyNode *next = current->next;
-        free(current->key); // Release key
-        free(current);      // Release node
-        current = next;
-    }
-    key_list = NULL;
+    destroy_stack(visited_stack);
+    free(threads);
     hdestroy();
-
-    // // Clean up frontier_stack
-    // while (frontier_stack->num_items > 0)
-    // {
-    //     struct UrlStackElement element;
-    //     pop(frontier_stack, &element);
-    //     free(element.url_ptr); // Free dynamically allocated URL
-    // }
-
-    // // Clean up png_stack
-    // while (png_stack->num_items > 0)
-    // {
-    //     struct UrlStackElement element;
-    //     pop(png_stack, &element);
-    //     free(element.url_ptr); // Free dynamically allocated URL
-    // }
-
     pthread_mutex_destroy(&frontier_mutex);
     pthread_mutex_destroy(&visited_mutex);
     pthread_mutex_destroy(&png_mutex);
