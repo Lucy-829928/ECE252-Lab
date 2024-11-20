@@ -31,6 +31,7 @@ ISTACK *png_stack;        // Stack to track visited URLs
 int total_png = 0;        // Total number of valid PNG URLs found
 int visited = 0;          // Total number of URLs visited
 int sleeping_threads = 0; // Number of threads waiting for URLs
+int processing_thread = 0; // Number of threads processing URLs
 int t = 1;                // Number of worker threads
 int m = MAX_URL_NUM;      // User-specified maximum number of URLs to visit
 int v = 0;                // Indicates if logging is requested
@@ -341,7 +342,7 @@ void *do_work(void *arg)
         CURLcode res;
         RECV_BUF recv_buf;
         long response_code = 0;
-        char *final_url = NULL;
+        //char *final_url = NULL;
 
         curl_global_init(CURL_GLOBAL_DEFAULT);
         curl_handle = easy_handle_init(&recv_buf, url.url_ptr);
@@ -354,9 +355,13 @@ void *do_work(void *arg)
             abort();
         }
 
+        // Enable redirection handling
+        curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1L);
+        curl_easy_setopt(curl_handle, CURLOPT_MAXREDIRS, 5L);
+
         res = curl_easy_perform(curl_handle);
         curl_easy_getinfo(curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
-        curl_easy_getinfo(curl_handle, CURLINFO_EFFECTIVE_URL, &final_url);
+        //curl_easy_getinfo(curl_handle, CURLINFO_EFFECTIVE_URL, &final_url);
         // printf(" > respond code %ld for link: %s\n", response_code, url.url_ptr);
 
         if (res != CURLE_OK)
@@ -365,9 +370,47 @@ void *do_work(void *arg)
         }
         else if (response_code >= 200 && response_code < 400)
         {
+            char *redirect_url = NULL;
+            char *current_url = strdup(url.url_ptr);
+
+            if (response_code >= 300 && response_code < 400)
+            {
+                while (1) {
+                    curl_easy_getinfo(curl_handle, CURLINFO_REDIRECT_URL, &redirect_url);
+
+                    pthread_mutex_lock(&visited_mutex);
+                    ENTRY entry = {.key = strdup(current_url)};
+                    if (hsearch(entry, FIND) == NULL) {
+                        hsearch(entry, ENTER);
+                        KeyNode *new_node = malloc(sizeof(KeyNode));
+                        new_node->key = entry.key; // key address
+                        new_node->next = key_list;
+                        key_list = new_node; // update list head
+                    } else {
+                        free(entry.key);
+                    }
+                    pthread_mutex_unlock(&visited_mutex);
+
+                    if (!redirect_url || strcmp(redirect_url, current_url) == 0) {
+                        break;
+                    }
+
+                    free(current_url);
+                    current_url = strdup(redirect_url);
+                    curl_easy_setopt(curl_handle, CURLOPT_URL, current_url);
+                    curl_easy_perform(curl_handle);
+                    curl_easy_getinfo(curl_handle, CURLINFO_RESPONSE_CODE, &response_code);
+
+                    if (response_code < 300 || response_code >= 400) {
+                        break;
+                    }
+                }
+                free(current_url);
+            }
+
             // Process the data and mark the final URL as visited
             pthread_mutex_lock(&visited_mutex);
-            ENTRY entry = {.key = strdup(final_url)};
+            ENTRY entry = {.key = strdup(current_url)};
 
             if (hsearch(entry, FIND) == NULL)
             {
@@ -406,7 +449,7 @@ void *do_work(void *arg)
                     {
                         // fprintf(fp, "[%ld] Thread %lu Visiting: %s\n", time(NULL), pthread_self(), url.url_ptr);
                         // fprintf(fp, "Total PNGs found: %d\n", png_count);
-                        fprintf(fp, "%s\n", url.url_ptr);
+                        fprintf(fp, "%s\n", current_url);
                         fclose(fp);
                         // printf(" === Logged URL to log.txt: %s\n", url.url_ptr);
                     }
@@ -424,6 +467,8 @@ void *do_work(void *arg)
                 free(entry.key);
                 pthread_mutex_unlock(&visited_mutex);
             }
+
+            free(current_url);
         }
         else if (response_code >= 400 && response_code < 600)
         {
