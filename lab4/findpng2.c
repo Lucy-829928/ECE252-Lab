@@ -20,6 +20,7 @@
 #define MAX_URL_LENGTH 256 // Maximum length of a URL
 
 // Shared data structures
+//pthread_barrier_t init_barrier; // Barrier to synchronize thread initialization
 pthread_mutex_t frontier_mutex; // Mutex to protect access to the frontier stack
 pthread_mutex_t visited_mutex;  // Mutex to protect access to visited hash table
 pthread_mutex_t png_mutex;      // Mutex to protect access to PNG stack and PNG count
@@ -34,7 +35,7 @@ int sleeping_threads = 0; // Number of threads waiting for URLs
 int t = 1;                // Number of worker threads
 int m = MAX_PNG_URLS;      // User-specified maximum number of URLs to visit
 int v = 0;                // Indicates if logging is requested
-char log_entry[256];      // Name of the log file
+__thread char log_entry[256];      // Name of the log file
 int exit_flag = 0;        // Global exit flag, initialize to 0
 
 typedef struct KeyNode
@@ -105,23 +106,18 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
             // Push the URL to the frontier stack
             ENTRY entry = {.key = strdup((const char *)href)};
             pthread_mutex_lock(&visited_mutex);
-            pthread_mutex_lock(&frontier_mutex);
             if (hsearch(entry, FIND) == NULL)
             {
                 // hsearch(entry, ENTER);
-                free(entry.key);
                 struct UrlStackElement new_element = {.url_ptr = strdup((const char *)href)};
+                pthread_mutex_lock(&frontier_mutex);
                 push(frontier_stack, new_element);
                 // printf("    ?? PUSH to frontier\n");
                 pthread_cond_signal(&frontier_cond); // Signal waiting threads
+                pthread_mutex_unlock(&frontier_mutex);
                 // printf("    ??? URL not exist visited: %s, add to frontier\n", href);
             }
-            else
-            {
-                free(entry.key);
-                // printf("    !!! URL already visited: %s, not add to frontier\n", href);
-            }
-            pthread_mutex_unlock(&frontier_mutex);
+            free(entry.key);
             pthread_mutex_unlock(&visited_mutex);
 
             xmlFree(href);
@@ -178,6 +174,7 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         }
 
         total_png++;
+        pthread_mutex_unlock(&png_mutex);
         // printf("  total png = %d\n", total_png);
         FILE *png_file = fopen("png_urls.txt", "a");
         if (png_file)
@@ -190,8 +187,6 @@ int process_png_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
         // printf(">> PNG URL pushed to png_stack: %s\n", png_url.url_ptr);
         // printf(">>> PNG stack size: %d\n", png_stack->num_items);
         // free(png_url.url_ptr);
-
-        pthread_mutex_unlock(&png_mutex);
 
         // Save the PNG locally
         // char fname[256];
@@ -231,6 +226,9 @@ int process_data_2(CURL *curl_handle, RECV_BUF *p_recv_buf)
 // Worker thread function
 void *do_work(void *arg)
 {
+    // Allow threads to initialize stacks and other data
+    //pthread_barrier_wait(&init_barrier);
+
     while (1)
     {
         pthread_mutex_lock(&frontier_mutex);
@@ -301,12 +299,11 @@ void *do_work(void *arg)
         if (response_code >= 200 && response_code < 300 && res == CURLE_OK)
         {
             // Log success url
-            pthread_mutex_lock(&visited_mutex);
             ENTRY entry = {.key = strdup(url.url_ptr)};
+            pthread_mutex_lock(&visited_mutex);
             if (hsearch(entry, FIND) == NULL)
             {
                 hsearch(entry, ENTER);
-                // free(entry.key);
 
                 // Save key to linked list
                 KeyNode *new_node = malloc(sizeof(KeyNode));
@@ -338,12 +335,11 @@ void *do_work(void *arg)
         else if (response_code >= 300 && response_code < 400 && final_url && res == CURLE_OK)
         {
             // Log redirect url
-            pthread_mutex_lock(&visited_mutex);
             ENTRY entry_original = {.key = strdup(url.url_ptr)};
+            pthread_mutex_lock(&visited_mutex);
             if (hsearch(entry_original, FIND) == NULL)
             {
                 hsearch(entry_original, ENTER);
-                // free(entry_original.key);
 
                 // Save key to linked list
                 KeyNode *new_node = malloc(sizeof(KeyNode));
@@ -373,12 +369,11 @@ void *do_work(void *arg)
             }
 
             // Log final url
-            pthread_mutex_lock(&visited_mutex);
             ENTRY entry_redirected = {.key = strdup(final_url)};
+            pthread_mutex_lock(&visited_mutex);
             if (hsearch(entry_redirected, FIND) == NULL)
             {
                 hsearch(entry_redirected, ENTER);
-                // free(entry_redirected.key);
 
                 // Save key to linked list
                 KeyNode *new_node = malloc(sizeof(KeyNode));
@@ -411,8 +406,8 @@ void *do_work(void *arg)
 
         else if (response_code >= 400 && response_code < 600)
         {
-            pthread_mutex_lock(&visited_mutex);
             ENTRY entry = {.key = strdup(url.url_ptr)};
+            pthread_mutex_lock(&visited_mutex);
             if (hsearch(entry, FIND) == NULL)
             {
                 hsearch(entry, ENTER);
@@ -444,12 +439,11 @@ void *do_work(void *arg)
         else
         {
             // printf("respond code unacceptable\n");
-            pthread_mutex_lock(&visited_mutex);
             ENTRY entry = {.key = strdup(url.url_ptr)};
+            pthread_mutex_lock(&visited_mutex);
             if (hsearch(entry, FIND) == NULL)
             {
                 hsearch(entry, ENTER);
-                // free(entry.key);
 
                 // Save key to linked list
                 KeyNode *new_node = malloc(sizeof(KeyNode));
@@ -587,6 +581,8 @@ int main(int argc, char *argv[])
     struct UrlStackElement first_url = {.url_ptr = strdup(seed_url)};
     push(frontier_stack, first_url);
 
+    //pthread_barrier_init(&init_barrier, NULL, t);
+
     // Create worker threads
     pthread_t threads[t];
     for (int i = 0; i < t; i++)
@@ -599,6 +595,8 @@ int main(int argc, char *argv[])
     {
         pthread_join(threads[i], NULL);
     }
+
+    //pthread_barrier_destroy(&init_barrier);
 
     // printf(">> png url in stack: %d\n", png_stack->num_items);
     // Write visited URLs to the output file
