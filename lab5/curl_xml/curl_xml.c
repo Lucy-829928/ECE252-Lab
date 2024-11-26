@@ -259,7 +259,7 @@ int write_file(const char *path, const void *in, size_t len)
  * Note: the caller is responsbile for cleaning the returned curl handle
  */
 
-CURL *easy_handle_init(RECV_BUF *ptr, const char *url)
+CURL *easy_handle_init(RECV_BUF *ptr, const char *url, int index)
 {
     CURL *curl_handle = NULL;
 
@@ -276,6 +276,7 @@ CURL *easy_handle_init(RECV_BUF *ptr, const char *url)
 
     if (curl_handle == NULL) {
         fprintf(stderr, "curl_easy_init: returned NULL\n");
+        recv_buf_cleanup(ptr); // Free resources if CURL fails
         return NULL;
     }
 
@@ -304,12 +305,12 @@ CURL *easy_handle_init(RECV_BUF *ptr, const char *url)
     /* supports all built-in encodings */ 
     curl_easy_setopt(curl_handle, CURLOPT_ACCEPT_ENCODING, "");
 
-    /* Max time in seconds that the connection phase to the server to take */
-    //curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT, 5L);
-    /* Max time in seconds that libcurl transfer operation is allowed to take */
-    //curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 10L);
-    /* Time out for Expect: 100-continue response in milliseconds */
-    //curl_easy_setopt(curl_handle, CURLOPT_EXPECT_100_TIMEOUT_MS, 0L);
+    // /* Max time in seconds that the connection phase to the server to take */
+    // curl_easy_setopt(curl_handle, CURLOPT_CONNECTTIMEOUT, 5L);
+    // /* Max time in seconds that libcurl transfer operation is allowed to take */
+    // curl_easy_setopt(curl_handle, CURLOPT_TIMEOUT, 10L);
+    // /* Time out for Expect: 100-continue response in milliseconds */
+    // curl_easy_setopt(curl_handle, CURLOPT_EXPECT_100_TIMEOUT_MS, 0L);
 
     /* Enable the cookie engine without reading any initial cookies */
     curl_easy_setopt(curl_handle, CURLOPT_COOKIEFILE, "");
@@ -317,6 +318,9 @@ CURL *easy_handle_init(RECV_BUF *ptr, const char *url)
     curl_easy_setopt(curl_handle, CURLOPT_PROXYAUTH, CURLAUTH_ANY);
     /* allow whatever auth the server speaks */
     curl_easy_setopt(curl_handle, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+
+    /* Set the private data to the index */
+    curl_easy_setopt(curl_handle, CURLOPT_PRIVATE, (void *)(intptr_t)index);
 
     return curl_handle;
 }

@@ -36,5 +36,5 @@ int recv_buf_init(RECV_BUF *ptr, size_t max_size);
 int recv_buf_cleanup(RECV_BUF *ptr);
 void cleanup(CURL *curl, RECV_BUF *ptr);
 int write_file(const char *path, const void *in, size_t len);
-CURL *easy_handle_init(RECV_BUF *ptr, const char *url);
+CURL *easy_handle_init(RECV_BUF *ptr, const char *url, int index);
 int process_data(CURL *curl_handle, RECV_BUF *p_recv_buf);

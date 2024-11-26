@@ -14,3 +14,5 @@ static const char *urls[] = {
 static size_t cb(char *d, size_t n, size_t l, void *p);
 
 static void init(CURLM *cm, int i);
+
+int test(void);
