@@ -1,8 +1,8 @@
 CC = gcc       # compiler
 LD = gcc       # linker
-CFLAGS = -Wall -g -std=c99 -I./curl_xml $(shell xml2-config --cflags) # compilation flags
+CFLAGS = -Wall -g -std=c99 -I./curl_xml $(shell xml2-config --cflags) $(shell curl-config --cflags) -I./curl_multi $(shell pkg-config --cflags libxml-2.0 libcurl) # compilation flags
 LDFLAGS = -g   # debugging symbols in build
-LDLIBS = -lz -lcurl -lpthread -lxml2 # link with libz
+LDLIBS = -lz -lcurl -lpthread -lxml2 $(shell pkg-config --libs libxml-2.0 libcurl) # link with libz
 
 # Source files and object files
 TARGET_SRCS = findpng3.c
@@ -10,6 +10,7 @@ TARGET_SRCS = findpng3.c
 UTIL_SRCS = lab_png.c \
 			curl_xml/curl_xml.c \
 			shm/shm_stack.c \
+			curl_multi/curl_multi_test.c
 # PRE_USE_SRCS = crc.c zutil.c
 
 UTIL_OBJS = $(UTIL_SRCS:.c=.o)
@@ -50,3 +51,4 @@ clean:
 #	rm -f $(PRE_TARGETS) *.o *.d *.out
 	rm -f curl_xml/*.o curl_xml/*.d curl_xml/*.out
 	rm -f shm/*.o shm/*.d shm/*.out
+	rm -f curl_multi/*.o curl_multi/*.d curl_multi/*.out
