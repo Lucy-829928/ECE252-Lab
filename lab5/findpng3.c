@@ -160,7 +160,6 @@ void do_work() {
         int still_running = 0; // Number of running handles
         int msgs_left = 0; // Number of messages left
         long http_status_code;
-        // const char *szUrl; // URL to visit
         
         for (int i = 0; i < t; i++) {
             if (frontier_stack->num_items > 0) {
@@ -199,18 +198,6 @@ void do_work() {
                 } else {
                     i--;
                 }
-                // eh = easy_handle_init(&recv_buf_array[i], popped_url.url_ptr, i);
-                // if (eh == NULL) {
-                //     fprintf(stderr, "Failed to initialize CURL handle for URL: %s\n", popped_url.url_ptr);
-                //     free(popped_url.url_ptr);
-                //     popped_url.url_ptr = NULL;
-                //     recv_buf_cleanup(&recv_buf_array[i]);
-                //     continue; // Skip this iteration
-                // } else {
-                //     curl_multi_add_handle(cm, eh);
-                //     free(popped_url.url_ptr);
-                //     popped_url.url_ptr = NULL;
-                // }
             }
         }
 
@@ -232,73 +219,18 @@ void do_work() {
                 CURL *completed_handle = msg->easy_handle;
                 
                 http_status_code = 0;
-                // szUrl = NULL;
 
                 intptr_t private_index;
                 curl_easy_getinfo(completed_handle, CURLINFO_PRIVATE, &private_index);
                 int index = (int)private_index;
 
                 curl_easy_getinfo(completed_handle, CURLINFO_RESPONSE_CODE, &http_status_code);
-                // curl_easy_getinfo(completed_handle, CURLINFO_EFFECTIVE_URL, &szUrl);
 
                 // printf("Processing URL: %s, Status Code: %ld\n", szUrl, http_status_code);
 
                 if (http_status_code >= 200 && http_status_code < 400) {
                     process_data_2(completed_handle, &recv_buf_array[index]);
                 }
-
-                // if (msg->data.result != CURLE_OK) {
-                //     // fprintf(stderr, "CURL error code: %d\n", msg->data.result);
-                //     ENTRY entry = {.key = strdup(szUrl)};
-                //     if (hsearch(entry, FIND) == NULL) {
-                //         hsearch(entry, ENTER);
-
-                //         KeyNode *new_node = malloc(sizeof(KeyNode));
-                //         new_node->key = entry.key;
-                //         new_node->next = key_list;
-                //         key_list = new_node;
-
-                //         if (v == 1) {
-                //             FILE *fp = fopen(log_entry, "a");
-                //             if (fp) {
-                //                 fprintf(fp, "%s\n", szUrl);
-                //                 fclose(fp);
-                //             }
-                //         }
-                //     } else {
-                //         free(entry.key);
-                //         entry.key = NULL;
-                // }
-
-                //     curl_multi_remove_handle(cm, completed_handle);
-                //     curl_easy_cleanup(completed_handle);
-                //     continue;
-                // }
-
-                // ENTRY entry = {.key = strdup(szUrl)};
-                // if (hsearch(entry, FIND) == NULL) {
-                //     hsearch(entry, ENTER);
-
-                //     KeyNode *new_node = malloc(sizeof(KeyNode));
-                //     new_node->key = entry.key;
-                //     new_node->next = key_list;
-                //     key_list = new_node;
-
-                //     if (v == 1) {
-                //         FILE *fp = fopen(log_entry, "a");
-                //         if (fp) {
-                //             fprintf(fp, "%s\n", szUrl);
-                //             fclose(fp);
-                //         }
-                //     }
-
-                //     // if (http_status_code >= 200 && http_status_code < 400) {
-                //     //     process_data_2(completed_handle, &recv_buf_array[index]);
-                //     // }
-                // } else {
-                //     free(entry.key);
-                //     entry.key = NULL;
-                // }
             
                 curl_multi_remove_handle(cm, completed_handle);
                 curl_easy_cleanup(completed_handle);
