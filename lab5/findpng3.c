@@ -22,7 +22,6 @@
 ISTACK *frontier_stack;             // Stack to manage the frontier of URLs to visit
 ISTACK *png_stack;                  // Stack to track PNG URLs
 int total_png = 0;                  // Total number of valid PNG URLs found
-int visited = 0;                    // Total number of URLs visited
 int t = 1;                          // Number of concurrent connections (default = 1)
 int m = MAX_PNG_URLS;               // User-specified maximum number of URLs to visit (default = 50)
 int v = 0;                          // Indicates if logging is requested
@@ -161,26 +160,57 @@ void do_work() {
         int still_running = 0; // Number of running handles
         int msgs_left = 0; // Number of messages left
         long http_status_code;
-        const char *szUrl; // URL to visit
+        // const char *szUrl; // URL to visit
         
         for (int i = 0; i < t; i++) {
             if (frontier_stack->num_items > 0) {
                 struct UrlStackElement popped_url;
                 pop(frontier_stack, &popped_url);
                 //printf("Popped URL: %s\n", popped_url.url_ptr);
+                ENTRY entry = {.key = strdup(popped_url.url_ptr)};
+                if (hsearch(entry, FIND) == NULL) {
+                    hsearch(entry, ENTER);
 
-                eh[i] = easy_handle_init(&recv_buf_array[i], popped_url.url_ptr, i);
-                if (eh[i] == NULL) {
-                    fprintf(stderr, "Failed to initialize CURL handle for URL: %s\n", popped_url.url_ptr);
-                    free(popped_url.url_ptr);
-                    popped_url.url_ptr = NULL;
-                    recv_buf_cleanup(&recv_buf_array[i]);
-                    continue; // Skip this iteration
+                    KeyNode *new_node = malloc(sizeof(KeyNode));
+                    new_node->key = entry.key;
+                    new_node->next = key_list;
+                    key_list = new_node;
+
+                    if (v == 1) {
+                        FILE *fp = fopen(log_entry, "a");
+                        if (fp) {
+                            fprintf(fp, "%s\n", popped_url.url_ptr);
+                            fclose(fp);
+                        }
+                    }
+
+                    eh[i] = easy_handle_init(&recv_buf_array[i], popped_url.url_ptr, i);
+                    if (eh[i] == NULL) {
+                        fprintf(stderr, "Failed to initialize CURL handle for URL: %s\n", popped_url.url_ptr);
+                        free(popped_url.url_ptr);
+                        popped_url.url_ptr = NULL;
+                        recv_buf_cleanup(&recv_buf_array[i]);
+                        continue; // Skip this iteration
+                    } else {
+                        curl_multi_add_handle(cm, eh[i]);
+                        free(popped_url.url_ptr);
+                        popped_url.url_ptr = NULL;
+                    }
                 } else {
-                    curl_multi_add_handle(cm, eh[i]);
-                    free(popped_url.url_ptr);
-                    popped_url.url_ptr = NULL;
+                    i--;
                 }
+                // eh = easy_handle_init(&recv_buf_array[i], popped_url.url_ptr, i);
+                // if (eh == NULL) {
+                //     fprintf(stderr, "Failed to initialize CURL handle for URL: %s\n", popped_url.url_ptr);
+                //     free(popped_url.url_ptr);
+                //     popped_url.url_ptr = NULL;
+                //     recv_buf_cleanup(&recv_buf_array[i]);
+                //     continue; // Skip this iteration
+                // } else {
+                //     curl_multi_add_handle(cm, eh);
+                //     free(popped_url.url_ptr);
+                //     popped_url.url_ptr = NULL;
+                // }
             }
         }
 
@@ -195,75 +225,80 @@ void do_work() {
             }
 
             curl_multi_perform(cm, &still_running);
-            } while(still_running);
+        } while(still_running);
 
         while ((msg = curl_multi_info_read(cm, &msgs_left))) {
             if (msg->msg == CURLMSG_DONE) {
                 CURL *completed_handle = msg->easy_handle;
                 
                 http_status_code = 0;
-                szUrl = NULL;
+                // szUrl = NULL;
 
                 intptr_t private_index;
                 curl_easy_getinfo(completed_handle, CURLINFO_PRIVATE, &private_index);
                 int index = (int)private_index;
 
                 curl_easy_getinfo(completed_handle, CURLINFO_RESPONSE_CODE, &http_status_code);
-                curl_easy_getinfo(completed_handle, CURLINFO_EFFECTIVE_URL, &szUrl);
+                // curl_easy_getinfo(completed_handle, CURLINFO_EFFECTIVE_URL, &szUrl);
 
                 // printf("Processing URL: %s, Status Code: %ld\n", szUrl, http_status_code);
 
-                if (msg->data.result != CURLE_OK) {
-                    // fprintf(stderr, "CURL error code: %d\n", msg->data.result);
-                    ENTRY entry = {.key = strdup(szUrl)};
-                    if (hsearch(entry, FIND) == NULL) {
-                        hsearch(entry, ENTER);
-
-                        KeyNode *new_node = malloc(sizeof(KeyNode));
-                        new_node->key = entry.key;
-                        new_node->next = key_list;
-                        key_list = new_node;
-
-                        if (v == 1) {
-                            FILE *fp = fopen(log_entry, "a");
-                            if (fp) {
-                                fprintf(fp, "%s\n", szUrl);
-                                fclose(fp);
-                            }
-                        }
-                    } else {
-                        free(entry.key);
-                        entry.key = NULL;
+                if (http_status_code >= 200 && http_status_code < 400) {
+                    process_data_2(completed_handle, &recv_buf_array[index]);
                 }
 
-                    curl_multi_remove_handle(cm, completed_handle);
-                    curl_easy_cleanup(completed_handle);
-                    continue;
-                } 
-                ENTRY entry = {.key = strdup(szUrl)};
-                if (hsearch(entry, FIND) == NULL) {
-                    hsearch(entry, ENTER);
+                // if (msg->data.result != CURLE_OK) {
+                //     // fprintf(stderr, "CURL error code: %d\n", msg->data.result);
+                //     ENTRY entry = {.key = strdup(szUrl)};
+                //     if (hsearch(entry, FIND) == NULL) {
+                //         hsearch(entry, ENTER);
 
-                    KeyNode *new_node = malloc(sizeof(KeyNode));
-                    new_node->key = entry.key;
-                    new_node->next = key_list;
-                    key_list = new_node;
+                //         KeyNode *new_node = malloc(sizeof(KeyNode));
+                //         new_node->key = entry.key;
+                //         new_node->next = key_list;
+                //         key_list = new_node;
 
-                    if (v == 1) {
-                        FILE *fp = fopen(log_entry, "a");
-                        if (fp) {
-                            fprintf(fp, "%s\n", szUrl);
-                            fclose(fp);
-                        }
-                    }
+                //         if (v == 1) {
+                //             FILE *fp = fopen(log_entry, "a");
+                //             if (fp) {
+                //                 fprintf(fp, "%s\n", szUrl);
+                //                 fclose(fp);
+                //             }
+                //         }
+                //     } else {
+                //         free(entry.key);
+                //         entry.key = NULL;
+                // }
 
-                    if (http_status_code >= 200 && http_status_code < 400) {
-                        process_data_2(completed_handle, &recv_buf_array[index]);
-                    }
-                } else {
-                    free(entry.key);
-                    entry.key = NULL;
-                }
+                //     curl_multi_remove_handle(cm, completed_handle);
+                //     curl_easy_cleanup(completed_handle);
+                //     continue;
+                // }
+
+                // ENTRY entry = {.key = strdup(szUrl)};
+                // if (hsearch(entry, FIND) == NULL) {
+                //     hsearch(entry, ENTER);
+
+                //     KeyNode *new_node = malloc(sizeof(KeyNode));
+                //     new_node->key = entry.key;
+                //     new_node->next = key_list;
+                //     key_list = new_node;
+
+                //     if (v == 1) {
+                //         FILE *fp = fopen(log_entry, "a");
+                //         if (fp) {
+                //             fprintf(fp, "%s\n", szUrl);
+                //             fclose(fp);
+                //         }
+                //     }
+
+                //     // if (http_status_code >= 200 && http_status_code < 400) {
+                //     //     process_data_2(completed_handle, &recv_buf_array[index]);
+                //     // }
+                // } else {
+                //     free(entry.key);
+                //     entry.key = NULL;
+                // }
             
                 curl_multi_remove_handle(cm, completed_handle);
                 curl_easy_cleanup(completed_handle);
