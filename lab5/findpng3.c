@@ -52,7 +52,7 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
         return -1;
     }
 
-    printf("Extracted URLS: \n");
+    // printf("Extracted URLS: \n");
     result = getnodeset(doc, xpath);
     if (result) {
         nodeset = result->nodesetval;
@@ -68,13 +68,13 @@ int find_http_2(char *buf, int size, int follow_relative_links, const char *base
                 continue;
             }
 
-            printf("URL Found: %s\n", href);
+            // printf("URL Found: %s\n", href);
 
             ENTRY entry = {.key = strdup((const char *)href)};
             if (hsearch(entry, FIND) == NULL) {
                 struct UrlStackElement new_element = {.url_ptr = strdup((const char *)href)};
                 push(frontier_stack, new_element); // Push to the stack
-                printf("URL Added to Frontier Stack: %s\n", href);
+                // printf("URL Added to Frontier Stack: %s\n", href);
             }
             free(entry.key);
             xmlFree(href);
@@ -148,11 +148,11 @@ void do_work() {
     }
     
     while (1) {
-        printf("Frontier stack size: %d, Total PNGs: %d\n", frontier_stack->num_items, total_png);
+        // printf("Frontier stack size: %d, Total PNGs: %d\n", frontier_stack->num_items, total_png);
 
         // EXIT CONDITION 1: no more task in frontier stack
         if (frontier_stack->num_items <= 0) {
-            printf("Exiting: No more URLs to visit\n");
+            // printf("Exiting: No more URLs to visit\n");
             break;
         }
     
@@ -167,16 +167,19 @@ void do_work() {
             if (frontier_stack->num_items > 0) {
                 struct UrlStackElement popped_url;
                 pop(frontier_stack, &popped_url);
-                printf("Popped URL: %s\n", popped_url.url_ptr);
+                //printf("Popped URL: %s\n", popped_url.url_ptr);
                 eh = easy_handle_init(&recv_buf_array[i], popped_url.url_ptr, i);
                 if (eh == NULL) {
                     fprintf(stderr, "Failed to initialize CURL handle for URL: %s\n", popped_url.url_ptr);
                     free(popped_url.url_ptr);
+                    popped_url.url_ptr = NULL;
                     recv_buf_cleanup(&recv_buf_array[i]);
                     continue; // Skip this iteration
+                } else {
+                    curl_multi_add_handle(cm, eh);
+                    free(popped_url.url_ptr);
+                    popped_url.url_ptr = NULL;
                 }
-                curl_multi_add_handle(cm, eh);
-                free(popped_url.url_ptr);
             }
         }
 
@@ -207,10 +210,10 @@ void do_work() {
                 curl_easy_getinfo(eh, CURLINFO_RESPONSE_CODE, &http_status_code);
                 curl_easy_getinfo(eh, CURLINFO_EFFECTIVE_URL, &szUrl);
 
-                printf("Processing URL: %s, Status Code: %ld\n", szUrl, http_status_code);
+                // printf("Processing URL: %s, Status Code: %ld\n", szUrl, http_status_code);
 
                 if (msg->data.result != CURLE_OK) {
-                    fprintf(stderr, "CURL error code: %d\n", msg->data.result);\
+                    // fprintf(stderr, "CURL error code: %d\n", msg->data.result);
                     curl_multi_remove_handle(cm, eh);
                     curl_easy_cleanup(eh);
                     continue;
@@ -225,7 +228,7 @@ void do_work() {
                     key_list = new_node;
 
                     if (v == 1) {
-                        FILE *fp = fopen(log_entry, "+a");
+                        FILE *fp = fopen(log_entry, "a");
                         if (fp) {
                             fprintf(fp, "%s\n", szUrl);
                             fclose(fp);
@@ -235,6 +238,7 @@ void do_work() {
                     process_data_2(eh, &recv_buf_array[index]);
                 } else {
                     free(entry.key);
+                    entry.key = NULL;
                 }
             
                 curl_multi_remove_handle(cm, eh);
@@ -245,7 +249,7 @@ void do_work() {
                 
                 // EXIT CONDITION 2: enough PNGs found
                 if (total_png >= m) {
-                    printf("Exiting: Reached PNG limit (%d)\n", total_png);
+                    // printf("Exiting: Reached PNG limit (%d)\n", total_png);
 
                     break;
                 }
@@ -256,10 +260,13 @@ void do_work() {
     }
 
     for (int i = 0; i < t; i++) {
-        recv_buf_cleanup(&recv_buf_array[i]); // Cleanup buffers
+        if (recv_buf_array[i].buf) {
+            recv_buf_cleanup(&recv_buf_array[i]); // Cleanup buffers
+        }
     }
     if (recv_buf_array) {
         free(recv_buf_array);
+        recv_buf_array = NULL;
     }
     curl_multi_cleanup(cm);
     curl_global_cleanup();
@@ -356,6 +363,7 @@ int main (int argc, char *argv[]) {
         pop(png_stack, &popped_url);
         fprintf(png_file, "%s\n", popped_url.url_ptr);
         free(popped_url.url_ptr);
+        popped_url.url_ptr = NULL;
     }
     fclose(png_file);
 

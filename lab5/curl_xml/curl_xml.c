@@ -208,6 +208,7 @@ int recv_buf_cleanup(RECV_BUF *ptr)
     free(ptr->buf);
     ptr->size = 0;
     ptr->max_size = 0;
+    ptr->buf = NULL;
     return 0;
 }
 
