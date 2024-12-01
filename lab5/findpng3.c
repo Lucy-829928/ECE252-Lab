@@ -149,6 +149,8 @@ void do_work() {
     for (int i = 0; i < t; i++) {
         recv_buf_array[i].buf = NULL;
     }
+
+    memset(recv_buf_array, 0, t * sizeof(RECV_BUF));
     
     while (1) {
         // printf("Frontier stack size: %d, Total PNGs: %d\n", frontier_stack->num_items, total_png);
@@ -160,6 +162,7 @@ void do_work() {
         }
     
         CURL *eh[t]; // CURL easy handle
+        memset(eh, 0, sizeof(eh));
         CURLMsg *msg = NULL; // CURL message
         int still_running = 0; // Number of running handles
         int msgs_left = 0; // Number of messages left
@@ -242,6 +245,7 @@ void do_work() {
             
                 curl_multi_remove_handle(cm, completed_handle);
                 curl_easy_cleanup(completed_handle);
+                eh[index] = NULL;
                 if (recv_buf_array[index].buf) {
                     recv_buf_cleanup(&recv_buf_array[index]);
                 }
@@ -249,8 +253,19 @@ void do_work() {
                 // EXIT CONDITION 2: enough PNGs found
                 if (total_png >= m) {
                     // printf("Exiting: Reached PNG limit (%d)\n", total_png);
+                    for (int i = 0; i < t; i++) {
+                        if (eh[i] != NULL) {
+                            curl_multi_remove_handle(cm, eh[i]);
+                            curl_easy_cleanup(eh[i]);
+                        }
+                        recv_buf_cleanup(&recv_buf_array[i]);
+                    }
+                    free(recv_buf_array);
+                    recv_buf_array = NULL;
+                    curl_multi_cleanup(cm);
+                    curl_global_cleanup();
 
-                    break;
+                    return; // Early exit
                 }
             } else {
             fprintf(stderr, "error: after curl_multi_info_read(), CURLMsg=%d\n", msg->msg);
