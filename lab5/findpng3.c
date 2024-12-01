@@ -143,7 +143,11 @@ void do_work() {
 
     if (recv_buf_array == NULL) {
         fprintf(stderr, "Failed to allocate memory for recv_buf_array\n");
-        return;
+        return; 
+    }
+
+    for (int i = 0; i < t; i++) {
+        recv_buf_array[i].buf = NULL;
     }
     
     while (1) {
@@ -189,6 +193,7 @@ void do_work() {
                         free(popped_url.url_ptr);
                         popped_url.url_ptr = NULL;
                         recv_buf_cleanup(&recv_buf_array[i]);
+                        free(entry.key);
                         continue; // Skip this iteration
                     } else {
                         curl_multi_add_handle(cm, eh[i]);
@@ -196,6 +201,9 @@ void do_work() {
                         popped_url.url_ptr = NULL;
                     }
                 } else {
+                    free(entry.key);
+                    free(popped_url.url_ptr);
+                    popped_url.url_ptr = NULL;
                     i--;
                 }
             }
