@@ -1,0 +1,352 @@
+Test Case Report
+==================================================
+
+Running test case: test_make_findpng2.py
+Output:
+gcc        -MM -MF shm/shm_stack.d -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2   shm/shm_stack.c
+gcc        -MM -MF curl_xml/curl_xml.d -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2   curl_xml/curl_xml.c
+gcc        -MM -MF lab_png.d -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2   lab_png.c
+gcc        -MM -MF findpng2.d -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2   findpng2.c
+gcc        -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2  -c findpng2.c -o findpng2.o
+gcc        -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2  -c lab_png.c -o lab_png.o
+gcc        -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2  -c curl_xml/curl_xml.c -o curl_xml/curl_xml.o
+gcc        -Wall -g -std=c99 -I./curl_xml -I/usr/include/libxml2  -c shm/shm_stack.c -o shm/shm_stack.o
+gcc        -o findpng2 findpng2.o lab_png.o curl_xml/curl_xml.o shm/shm_stack.o -lz -lcurl -lpthread -lxml2  -g   
+
+
+Build successful. Executable 'findpng2' found.
+
+Result: PASSED (1/1 points)
+==================================================
+
+Running test case: test_2p1.py
+Output:
+Running command: ./findpng2 -t 1 -m 41 http://ece252-1.uwaterloo.ca/lab4
+findpng2 execution time: 53.057712 seconds
+Found: 41
+Test Passed: Running with -t 1 -m 41 collected 41 pngs
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 53.081s
+
+OK
+
+Result: PASSED (2/2 points)
+==================================================
+
+Running test case: test_2p2.py
+Output:
+Running command: ./findpng2 -t 1 -m 100 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+findpng2 execution time: 111.681016 seconds
+Found: 50 pngs
+Found: 0 logs
+Test Failed: Expected at least 347 URLs, but found 0.
+
+E
+======================================================================
+ERROR: test_collect_pngs_and_urls (__main__.TestLab4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "test_2p2.py", line 80, in test_collect_pngs_and_urls
+    exit(1)
+  File "/usr/lib/python3.8/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: 1
+
+----------------------------------------------------------------------
+Ran 1 test in 111.700s
+
+FAILED (errors=1)
+
+Result: FAILED (0/4 points)
+==================================================
+
+Running test case: test_3p1.py
+Output:
+findpng2 execution time: 6.918196 seconds
+Running command: ./findpng2 -t 16 -m 100 http://ece252-1.uwaterloo.ca/lab4
+Thread count: 17
+Test Passed: Correctly spawns 16 or 17 threads
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 6.979s
+
+OK
+
+Result: PASSED (2/2 points)
+==================================================
+
+Running test case: test_3p2.py
+Output:
+findpng2 execution time: 9.073871 seconds
+Running command: ./findpng2 -t 13 -m 100 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Found: 50 PNGs
+URLs crawled: 0
+Test Failed: Expected at least 347 URLs, but found 0.
+
+E
+======================================================================
+ERROR: test_correct_number_of_pngs_and_urls (__main__.TestLab4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "test_3p2.py", line 111, in test_correct_number_of_pngs_and_urls
+    exit(1)
+  File "/usr/lib/python3.8/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: 1
+
+----------------------------------------------------------------------
+Ran 1 test in 9.142s
+
+FAILED (errors=1)
+
+Result: FAILED (0/2 points)
+==================================================
+
+Running test case: test_4.py
+Output:
+Test Passed: Student made efforts to reduce busy waiting through sem_waits or pthread_cond_waits.
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+OK
+
+Result: PASSED (2/2 points)
+==================================================
+
+Running test case: test_5p1.py
+Output:
+Deleted png_urls.txt
+Deleted log.txt
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Average execution time over 5 runs with 1 thread(s): 40.27 seconds
+Execution time with 1 thread(s): 40.27 seconds
+Running command: ./findpng2 -t 20 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 20 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 20 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 20 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 20 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Average execution time over 5 runs with 20 thread(s): 2.48 seconds
+Execution time with 20 thread(s): 2.48 seconds
+Calculated speedup: 16.21x
+Test Passed: Speedup with 20 threads is >= 16x or runtime <= 2.4s.
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 213.795s
+
+OK
+
+Result: PASSED (2/2 points)
+==================================================
+
+Running test case: test_5p2.py
+Output:
+Deleted png_urls.txt
+log.txt does not exist, no need to delete
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 1 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Average execution time over 5 runs with 1 thread(s): 40.23 seconds
+Execution time with 1 thread(s): 40.23 seconds
+Running command: ./findpng2 -t 10 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 10 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 10 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 10 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Running command: ./findpng2 -t 10 -m 20 http://ece252-1.uwaterloo.ca/lab4
+Average execution time over 5 runs with 10 thread(s): 4.07 seconds
+Execution time with 10 thread(s): 4.07 seconds
+Calculated speedup: 9.89x
+Test Passed: Speedup with 10 threads is >= 8x or runtime <= 4.8s.
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 221.485s
+
+OK
+
+Result: PASSED (2/2 points)
+==================================================
+
+Running test case: test_6p1.py
+Output:
+Deleted png_urls.txt
+
+Running test with m = 5
+Running command: ./findpng2 -t 20 -m 5 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Output of program under test:
+ findpng2 execution time: 1.099046 seconds
+
+m=5: Found 5 PNGs, Crawled 0 URLs, Time=1.12s
+
+Running test with m = 48
+Running command: ./findpng2 -t 20 -m 48 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Output of program under test:
+ findpng2 execution time: 3.997019 seconds
+
+m=48: Found 48 PNGs, Crawled 0 URLs, Time=4.02s
+
+Running test with m = 100
+Running command: ./findpng2 -t 20 -m 100 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Output of program under test:
+ findpng2 execution time: 5.582534 seconds
+
+m=100: Found 50 PNGs, Crawled 0 URLs, Time=5.60s
+Test Passed: Correct number of PNGs collected for each m.
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 10.740s
+
+OK
+
+Result: PASSED (2/2 points)
+==================================================
+
+Running test case: test_6p2.py
+Output:
+Deleted png_urls.txt
+Deleted log.txt
+
+Running test with m = 48
+Running command: ./findpng2 -t 20 -m 48 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Output of program under test:
+ findpng2 execution time: 3.939413 seconds
+
+m=48: Found 48 PNGs, Crawled 0 URLs, Time=3.96s
+
+Running test with m = 100
+Running command: ./findpng2 -t 20 -m 100 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Output of program under test:
+ findpng2 execution time: 5.215091 seconds
+
+m=100: Found 50 PNGs, Crawled 0 URLs, Time=5.23s
+Test Failed: 0 URLs crawled for test condition(s)
+
+E
+======================================================================
+ERROR: test_multithread_output_case_2 (__main__.TestLab4)
+Test Case 2: Verify URLs crawled with m=48 <= URLs crawled with m=100.
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "test_6p2.py", line 82, in test_multithread_output_case_2
+    exit(1)
+  File "/usr/lib/python3.8/_sitebuiltins.py", line 26, in __call__
+    raise SystemExit(code)
+SystemExit: 1
+
+----------------------------------------------------------------------
+Ran 1 test in 9.192s
+
+FAILED (errors=1)
+
+Result: FAILED (0/2 points)
+==================================================
+
+Running test case: test_6p3.py
+Output:
+Deleted png_urls.txt
+Deleted log.txt
+
+Running test with m = 48
+Running command: ./findpng2 -t 20 -m 48 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Output of program under test:
+ findpng2 execution time: 4.584341 seconds
+
+m=48: Found 48 PNGs, Crawled 0 URLs, Time=4.60s
+
+Running test with m = 100
+Running command: ./findpng2 -t 20 -m 100 -v log.txt http://ece252-1.uwaterloo.ca/lab4
+Output of program under test:
+ findpng2 execution time: 5.634705 seconds
+
+m=100: Found 50 PNGs, Crawled 0 URLs, Time=5.65s
+Test Passed: Runtime for m=100 is <= 2 * runtime for m=48.
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 10.259s
+
+OK
+
+Result: PASSED (2/2 points)
+==================================================
+
+Running test case: test_7.py
+Output:
+findpng2 execution time: 29.071148 seconds
+Valgrind Output:
+ ==2936272== Memcheck, a memory error detector
+==2936272== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==2936272== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==2936272== Command: ./findpng2 -t 10 -m 100 http://ece252-1.uwaterloo.ca/lab4
+==2936272== 
+==2936272== Thread 2:
+==2936272== Conditional jump or move depends on uninitialised value(s)
+==2936272==    at 0x49678A4: xmlParseCharEncoding (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49BFED4: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C3988: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C4697: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C58B8: htmlParseDocument (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C5E09: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x10C4CF: mem_getdoc (curl_xml.c:44)
+==2936272==    by 0x10A9F3: find_http_2 (findpng2.c:63)
+==2936272==    by 0x10ACE0: process_html_2 (findpng2.c:144)
+==2936272==    by 0x10AF84: process_data_2 (findpng2.c:213)
+==2936272==    by 0x10B366: do_work (findpng2.c:327)
+==2936272==    by 0x491B608: start_thread (pthread_create.c:477)
+==2936272== 
+==2936272== Conditional jump or move depends on uninitialised value(s)
+==2936272==    at 0x49678E4: xmlParseCharEncoding (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49BFED4: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C3988: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C4697: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C58B8: htmlParseDocument (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x49C5E09: ??? (in /usr/lib/x86_64-linux-gnu/libxml2.so.2.9.10)
+==2936272==    by 0x10C4CF: mem_getdoc (curl_xml.c:44)
+==2936272==    by 0x10A9F3: find_http_2 (findpng2.c:63)
+==2936272==    by 0x10ACE0: process_html_2 (findpng2.c:144)
+==2936272==    by 0x10AF84: process_data_2 (findpng2.c:213)
+==2936272==    by 0x10B366: do_work (findpng2.c:327)
+==2936272==    by 0x491B608: start_thread (pthread_create.c:477)
+==2936272== 
+==2936272== 
+==2936272== HEAP SUMMARY:
+==2936272==     in use at exit: 0 bytes in 0 blocks
+==2936272==   total heap usage: 152,712 allocs, 152,712 frees, 761,252,917 bytes allocated
+==2936272== 
+==2936272== All heap blocks were freed -- no leaks are possible
+==2936272== 
+==2936272== Use --track-origins=yes to see where uninitialised values come from
+==2936272== For lists of detected and suppressed errors, rerun with: -s
+==2936272== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+
+No definitely lost bytes detected.
+Test Passed: No definitely lost memory.
+
+.
+----------------------------------------------------------------------
+Ran 1 test in 31.306s
+
+OK
+
+Result: PASSED (1/1 points)
+==================================================
+
+
+Summary
+==================================================
+Total Score: 16/24
+
+MM: Your marmoset score 20/24 will be used. 
+If you have concerns regarding this report, please fill in this form: https://forms.office.com/r/7s1060TMvA
